@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.itas.core.net.nio.Message;
+
 import net.itas.core.Dispatch;
 import net.itas.core.User;
 import net.itas.core.exception.DoubleException;
-import net.itas.core.io.nio.Message;
 import net.itas.util.Utils.ClassUtils;
 import net.itas.util.Utils.Objects;
 

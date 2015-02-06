@@ -1,8 +1,9 @@
 package net.itas.core.dispatch;
 
+import org.itas.core.net.nio.Message;
+
 import net.itas.core.Dispatch;
 import net.itas.core.User;
-import net.itas.core.io.nio.Message;
 
 public class ProtocolDispatch extends Dispatch {
 

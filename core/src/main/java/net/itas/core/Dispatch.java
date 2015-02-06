@@ -3,8 +3,9 @@ package net.itas.core;
 import java.io.IOException;
 import java.util.Objects;
 
+import org.itas.core.net.nio.Message;
+
 import net.itas.core.dispatch.Handle;
-import net.itas.core.io.nio.Message;
 import net.itas.util.Logger;
 
 /**

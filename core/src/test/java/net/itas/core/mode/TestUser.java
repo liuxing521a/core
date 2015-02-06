@@ -162,26 +162,22 @@ public class TestUser extends GameObject {
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException,
 			ClassNotFoundException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected String PRIFEX() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected <T extends GameObject> T autoInstance(String Id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -191,9 +187,6 @@ public class TestUser extends GameObject {
 		CtMethod[] methods = clazz.getMethods();
 		for (CtMethod method : methods) {
 			if ("setName".equals(method.getName())) {
-				method.insertAfter("this.modify(\"" + method.getName() + "\");");
-				method.insertAfter("this.modify(\"" + method.getName() + "\");");
-				method.insertAfter("this.modify(\"" + method.getName() + "\");");
 				method.insertAfter("this.modify(\"" + method.getName() + "\");");
 			}
 			System.out.println(method.getName());

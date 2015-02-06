@@ -2,7 +2,7 @@ package net.itas.core.io.rmi;
 
 import java.rmi.RemoteException;
 
-import net.itas.core.io.rmi.Rmi;
+import org.itas.core.net.rmi.Rmi;
 
 
 public interface TestExample extends Rmi {

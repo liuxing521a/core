@@ -6,9 +6,10 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.itas.core.annotation.UnSave;
-import net.itas.core.io.SendAble;
-import net.itas.core.io.nio.Message;
 import net.itas.util.Logger;
+
+import org.itas.buffer.SendAble;
+import org.itas.core.net.nio.Message;
 
 
 
@@ -52,9 +53,10 @@ public abstract class User extends GameObject {
 			return;
 		}
 		
-		Message message = sendAble.getData();
+		// TODO
+		Message message = Message.allocate(sendAble.SUFFIX(), sendAble);
 		message.setChannel(channel);
-		channel.write(message);
+		channel.write(sendAble.toBuffer());
 		
 		isFlush.compareAndSet(false, true);
 		Logger.debug("send without Flush message:{}", message);
@@ -70,7 +72,7 @@ public abstract class User extends GameObject {
 			return;
 		}
 		
-		Message message = sendAble.getData();
+		Message message = Message.allocate(sendAble.SUFFIX(), sendAble);
 		message.setChannel(channel);
 		channel.writeAndFlush(message);
 		Logger.debug("send and Flush message:{}", message);

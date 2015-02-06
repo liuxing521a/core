@@ -2,8 +2,9 @@ package net.itas.core.io.rmi;
 
 import java.util.Arrays;
 
-import net.itas.core.io.Hosts.Address;
-
+import org.itas.core.net.Hosts.Address;
+import org.itas.core.net.rmi.RmiClient;
+import org.itas.core.net.rmi.RmiServer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
