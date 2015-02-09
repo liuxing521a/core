@@ -6,14 +6,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import net.itas.core.Pool;
-import net.itas.core.Script;
-import net.itas.core.enums.EByte;
-import net.itas.core.enums.EString;
-import net.itas.core.util.GenericUtil;
-import net.itas.core.util.Utils.EnumUtils;
-import net.itas.util.ItasException;
-import net.itas.util.Utils.ClassUtils;
+import org.itas.core.Pool;
+import org.itas.core.Script;
+import org.itas.core.enums.EByte;
+import org.itas.core.enums.EString;
+import org.itas.core.util.GenericUtil;
+import org.itas.core.util.Utils.EnumUtils;
+import org.itas.util.ItasException;
+import org.itas.util.Utils.ClassUtils;
 
 abstract class AbstractXml {
 	

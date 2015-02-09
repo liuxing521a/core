@@ -7,10 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.itas.util.Logger;
-
 import org.itas.core.net.nio.Message;
 import org.itas.core.net.nio.SessionListener;
+import org.itas.util.Logger;
 
 public class NioClientHandler extends SimpleChannelInboundHandler<Message> {
 	

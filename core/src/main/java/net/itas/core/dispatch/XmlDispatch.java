@@ -1,9 +1,8 @@
 package net.itas.core.dispatch;
 
+import org.itas.core.Dispatch;
+import org.itas.core.User;
 import org.itas.core.net.nio.Message;
-
-import net.itas.core.Dispatch;
-import net.itas.core.User;
 
 public class XmlDispatch extends Dispatch {
 

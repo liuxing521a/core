@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.itas.util.ItasException;
-import net.itas.util.Logger;
-import net.itas.util.Utils.SQLUtils;
+import org.itas.util.ItasException;
+import org.itas.util.Logger;
+import org.itas.util.Utils.SQLUtils;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

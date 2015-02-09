@@ -1,6 +1,7 @@
 package org.itas.core.net.nio;
 
-import net.itas.core.Rule;
+import org.itas.core.Rule;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;

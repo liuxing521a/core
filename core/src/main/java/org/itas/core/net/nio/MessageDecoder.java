@@ -9,9 +9,9 @@ import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Objects;
 
-import net.itas.core.Rule;
-import net.itas.core.User;
-import net.itas.util.Logger;
+import org.itas.core.Rule;
+import org.itas.core.User;
+import org.itas.util.Logger;
 
 //@Sharable
 public class MessageDecoder extends ByteToMessageDecoder implements Rule {

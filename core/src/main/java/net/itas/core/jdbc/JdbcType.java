@@ -2,9 +2,10 @@ package net.itas.core.jdbc;
 
 import java.util.Objects;
 
+import org.itas.util.ItasException;
+import org.itas.util.Utils.ClassUtils;
+
 import net.itas.core.annotation.Size;
-import net.itas.util.ItasException;
-import net.itas.util.Utils.ClassUtils;
 
 public enum JdbcType {
 	
@@ -122,7 +123,7 @@ public enum JdbcType {
 	SIMPLE {
 		@Override
 		Class<?> clazz() {
-			return net.itas.core.Simple.class;
+			return org.itas.core.Simple.class;
 		}
 
 		@Override
@@ -177,7 +178,7 @@ public enum JdbcType {
 	EBYTE {
 		@Override
 		Class<?> clazz() {
-			return net.itas.core.enums.EByte.class;
+			return org.itas.core.enums.EByte.class;
 		}
 
 		@Override
@@ -188,7 +189,7 @@ public enum JdbcType {
 	EINT {
 		@Override
 		Class<?> clazz() {
-			return net.itas.core.enums.EInt.class;
+			return org.itas.core.enums.EInt.class;
 		}
 
 		@Override
@@ -199,7 +200,7 @@ public enum JdbcType {
 	ESTRING {
 		@Override
 		Class<?> clazz() {
-			return net.itas.core.enums.EString.class;
+			return org.itas.core.enums.EString.class;
 		}
 
 		@Override
@@ -244,13 +245,13 @@ public enum JdbcType {
 			return String.format(column.suffix(), field.getName());
 		} else if (ClassUtils.isExtends(clazz, net.itas.core.resource.Resource.class)) {
 			return String.format(column.suffix(), field.getName());
-		} else if (clazz == net.itas.core.Simple.class) {
+		} else if (clazz == org.itas.core.Simple.class) {
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, net.itas.core.enums.EByte.class)) {
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.enums.EByte.class)) {
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, net.itas.core.enums.EInt.class)) { 
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.enums.EInt.class)) { 
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, net.itas.core.enums.EString.class)) {
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.enums.EString.class)) {
 			return String.format(column.suffix(), field.getName());
 		} else {
 			return String.format(column.suffix(), field.getName());

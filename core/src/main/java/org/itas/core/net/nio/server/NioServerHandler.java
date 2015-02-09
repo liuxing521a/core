@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.itas.core.Dispatch;
+import org.itas.core.Rule;
+import org.itas.core.User;
 import org.itas.core.net.nio.Message;
 import org.itas.core.net.nio.SessionListener;
-
-import net.itas.core.Dispatch;
-import net.itas.core.Rule;
-import net.itas.core.User;
-import net.itas.util.Logger;
+import org.itas.util.Logger;
 
 @Sharable
 public class NioServerHandler extends SimpleChannelInboundHandler<Message> implements Rule {

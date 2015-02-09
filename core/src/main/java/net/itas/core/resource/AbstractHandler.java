@@ -9,8 +9,7 @@ import java.util.Map;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import net.itas.util.Utils.ClassUtils;
-
+import org.itas.util.Utils.ClassUtils;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 

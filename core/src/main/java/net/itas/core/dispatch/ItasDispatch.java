@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.itas.core.Dispatch;
+import org.itas.core.User;
 import org.itas.core.net.nio.Message;
+import org.itas.util.Utils.ClassUtils;
+import org.itas.util.Utils.Objects;
 
-import net.itas.core.Dispatch;
-import net.itas.core.User;
 import net.itas.core.exception.DoubleException;
-import net.itas.util.Utils.ClassUtils;
-import net.itas.util.Utils.Objects;
 
 public class ItasDispatch extends Dispatch {
 

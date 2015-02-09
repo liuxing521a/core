@@ -1,7 +1,7 @@
 package net.itas.core.dispatch;
 
-import net.itas.core.Hook;
-import net.itas.util.Logger;
+import org.itas.core.Hook;
+import org.itas.util.Logger;
 
 public class HookDispatch implements Hook {
 	

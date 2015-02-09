@@ -1,12 +1,12 @@
 package org.itas.core.net.nio.server;
 
+import org.itas.core.Factory;
 import org.itas.core.net.nio.MessageDecoder;
 import org.itas.core.net.nio.MessageEncoder;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import net.itas.core.Factory;
 
 class NioServerInitializer extends ChannelInitializer<SocketChannel> {
 

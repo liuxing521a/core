@@ -3,12 +3,12 @@ package org.itas.core.net.nio;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import net.itas.core.Rule;
-import net.itas.core.User;
-import net.itas.util.Utils.Objects;
-import net.itas.util.collection.CircularQueue;
 
 import org.itas.buffer.SendAble;
+import org.itas.core.Rule;
+import org.itas.core.User;
+import org.itas.util.Utils.Objects;
+import org.itas.util.collection.CircularQueue;
 
 public class Message implements Rule {
 
