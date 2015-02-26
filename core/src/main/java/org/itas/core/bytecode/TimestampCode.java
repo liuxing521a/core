@@ -1,11 +1,8 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.CtField;
 
-import org.itas.core.code.CodeType;
-import org.itas.core.code.Modify;
-
-public class TimestampCode extends CodeType {
+public class TimestampCode extends ByteCodeType {
 
 	public TimestampCode(Modify modify) {
 		super(modify);

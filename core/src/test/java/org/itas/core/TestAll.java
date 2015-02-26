@@ -1,18 +1,19 @@
 package org.itas.core;
 
-import org.itas.core.code.TestCodeType;
-import org.itas.core.code.type.TestBoolCode;
-import org.itas.core.code.type.TestByteCode;
-import org.itas.core.code.type.TestCharCode;
-import org.itas.core.code.type.TestDoubleCode;
-import org.itas.core.code.type.TestFloatCode;
-import org.itas.core.code.type.TestIntCode;
-import org.itas.core.code.type.TestLongCode;
-import org.itas.core.code.type.TestResourceCode;
-import org.itas.core.code.type.TestShortCode;
-import org.itas.core.code.type.TestSimpleCode;
-import org.itas.core.code.type.TestStringCode;
-import org.itas.core.code.type.TestTimestampCode;
+import org.itas.core.bytecode.TestCodeType;
+import org.itas.core.bytecode.TestStatementBooleanProvider;
+import org.itas.core.bytecode.TestStatementByteProvider;
+import org.itas.core.bytecode.TestStatementCharProvider;
+import org.itas.core.bytecode.TestStatementDoubleProvider;
+import org.itas.core.bytecode.TestStatementFloatProvider;
+import org.itas.core.bytecode.TestStatementIntProvider;
+import org.itas.core.bytecode.TestStatementListProvider;
+import org.itas.core.bytecode.TestStatementLongProvider;
+import org.itas.core.bytecode.TestStatementResourcesProvider;
+import org.itas.core.bytecode.TestStatementShortProvider;
+import org.itas.core.bytecode.TestStatementSimpleProvider;
+import org.itas.core.bytecode.TestStatementStringProvider;
+import org.itas.core.bytecode.TestTimestampCode;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -22,17 +23,18 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ 
 	TestByteCodes.class, 
 	TestCodeType.class, 
-	TestBoolCode.class, 
-	TestByteCode.class, 
-	TestCharCode.class, 
-	TestDoubleCode.class, 
-	TestFloatCode.class, 
-	TestIntCode.class, 
-	TestLongCode.class, 
-	TestResourceCode.class, 
-	TestShortCode.class, 
-	TestStringCode.class, 
-	TestSimpleCode.class, 
+	TestStatementBooleanProvider.class, 
+	TestStatementByteProvider.class, 
+	TestStatementCharProvider.class, 
+	TestStatementDoubleProvider.class, 
+	TestStatementFloatProvider.class, 
+	TestStatementIntProvider.class, 
+	TestStatementLongProvider.class, 
+	TestStatementResourcesProvider.class, 
+	TestStatementShortProvider.class, 
+	TestStatementStringProvider.class, 
+	TestStatementSimpleProvider.class, 
+	TestStatementListProvider.class, 
 	TestTimestampCode.class, 
 	})
 public class TestAll {

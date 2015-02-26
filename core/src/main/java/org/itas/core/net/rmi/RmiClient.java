@@ -8,9 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.itas.core.net.Hosts.Address;
+import org.itas.core.resource.HostRes;
 import org.itas.util.Logger;
-
-import net.itas.core.resource.HostRes;
 
 public abstract class RmiClient {
 

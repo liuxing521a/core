@@ -1,4 +1,4 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -6,90 +6,57 @@ import javassist.CtField;
 import javassist.bytecode.SignatureAttribute;
 import javassist.bytecode.SignatureAttribute.ClassType;
 import net.itas.core.annotation.Clazz;
+import net.itas.core.annotation.Size;
 
-import org.itas.core.code.Modify;
 import org.itas.util.Utils.Objects;
 
-public class ListCode extends AbStractGeneric {
+class StatementListProvider extends AbStractGeneric {
 
-	public ListCode(Modify modify) {
+	private static final String STATEMENT_SET = 
+			"\t\t" 
+			+ "state.setString(%s, org.itas.core.util.GameObjects.toString(get%s()));" ;
+
+
+	private static final String RESULTSET_GET = 
+			"\t\t"
+			+ "String %sData = result.getString(\"%s\");"
+			+ "\n\t\t"
+			+ "java.util.List %sList = org.itas.core.util.GameObjects.parseList(%sData);"
+			+ "\n\t\t"
+			+ "java.util.List %sArray = new %s();"
+			+ "\n\t\t"
+			+ "for (Object value : %sList) {"
+			+ "\n\t\t\t"
+			+ "%sArray.add(%s);"
+			+ "\n\t\t"
+			+ "}"
+			+ "\n\t\t"
+			+ "set%s(%sArray);";
+	
+	public StatementListProvider(Modify modify) {
 		super(modify);
 	}
 
 	@Override
 	protected String setStatement(CtField field) throws Exception {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("state.setString(");
-		buffer.append(modify.incIndex());
-		buffer.append(", toString(get");
-		buffer.append(field.getName());
-		buffer.append(");");
-		
-		return buffer.toString();
+		return String.format(STATEMENT_SET, modify.incIndex(), firstKeyUpCase(field.getName()));
 	}
 
 	@Override
 	protected String getResultSet(CtField field) throws Exception {
-		StringBuilder buffer = new StringBuilder();
-		
 		ClassType definType = (ClassType)SignatureAttribute.toFieldSignature(field.getGenericSignature());
 		ClassType chirldType = (ClassType)(definType.getTypeArguments()[0].getType());
-		CtClass genericType = ClassPool.getDefault().get(chirldType.getName());
-
-		buffer.append("\t\t");
-		buffer.append("String ");
-		buffer.append(field.getName());
-		buffer.append("Data = result.getString(\"");
-		buffer.append(field.getName());
-		buffer.append("\");");
+		CtClass genericType = ClassPool.getDefault().get("org.itas.core.bytecode.TestStatementListProvider$TestMode");
 		
-		buffer.append("\n\t\t");
-		buffer.append("java.util.List ");
-		buffer.append(field.getName());
-		buffer.append("List");
-		buffer.append(" = parseList(");
-		buffer.append(field.getName());
-		buffer.append("Data);");
-
-		buffer.append("\n\t\t");
-		buffer.append(definType.getName());
-		buffer.append(" ");
-		buffer.append(field.getName());
-		buffer.append("Array = ");
-		buffer.append("new ");
 		Object annotiation = field.getAnnotation(Clazz.class);
-		if (Objects.nonNull(annotiation)) {
-			Clazz clazz = (Clazz)annotiation;
-			buffer.append(clazz.value().getName());
-		} else {
-			buffer.append("java.util.ArrayList");
-		}
-		buffer.append("(8);");
+		String listClassName = Objects.nonNull(annotiation) ? 
+			((Clazz)annotiation).value().getName() : "java.util.ArrayList";
 		
-		buffer.append("\n\t\t");
-		buffer.append("for (Object value : ");
-		buffer.append(field.getName());
-		buffer.append("List) {");
 		
-		buffer.append("\n\t\t\t");
-		buffer.append(field.getName());
-		buffer.append("Array.add(");
-		buffer.append(string2Generic(genericType, "(String)value"));
-		buffer.append(");");
-		
-		buffer.append("\n\t\t");
-		buffer.append("}");
-		
-		buffer.append("\n\t\t");
-		buffer.append("set");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("(");
-		buffer.append(field.getName());
-		buffer.append("Array();");
-		
-		return buffer.toString();
+		return String.format(RESULTSET_GET, field.getName(), field.getName(), field.getName(),
+				field.getName(), field.getName(), listClassName, field.getName(),
+				field.getName(), string2Generic(genericType, "(String)value"),
+				firstKeyUpCase(field.getName()), field.getName());
 	}
 	
 }

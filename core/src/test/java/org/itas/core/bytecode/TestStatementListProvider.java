@@ -3,26 +3,31 @@ package org.itas.core.bytecode;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import junit.framework.Assert;
+import net.itas.core.annotation.Clazz;
 
 import org.itas.core.GameBaseAotuID;
-import org.itas.core.Simple;
-import org.itas.core.bytecode.Modify;
-import org.itas.core.bytecode.StatementSimpleProvider;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestStatementSimpleProvider {
+import com.mysql.jdbc.PreparedStatement;
 
-	private StatementSimpleProvider codeType;
+public class TestStatementListProvider {
+
+	private StatementListProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new StatementSimpleProvider(new Modify() {
+		codeType = new StatementListProvider(new Modify() {
 			@Override
 			protected String toModify() {
 				return null;
@@ -33,33 +38,29 @@ public class TestStatementSimpleProvider {
 	@Test
 	public void testSetStatement() throws Exception {
 		ClassPool pool = ClassPool.getDefault();
-		CtClass clazz = pool.get("org.itas.core.bytecode.TestStatementSimpleProvider$Model");
+		CtClass clazz = pool.get("org.itas.core.bytecode.TestStatementListProvider$Model");
 		CtField field = clazz.getDeclaredField("bs");
 		
 		String expected = 
 						"\t\t"
-						+ "String id_bs = \"\";" 
-						+ "\n\t\t"
-						+ "if (getBs() != null) {" 
-						+ "\n\t\t\t"
-						+ "id_bs = getBs().getId();" 
-						+ "\n\t\t"
-						+ "}" 
-						+ "\n\t\t"
-						+ "state.setString(1, id_bs);";
-		
+						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getBs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
 		expected = 
 				"\t\t"
-				+ "String id_bs = result.getString(\"bs\");" 
+				+ "String bsData = result.getString(\"bs\");"
 				+ "\n\t\t"
-				+ "if (id_bs != null && id_bs.length() > 0) {" 
-				+ "\n\t\t\t"
-				+ "setBs(new org.itas.core.Simple(id_bs));" 
+				+ "java.util.List bsList = org.itas.core.util.GameObjects.parseList(bsData);"
 				+ "\n\t\t"
-				+ "}";
+				+ "java.util.List bsArray = new LinkedList();"
+				+ "\n\t\t"
+				+ "for (Object value : bsList) {"
+				+ "\n\t\t"
+				+ "}"
+				+ "\n\t\t"
+				+ "setBs(bsArray);";
+				//						 bsArray.add(%s);
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
 	}
@@ -68,14 +69,25 @@ public class TestStatementSimpleProvider {
 	
 	class Model {
 		
-		private Simple<TestMode> bs;
+		@Clazz(LinkedList.class)
+		private List<TestMode> bs;
 
-		public Simple<TestMode> getBs() {
+		public List<TestMode> getBs() {
 			return bs;
 		}
 
-		public void setBs(Simple<TestMode> bs) {
+		public void setBs(List<TestMode> bs) {
 			this.bs = bs;
+		}
+		
+		public void load(ResultSet result) throws SQLException {
+					 String bsData = result.getString("bs");
+					 java.util.List bsList = org.itas.core.util.GameObjects.parseList(bsData);
+					 java.util.List bsArray = new LinkedList();
+					 for (Object value : bsList) {
+//						 bsArray.add(%s);
+					 }
+					 setBs(bsArray);;
 		}
 		
 	}

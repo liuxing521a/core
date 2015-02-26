@@ -1,14 +1,12 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import static org.itas.core.util.Utils.CtClassUtils.isExtends;
 import javassist.CtClass;
 
-import org.itas.core.code.CodeType;
-import org.itas.core.code.Modify;
 import org.itas.core.enums.EString;
 import org.itas.util.ItasException;
 
-public abstract class AbStractGeneric extends CodeType {
+public abstract class AbStractGeneric extends ByteCodeType {
 
 	public AbStractGeneric(Modify modify) {
 		super(modify);

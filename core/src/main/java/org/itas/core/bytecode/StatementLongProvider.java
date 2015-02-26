@@ -3,21 +3,21 @@ package org.itas.core.bytecode;
 import javassist.CtField;
 
 /**
- * String类型statement预处理生成
+ * long类型statement预处理生成
  * @author liuzhen(liuxing521a@gmail.com)
- * @crateTime 2015年2月26日下午5:35:21
+ * @crateTime 2015年2月26日下午5:11:36
  */
-class StatementStringProvider extends ByteCodeType {
+class StatementLongProvider extends ByteCodeType {
 
 	private static final String STATEMENT_SET = 
 			"\t\t" +
-			"state.setString(%s, get%s());";
+			"state.setLong(%s, get%s());";
 	
 	private static final String RESULTSET_GET = 
 			"\t\t" +
-			"set%s(result.getString(\"%s\"));";
+			"set%s(result.getLong(\"%s\"));";
 	
-	public StatementStringProvider(Modify modify) {
+	public StatementLongProvider(Modify modify) {
 		super(modify);
 	}
 

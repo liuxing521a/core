@@ -1,4 +1,4 @@
-package org.itas.core.code;
+package org.itas.core.bytecode;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -8,7 +8,7 @@ import javassist.NotFoundException;
 import org.itas.util.ItasException;
 
 
-public abstract class CodeType {
+public abstract class ByteCodeType {
 
 	/**
 	 * boolean包装类型
@@ -129,11 +129,11 @@ public abstract class CodeType {
 
 			simpleType = pool.get("org.itas.core.Simple");
 
-			resourceChirldType = pool.get("net.itas.core.resource");
+			resourceChirldType = pool.get("org.itas.core.resource.Resource");
 
 			enumByteChirldType = pool.get("org.itas.core.enums.EByte");
 
-			enumIntChirldType = pool.get("org.itas.core.enums.EShort");
+			enumIntChirldType = pool.get("org.itas.core.enums.EInt");
 			
 			enumStringChirldType = pool.get("org.itas.core.enums.EString");
 			
@@ -141,7 +141,7 @@ public abstract class CodeType {
 
     		setChirldType = pool.get("java.util.Set");
 
-    		mapChirldType = pool.get("java.util.Map.");
+    		mapChirldType = pool.get("java.util.Map");
 
     		ccrtmapChirldType = pool.get("java.util.concurrent.ConcurrentMap");
 
@@ -151,7 +151,7 @@ public abstract class CodeType {
 		}
     }
 	
-	public CodeType(Modify modify) {
+	public ByteCodeType(Modify modify) {
 		this.modify = modify;
 	}
 	

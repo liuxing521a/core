@@ -167,7 +167,7 @@ public enum JdbcType {
 	XML {
 		@Override
 		Class<?> clazz() {
-			return net.itas.core.resource.Resource.class;
+			return org.itas.core.resource.Resource.class;
 		}
 
 		@Override
@@ -243,7 +243,7 @@ public enum JdbcType {
 			return String.format(column.suffix(), field.getName());
 		} else if (ClassUtils.isExtends(clazz, java.util.Map.class)) {
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, net.itas.core.resource.Resource.class)) {
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.resource.Resource.class)) {
 			return String.format(column.suffix(), field.getName());
 		} else if (clazz == org.itas.core.Simple.class) {
 			return String.format(column.suffix(), field.getName());

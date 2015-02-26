@@ -1,4 +1,4 @@
-package net.itas.core.resource;
+package org.itas.core.resource;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;

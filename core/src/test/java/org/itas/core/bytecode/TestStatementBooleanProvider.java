@@ -1,21 +1,20 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import junit.framework.Assert;
 
-import org.itas.core.code.Modify;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestBoolCode {
+public class TestStatementBooleanProvider {
 
-	private BoolCode codeType;
+	private StatementBooleanProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new BoolCode(new Modify() {
+		codeType = new StatementBooleanProvider(new Modify() {
 			@Override
 			protected String toModify() {
 				return null;
@@ -26,7 +25,7 @@ public class TestBoolCode {
 	@Test
 	public void testSetStatement() throws Exception {
 		ClassPool pool = ClassPool.getDefault();
-		CtClass clazz = pool.get("org.itas.core.code.type.TestBoolCode$Model");
+		CtClass clazz = pool.get("org.itas.core.bytecode.TestStatementBooleanProvider$Model");
 		CtField field = clazz.getDeclaredField("bs");
 		
 		String content = codeType.setStatement(field);

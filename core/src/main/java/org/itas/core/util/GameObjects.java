@@ -12,10 +12,9 @@ import org.itas.core.Simple;
 import org.itas.core.enums.EByte;
 import org.itas.core.enums.EInt;
 import org.itas.core.enums.EString;
+import org.itas.core.resource.Resource;
 import org.itas.util.Utils.ClassUtils;
 import org.itas.util.Utils.Objects;
-
-import net.itas.core.resource.Resource;
 
 /**
  * 对象基类的提供处理集合的方法

@@ -1,4 +1,4 @@
-package net.itas.core.resource;
+package org.itas.core.resource;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

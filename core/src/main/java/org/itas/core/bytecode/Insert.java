@@ -1,4 +1,4 @@
-package org.itas.core.code.modify;
+package org.itas.core.bytecode;
 
 public class Insert {
 

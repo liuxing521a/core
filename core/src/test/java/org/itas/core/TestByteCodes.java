@@ -3,7 +3,7 @@ package org.itas.core;
 import javassist.ClassPool;
 import javassist.CtClass;
 
-import org.itas.core.code.ByteCodes;
+import org.itas.core.bytecode.ByteCodes;
 import org.junit.Before;
 import org.junit.Test;
 

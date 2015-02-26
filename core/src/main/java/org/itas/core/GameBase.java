@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.itas.util.ItasException;
-
 import net.itas.core.annotation.UnSave;
+
+import org.itas.util.ItasException;
 
 abstract class GameBase implements Externalizable {
 

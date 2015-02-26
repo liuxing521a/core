@@ -1,21 +1,22 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import junit.framework.Assert;
 
-import org.itas.core.code.Modify;
+import org.itas.core.bytecode.StatementDoubleProvider;
+import org.itas.core.bytecode.Modify;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestDoubleCode {
+public class TestStatementDoubleProvider {
 
-	private DoubleCode codeType;
+	private StatementDoubleProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new DoubleCode(new Modify() {
+		codeType = new StatementDoubleProvider(new Modify() {
 			@Override
 			protected String toModify() {
 				return null;
@@ -26,7 +27,7 @@ public class TestDoubleCode {
 	@Test
 	public void testSetStatement() throws Exception {
 		ClassPool pool = ClassPool.getDefault();
-		CtClass clazz = pool.get("org.itas.core.code.type.TestDoubleCode$Model");
+		CtClass clazz = pool.get("org.itas.core.bytecode.TestStatementDoubleProvider$Model");
 		CtField field = clazz.getDeclaredField("bs");
 		
 		String content = codeType.setStatement(field);

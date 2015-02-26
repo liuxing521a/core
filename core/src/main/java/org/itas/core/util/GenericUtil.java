@@ -15,12 +15,12 @@ import java.util.Set;
 import org.itas.core.Pool;
 import org.itas.core.enums.EByte;
 import org.itas.core.enums.EString;
+import org.itas.core.resource.Resource;
 import org.itas.core.util.Utils.EnumUtils;
 import org.itas.util.Utils.ClassUtils;
 import org.itas.util.Utils.Objects;
 
 import net.itas.core.annotation.Clazz;
-import net.itas.core.resource.Resource;
 
 /**
  * <p>泛型处理</p>

@@ -15,6 +15,7 @@ import org.itas.core.GameObject;
 import org.itas.core.Simple;
 import org.itas.core.enums.EByte;
 import org.itas.core.enums.EString;
+import org.itas.core.resource.Resource;
 import org.itas.util.ItasException;
 import org.itas.util.Pair;
 import org.itas.util.Utils.Objects;
@@ -23,7 +24,6 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import net.itas.core.annotation.SQLEntity;
-import net.itas.core.resource.Resource;
 
 public final class Utils {
 
@@ -180,15 +180,15 @@ public final class Utils {
 			} else if (parent == Simple.class) {
 				return clazz == clazzPool.get("net.itas.core.Simple");
 			} else if (parent == Pair.class) {
-				return clazz == clazzPool.get("net.itas.util.Pair");
+				return clazz == clazzPool.get("org.itas.util.Pair");
 			} else if (parent == Timestamp.class) {
 				return clazz == clazzPool.get("java.sql.Timestamp");
 			} else if (parent == EByte.class) {
-				return clazz.subtypeOf(clazzPool.get("net.itas.core.EnumByte"));
+				return clazz.subtypeOf(clazzPool.get("org.itas.core.EnumByte"));
 			} else if (parent == EString.class) {
-				return clazz.subtypeOf(clazzPool.get("net.itas.core.EnumString"));
+				return clazz.subtypeOf(clazzPool.get("org.itas.core.EnumString"));
 			} else if (parent == Resource.class) {
-				return clazz.subtypeOf(clazzPool.get("net.itas.core.resource.Resource"));
+				return clazz.subtypeOf(clazzPool.get("org.itas.core.resource.Resource"));
 			} else if (parent == Collection.class) {
 				return clazz.subtypeOf(clazzPool.get("java.util.Collection"));
 			} else if (parent == List.class) {
@@ -198,9 +198,9 @@ public final class Utils {
 			} else if (parent == Map.class) {
 				return clazz.subtypeOf(clazzPool.get("java.util.Map"));
 			} else if (parent == GameObject.class) {
-				return clazz.subtypeOf(clazzPool.get("net.itas.core.GameBase"));
+				return clazz.subtypeOf(clazzPool.get("org.itas.core.GameBase"));
 			} else if (parent == GameBaseAotuID.class) {
-				return clazz.subtypeOf(clazzPool.get("net.itas.core.GameBaseString"));
+				return clazz.subtypeOf(clazzPool.get("org.itas.core.GameBaseString"));
 			} else {
 				throw new ItasException("unsupported type:" + clazz);
 			}

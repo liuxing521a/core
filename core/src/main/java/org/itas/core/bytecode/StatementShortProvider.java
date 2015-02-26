@@ -1,42 +1,34 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.CtField;
 
-import org.itas.core.code.CodeType;
-import org.itas.core.code.Modify;
+/**
+ * short类型statement预处理生成
+ * @author liuzhen(liuxing521a@gmail.com)
+ * @crateTime 2015年2月26日下午5:05:39
+ */
+class StatementShortProvider extends ByteCodeType {
 
-public class ShortCode extends CodeType {
-
-	public ShortCode(Modify modify) {
+	private static final String STATEMENT_SET = 
+			"\t\t" +
+			"state.setShort(%s, get%s());";
+	
+	private static final String RESULTSET_GET = 
+			"\t\t" +
+			"set%s(result.getShort(\"%s\"));";
+	
+	public StatementShortProvider(Modify modify) {
 		super(modify);
 	}
 
 	@Override
 	protected String setStatement(CtField field) {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("state.setShort(");
-		buffer.append(modify.incIndex());
-		buffer.append(", get");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("());");
-		
-		return buffer.toString();
+		return String.format(STATEMENT_SET, modify.incIndex(), firstKeyUpCase(field.getName()));
 	}
 
 	@Override
 	protected String getResultSet(CtField field) {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("set");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("(result.getShort(\"");
-		buffer.append(field.getName());
-		buffer.append("\"));");
-		
-		return buffer.toString();
+		return String.format(RESULTSET_GET, firstKeyUpCase(field.getName()), field.getName());
 	}
 
 }

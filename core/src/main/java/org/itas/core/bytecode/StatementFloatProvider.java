@@ -3,21 +3,21 @@ package org.itas.core.bytecode;
 import javassist.CtField;
 
 /**
- * String类型statement预处理生成
+ * float类型statement预处理生成
  * @author liuzhen(liuxing521a@gmail.com)
- * @crateTime 2015年2月26日下午5:35:21
+ * @crateTime 2015年2月26日下午5:11:14
  */
-class StatementStringProvider extends ByteCodeType {
+class StatementFloatProvider extends ByteCodeType {
 
 	private static final String STATEMENT_SET = 
 			"\t\t" +
-			"state.setString(%s, get%s());";
+			"state.setFloat(%s, get%s());";
 	
 	private static final String RESULTSET_GET = 
 			"\t\t" +
-			"set%s(result.getString(\"%s\"));";
+			"set%s(result.getFloat(\"%s\"));";
 	
-	public StatementStringProvider(Modify modify) {
+	public StatementFloatProvider(Modify modify) {
 		super(modify);
 	}
 

@@ -1,9 +1,8 @@
-package org.itas.core.code;
+package org.itas.core.bytecode;
 
 import static org.itas.core.util.Utils.ByteCodeUtils.getTableName;
 import static org.itas.core.util.Utils.ByteCodeUtils.name;
 import static org.itas.core.util.Utils.ByteCodeUtils.uname;
-import static org.itas.core.util.Utils.ByteCodeUtils.unameBool;
 import static org.itas.core.util.Utils.CtClassUtils.getAllField;
 import static org.itas.core.util.Utils.CtClassUtils.isBasicType;
 import static org.itas.core.util.Utils.CtClassUtils.isBasicWarpType;
@@ -14,18 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.itas.core.GameBaseAotuID;
-import org.itas.core.GameObject;
-import org.itas.core.Simple;
-import org.itas.core.enums.EByte;
-import org.itas.core.enums.EString;
-import org.itas.core.util.Utils.CtClassUtils;
-import org.itas.util.GenericInfo;
-import org.itas.util.ItasException;
-import org.itas.util.Utils.GenericUtils;
-import org.itas.util.Utils.Objects;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -34,9 +21,18 @@ import javassist.CtMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import net.itas.core.annotation.Clazz;
-import net.itas.core.annotation.PrimaryfKey;
 import net.itas.core.annotation.UnSave;
-import net.itas.core.resource.Resource;
+
+import org.itas.core.GameBaseAotuID;
+import org.itas.core.GameObject;
+import org.itas.core.Simple;
+import org.itas.core.enums.EByte;
+import org.itas.core.enums.EString;
+import org.itas.core.resource.Resource;
+import org.itas.util.GenericInfo;
+import org.itas.util.ItasException;
+import org.itas.util.Utils.GenericUtils;
+import org.itas.util.Utils.Objects;
 
 /**
  * 字节码操作

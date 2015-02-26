@@ -1,42 +1,34 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.CtField;
 
-import org.itas.core.code.CodeType;
-import org.itas.core.code.Modify;
+/**
+ * char类型statement预处理生成
+ * @author liuzhen(liuxing521a@gmail.com)
+ * @crateTime 2015年2月26日下午5:02:35
+ */
+class StatementCharProvider extends ByteCodeType {
 
-public class CharCode extends CodeType {
-
-	public CharCode(Modify modify) {
+	private static final String STATEMENT_SET = 
+			"\t\t" +
+			"state.setString(%s, String.valueOf(get%s()));";
+	
+	private static final String RESULTSET_GET = 
+			"\t\t" +
+			"set%s(result.getString(\"%s\").charAt(0));";
+	
+	public StatementCharProvider(Modify modify) {
 		super(modify);
 	}
 
 	@Override
 	protected String setStatement(CtField field) {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("state.setString(");
-		buffer.append(modify.incIndex());
-		buffer.append(", String.valueOf(get");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("()));");
-		
-		return buffer.toString();
+		return String.format(STATEMENT_SET, modify.incIndex(), firstKeyUpCase(field.getName()));
 	}
 
 	@Override
 	protected String getResultSet(CtField field) {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("set");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("(result.getString(\"");
-		buffer.append(field.getName());
-		buffer.append("\").charAt(0));");
-		
-		return buffer.toString();
+		return String.format(RESULTSET_GET, firstKeyUpCase(field.getName()), field.getName());
 	}
-
+	
 }

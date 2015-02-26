@@ -1,4 +1,4 @@
-package net.itas.core.resource;
+package org.itas.core.resource;
 
 public abstract class HostRes extends Resource {
 

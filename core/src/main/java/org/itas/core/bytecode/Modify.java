@@ -1,4 +1,4 @@
-package org.itas.core.code;
+package org.itas.core.bytecode;
 
 public abstract class Modify {
 

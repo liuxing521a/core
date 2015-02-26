@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.itas.core.net.Hosts.Address;
+import org.itas.core.resource.HostRes;
 import org.itas.util.Utils.ClassUtils;
 
 import net.itas.core.annotation.RmiRef;
-import net.itas.core.resource.HostRes;
 
 
 public abstract class RmiServer {

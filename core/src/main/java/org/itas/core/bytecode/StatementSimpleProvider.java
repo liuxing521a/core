@@ -1,75 +1,51 @@
-package org.itas.core.code.type;
+package org.itas.core.bytecode;
 
 import javassist.CtField;
 
-import org.itas.core.code.CodeType;
-import org.itas.core.code.Modify;
+/**
+ * simple类型statement预处理生成
+ * @author liuzhen(liuxing521a@gmail.com)
+ * @crateTime 2015年2月26日下午5:29:54
+ */
+class StatementSimpleProvider extends ByteCodeType {
 
-public class SimpleCode extends CodeType {
+	private static final String STATEMENT_SET = 
+			"\t\t" 
+			+ "String id_%s = \"\";" 
+			+ "\n\t\t" 
+			+ "if (get%s() != null) {" 
+			+ "\n\t\t\t" 
+			+ "id_%s = get%s().getId();" 
+			+ "\n\t\t" 
+			+ "}" 
+			+ "\n\t\t" 
+			+ "state.setString(%s, id_%s);";
 
-	public SimpleCode(Modify modify) {
+
+	private static final String RESULTSET_GET = 
+			"\t\t"
+			+ "String id_%s = result.getString(\"%s\");" 
+			+ "\n\t\t"
+			+ "if (id_%s != null && id_%s.length() > 0) {" 
+			+ "\n\t\t\t"
+			+ "set%s(new org.itas.core.Simple(id_%s));" 
+			+ "\n\t\t"
+			+ "}";
+
+	public StatementSimpleProvider(Modify modify) {
 		super(modify);
 	}
 
 	@Override
 	protected String setStatement(CtField field) {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("String id_");
-		buffer.append(field.getName());
-		buffer.append(" = \"\";");
-		
-		buffer.append("\n\t\t");
-		buffer.append("if (get");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("() != null) {");
-		buffer.append("\n\t\t\t");
-		
-		buffer.append("id_");
-		buffer.append(field.getName());
-		buffer.append(" = get");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("().getId();");
-		buffer.append("\n\t\t");
-		buffer.append("}");
-		
-		buffer.append("\n\t\t");
-		buffer.append("state.setString(");
-		buffer.append(modify.incIndex());
-		buffer.append(", id_");
-		buffer.append(field.getName());
-		buffer.append(");");
-		
-		return buffer.toString();
+		return String.format(STATEMENT_SET, field.getName(), firstKeyUpCase(field.getName()),
+				field.getName(), firstKeyUpCase(field.getName()), modify.incIndex(), field.getName());
 	}
 
 	@Override
 	protected String getResultSet(CtField field) {
-		StringBuilder buffer = new StringBuilder();
-		
-		buffer.append("\t\t");
-		buffer.append("String id_");
-		buffer.append(field.getName());
-		buffer.append(" = result.getString(\"");
-		buffer.append(field.getName());
-		buffer.append("\");");
-
-		buffer.append("\n\t\t");
-		buffer.append("if (org.itas.util.Utils.Objects.nonEmpty(id_");
-		buffer.append(field.getName());
-		buffer.append(")) {");
-		buffer.append("\n\t\t\t");
-		buffer.append("set");
-		buffer.append(firstKeyUpCase(field.getName()));
-		buffer.append("(new org.itas.core.Simple(id_");
-		buffer.append(field.getName());
-		buffer.append("));");
-		buffer.append("\n\t\t");
-		buffer.append("}");
-		
-		
-		return buffer.toString();
+		return String.format(RESULTSET_GET, field.getName(), field.getName(),
+				field.getName(), field.getName(), firstKeyUpCase(field.getName()), field.getName());
 	}
 
 }
