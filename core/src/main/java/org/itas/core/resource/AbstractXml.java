@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import org.itas.core.EnumByte;
+import org.itas.core.EnumString;
 import org.itas.core.Pool;
 import org.itas.core.Script;
-import org.itas.core.enums.EByte;
-import org.itas.core.enums.EString;
 import org.itas.core.util.GenericUtil;
 import org.itas.core.util.Utils.EnumUtils;
 import org.itas.util.ItasException;
@@ -50,10 +50,10 @@ abstract class AbstractXml {
 				script.setMethod(scripts.get(field.getName()));
 				field.set(this, script);
 			} else if (ClassUtils.isExtends(field.getType(), Enum.class)) {
-				if (ClassUtils.isExtends(field.getType(), EByte.class)) {
-					field.set(this, EnumUtils.parse((Class<? extends EByte>)field.getType(), Byte.valueOf(text)));
-				} else if (ClassUtils.isExtends(field.getType(), EString.class)) {
-					field.set(this, EnumUtils.parse((Class<? extends EString>)field.getType(), text));
+				if (ClassUtils.isExtends(field.getType(), EnumByte.class)) {
+					field.set(this, EnumUtils.parse((Class<? extends EnumByte>)field.getType(), Byte.valueOf(text)));
+				} else if (ClassUtils.isExtends(field.getType(), EnumString.class)) {
+					field.set(this, EnumUtils.parse((Class<? extends EnumString>)field.getType(), text));
 				} else {
 					throw new RuntimeException("unSupported:[type:" + field.getType() + "]");
 				}

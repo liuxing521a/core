@@ -1,19 +1,24 @@
 package org.itas.core;
 
+import org.itas.core.bytecode.TestCodeBooleanProvider;
+import org.itas.core.bytecode.TestCodeByteProvider;
+import org.itas.core.bytecode.TestCodeCharProvider;
+import org.itas.core.bytecode.TestCodeDoubleProvider;
+import org.itas.core.bytecode.TestCodeEnumByteProvider;
+import org.itas.core.bytecode.TestCodeEnumIntProvider;
+import org.itas.core.bytecode.TestCodeEnumStringProvider;
+import org.itas.core.bytecode.TestCodeFloatProvider;
+import org.itas.core.bytecode.TestCodeIntProvider;
+import org.itas.core.bytecode.TestCodeListProvider;
+import org.itas.core.bytecode.TestCodeLongProvider;
+import org.itas.core.bytecode.TestCodeResourcesProvider;
+import org.itas.core.bytecode.TestCodeSetProvider;
+import org.itas.core.bytecode.TestCodeShortProvider;
+import org.itas.core.bytecode.TestCodeSimpleProvider;
+import org.itas.core.bytecode.TestCodeStringProvider;
+import org.itas.core.bytecode.TestCodeTimestampCode;
 import org.itas.core.bytecode.TestCodeType;
-import org.itas.core.bytecode.TestStatementBooleanProvider;
-import org.itas.core.bytecode.TestStatementByteProvider;
-import org.itas.core.bytecode.TestStatementCharProvider;
-import org.itas.core.bytecode.TestStatementDoubleProvider;
-import org.itas.core.bytecode.TestStatementFloatProvider;
-import org.itas.core.bytecode.TestStatementIntProvider;
-import org.itas.core.bytecode.TestStatementListProvider;
-import org.itas.core.bytecode.TestStatementLongProvider;
-import org.itas.core.bytecode.TestStatementResourcesProvider;
-import org.itas.core.bytecode.TestStatementShortProvider;
-import org.itas.core.bytecode.TestStatementSimpleProvider;
-import org.itas.core.bytecode.TestStatementStringProvider;
-import org.itas.core.bytecode.TestTimestampCode;
+import org.itas.core.util.TestType;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -23,19 +28,24 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ 
 	TestByteCodes.class, 
 	TestCodeType.class, 
-	TestStatementBooleanProvider.class, 
-	TestStatementByteProvider.class, 
-	TestStatementCharProvider.class, 
-	TestStatementDoubleProvider.class, 
-	TestStatementFloatProvider.class, 
-	TestStatementIntProvider.class, 
-	TestStatementLongProvider.class, 
-	TestStatementResourcesProvider.class, 
-	TestStatementShortProvider.class, 
-	TestStatementStringProvider.class, 
-	TestStatementSimpleProvider.class, 
-	TestStatementListProvider.class, 
-	TestTimestampCode.class, 
+	TestType.class, 
+	TestCodeBooleanProvider.class, 
+	TestCodeByteProvider.class, 
+	TestCodeCharProvider.class, 
+	TestCodeDoubleProvider.class, 
+	TestCodeFloatProvider.class, 
+	TestCodeIntProvider.class, 
+	TestCodeLongProvider.class, 
+	TestCodeResourcesProvider.class, 
+	TestCodeShortProvider.class, 
+	TestCodeStringProvider.class, 
+	TestCodeSimpleProvider.class, 
+	TestCodeListProvider.class, 
+	TestCodeSetProvider.class, 
+	TestCodeTimestampCode.class, 
+	TestCodeEnumByteProvider.class, 
+	TestCodeEnumIntProvider.class, 
+	TestCodeEnumStringProvider.class, 
 	})
 public class TestAll {
 	

@@ -3,27 +3,19 @@ package org.itas.core.bytecode;
 import java.util.List;
 import java.util.Map;
 
-import javassist.ClassPool;
-import javassist.CtClass;
 import javassist.CtField;
-import javassist.bytecode.SignatureAttribute;
-import javassist.bytecode.SignatureAttribute.ClassSignature;
-import javassist.bytecode.SignatureAttribute.ClassType;
-import javassist.bytecode.SignatureAttribute.TypeArgument;
-import javassist.bytecode.SignatureAttribute.TypeParameter;
 import junit.framework.Assert;
 
-import org.itas.core.bytecode.ByteCodeType;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestCodeType {
 
-	protected ByteCodeType codeType;
+	protected Provider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new ByteCodeType(null) {
+		codeType = new Provider(null) {
 			@Override
 			protected String setStatement(CtField field) {
 				return null;

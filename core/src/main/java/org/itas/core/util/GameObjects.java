@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.itas.core.EnumByte;
+import org.itas.core.EnumInt;
+import org.itas.core.EnumString;
 import org.itas.core.Simple;
-import org.itas.core.enums.EByte;
-import org.itas.core.enums.EInt;
-import org.itas.core.enums.EString;
 import org.itas.core.resource.Resource;
 import org.itas.util.Utils.ClassUtils;
 import org.itas.util.Utils.Objects;
@@ -41,12 +41,12 @@ public final class GameObjects {
 				dataBuf.append(((Simple<?>)o).getId()).append('|');
 			} else if (ClassUtils.isExtends(clazz, Resource.class)) {
 				dataBuf.append(((Resource)o).getId()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EByte.class)) {
-				dataBuf.append(((EByte)o).key()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EInt.class)) {
-				dataBuf.append(((EInt)o).key()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EString.class)) {
-				dataBuf.append(((EString)o).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumByte.class)) {
+				dataBuf.append(((EnumByte)o).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumInt.class)) {
+				dataBuf.append(((EnumInt)o).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumString.class)) {
+				dataBuf.append(((EnumString)o).key()).append('|');
 			} else if (clazz == String.class) {
 				dataBuf.append(textEncode((String)o)).append('|');
 			} else {
@@ -102,12 +102,12 @@ public final class GameObjects {
 				dataBuf.append(((Simple<?>)data.getKey()).getId()).append(',');
 			} else if (ClassUtils.isExtends(clazz, Resource.class)) {
 				dataBuf.append(((Resource)data.getKey()).getId()).append(',');
-			} else if (ClassUtils.isExtends(clazz, EByte.class)) {
-				dataBuf.append(((EByte)data.getKey()).key()).append(',');
-			} else if (ClassUtils.isExtends(clazz, EInt.class)) {
-				dataBuf.append(((EInt)data.getKey()).key()).append(',');
-			} else if (ClassUtils.isExtends(clazz, EString.class)) {
-				dataBuf.append(((EString)data.getKey()).key()).append(',');
+			} else if (ClassUtils.isExtends(clazz, EnumByte.class)) {
+				dataBuf.append(((EnumByte)data.getKey()).key()).append(',');
+			} else if (ClassUtils.isExtends(clazz, EnumInt.class)) {
+				dataBuf.append(((EnumInt)data.getKey()).key()).append(',');
+			} else if (ClassUtils.isExtends(clazz, EnumString.class)) {
+				dataBuf.append(((EnumString)data.getKey()).key()).append(',');
 			} else if (clazz == String.class) {
 				dataBuf.append(textEncode((String)data.getKey())).append(',');
 			} else {	
@@ -118,12 +118,12 @@ public final class GameObjects {
 				dataBuf.append(((Simple<?>)data.getValue()).getId()).append('|');
 			} else if (ClassUtils.isExtends(clazz, Resource.class)) {
 				dataBuf.append(((Resource)data.getValue()).getId()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EByte.class)) {
-				dataBuf.append(((EByte)data.getValue()).key()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EInt.class)) {
-				dataBuf.append(((EInt)data.getValue()).key()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EString.class)) {
-				dataBuf.append(((EString)data.getValue()).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumByte.class)) {
+				dataBuf.append(((EnumByte)data.getValue()).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumInt.class)) {
+				dataBuf.append(((EnumInt)data.getValue()).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumString.class)) {
+				dataBuf.append(((EnumString)data.getValue()).key()).append('|');
 			} else if (clazz == String.class) {
 				dataBuf.append(textEncode((String)data.getValue())).append('|');
 			} else {
@@ -182,12 +182,12 @@ public final class GameObjects {
 				dataBuf.append(((Simple<?>)o).getId()).append('|');
 			} else if (ClassUtils.isExtends(clazz, Resource.class)) {
 				dataBuf.append(((Resource)o).getId()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EByte.class)) {
-				dataBuf.append(((EByte)o).key()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EInt.class)) {
-				dataBuf.append(((EInt)o).key()).append('|');
-			} else if (ClassUtils.isExtends(clazz, EString.class)) {
-				dataBuf.append(((EString)o).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumByte.class)) {
+				dataBuf.append(((EnumByte)o).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumInt.class)) {
+				dataBuf.append(((EnumInt)o).key()).append('|');
+			} else if (ClassUtils.isExtends(clazz, EnumString.class)) {
+				dataBuf.append(((EnumString)o).key()).append('|');
 			} else if (clazz == String.class) {
 				dataBuf.append(textEncode((String)o)).append('|');
 			} else {
@@ -219,12 +219,12 @@ public final class GameObjects {
 					dataBuf.append(((Simple<?>)o).getId()).append('|');
 				} else if (ClassUtils.isExtends(clazz, Resource.class)) {
 					dataBuf.append(((Resource)o).getId()).append('|');
-				} else if (ClassUtils.isExtends(clazz, EByte.class)) {
-					dataBuf.append(((EByte)o).key()).append('|');
-				} else if (ClassUtils.isExtends(clazz, EInt.class)) {
-					dataBuf.append(((EInt)o).key()).append('|');
-				} else if (ClassUtils.isExtends(clazz, EString.class)) {
-					dataBuf.append(((EString)o).key()).append('|');
+				} else if (ClassUtils.isExtends(clazz, EnumByte.class)) {
+					dataBuf.append(((EnumByte)o).key()).append('|');
+				} else if (ClassUtils.isExtends(clazz, EnumInt.class)) {
+					dataBuf.append(((EnumInt)o).key()).append('|');
+				} else if (ClassUtils.isExtends(clazz, EnumString.class)) {
+					dataBuf.append(((EnumString)o).key()).append('|');
 				} else if (clazz == String.class) {
 					dataBuf.append(textEncode((String)o)).append('|');
 				} else {

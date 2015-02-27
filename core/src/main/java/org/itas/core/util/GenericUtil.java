@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.itas.core.EnumByte;
+import org.itas.core.EnumString;
 import org.itas.core.Pool;
-import org.itas.core.enums.EByte;
-import org.itas.core.enums.EString;
 import org.itas.core.resource.Resource;
 import org.itas.core.util.Utils.EnumUtils;
 import org.itas.util.Utils.ClassUtils;
@@ -100,10 +100,10 @@ public final class GenericUtil {
 			return value;
 		} else if (Resource.class.isAssignableFrom((Class<?>)genericType)) {
 			return Pool.getResource(value);
-		} else if (EByte.class.isAssignableFrom((Class<?>)genericType)) {
-			return EnumUtils.parse((Class<? extends EByte>)genericType, Byte.valueOf(value));
-		} else if (EString.class.isAssignableFrom((Class<?>)genericType)) {
-			return EnumUtils.parse((Class<? extends EString>)genericType, value);
+		} else if (EnumByte.class.isAssignableFrom((Class<?>)genericType)) {
+			return EnumUtils.parse((Class<? extends EnumByte>)genericType, Byte.valueOf(value));
+		} else if (EnumString.class.isAssignableFrom((Class<?>)genericType)) {
+			return EnumUtils.parse((Class<? extends EnumString>)genericType, value);
 		} else {
 			throw new RuntimeException("reflect unSupported type:["	+ genericType + "]");
 		}

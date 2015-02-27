@@ -178,7 +178,7 @@ public enum JdbcType {
 	EBYTE {
 		@Override
 		Class<?> clazz() {
-			return org.itas.core.enums.EByte.class;
+			return org.itas.core.EnumByte.class;
 		}
 
 		@Override
@@ -189,7 +189,7 @@ public enum JdbcType {
 	EINT {
 		@Override
 		Class<?> clazz() {
-			return org.itas.core.enums.EInt.class;
+			return org.itas.core.EnumInt.class;
 		}
 
 		@Override
@@ -200,7 +200,7 @@ public enum JdbcType {
 	ESTRING {
 		@Override
 		Class<?> clazz() {
-			return org.itas.core.enums.EString.class;
+			return org.itas.core.EnumString.class;
 		}
 
 		@Override
@@ -247,11 +247,11 @@ public enum JdbcType {
 			return String.format(column.suffix(), field.getName());
 		} else if (clazz == org.itas.core.Simple.class) {
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, org.itas.core.enums.EByte.class)) {
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.EnumByte.class)) {
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, org.itas.core.enums.EInt.class)) { 
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.EnumInt.class)) { 
 			return String.format(column.suffix(), field.getName());
-		} else if (ClassUtils.isExtends(clazz, org.itas.core.enums.EString.class)) {
+		} else if (ClassUtils.isExtends(clazz, org.itas.core.EnumString.class)) {
 			return String.format(column.suffix(), field.getName());
 		} else {
 			return String.format(column.suffix(), field.getName());
