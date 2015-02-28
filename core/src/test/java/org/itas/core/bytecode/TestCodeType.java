@@ -11,11 +11,11 @@ import org.junit.Test;
 
 public class TestCodeType {
 
-	protected Provider codeType;
+	protected AbstractFieldProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new Provider(null) {
+		codeType = new AbstractFieldProvider(null) {
 			@Override
 			protected String setStatement(CtField field) {
 				return null;

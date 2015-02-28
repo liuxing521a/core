@@ -1,6 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.Utils.ByteCodeUtils.getTableName;
 import static org.itas.core.util.Utils.ByteCodeUtils.uname;
 import static org.itas.core.util.Utils.CtClassUtils.getAllField;
 
@@ -183,13 +182,13 @@ public final class ByteCodes {
 		deleteBuffer.append("\n\t}");
 		fillBuffer.append("\n\t}");
 		
-		addFieldSelectSQL(columns, selectSQLBuffer, clazz);
-
-		addFieldInsertSQL(columns, insertSQLBuffer, clazz);
-		
-		addFieldUpdateSQL(columns, updateSQLBuffer, clazz);
-
-		addFieldDeleteSQL(deleteSQLBuffer, clazz);
+//		addFieldSelectSQL(columns, selectSQLBuffer, clazz);
+//
+//		addFieldInsertSQL(columns, insertSQLBuffer, clazz);
+//		
+//		addFieldUpdateSQL(columns, updateSQLBuffer, clazz);
+//
+//		addFieldDeleteSQL(deleteSQLBuffer, clazz);
 		
 		CtMethod method = CtMethod.make(insertBuffer.toString(), clazz);
 		clazz.addMethod(method);
@@ -203,17 +202,17 @@ public final class ByteCodes {
 		method = CtMethod.make(fillBuffer.toString(), clazz);
 		clazz.addMethod(method);
 		
-		addMethodGetSelectSQL(clazz);
+//		addMethodGetSelectSQL(clazz);
+//
+//		addMethodGetInsertSQL(clazz);
+//
+//		addMethodGetUpdateSQL(clazz);
+//
+//		addMethodGetDeleteSQL(clazz);
 
-		addMethodGetInsertSQL(clazz);
-
-		addMethodGetUpdateSQL(clazz);
-
-		addMethodGetDeleteSQL(clazz);
-
-		addMethodClone(clazz);
+//		addMethodClone(clazz);
 		
-		addMethodGetTableName(clazz);
+//		addMethodGetTableName(clazz);
 		
 //		clazz.writeFile("D:/");
 		return clazz.toClass();
@@ -238,164 +237,4 @@ public final class ByteCodes {
 		throw new ItasException("unsupported field type:" + field.getType());
 	}
 	
-
-	private void addMethodGetSelectSQL(CtClass clazz) throws Exception {
-		StringBuffer selectBuf = new StringBuffer();
-		
-//		selectBuf.append(nextRow(1));
-//		selectBuf.append("@Override");
-		selectBuf.append(nextRow(1));
-		selectBuf.append("protected String getSelectSQL(){");
-		selectBuf.append(nextRow(2));
-		selectBuf.append("return this.select_SQL;");
-		selectBuf.append(nextRow(1));
-		selectBuf.append("}");
-		CtMethod method = CtMethod.make(selectBuf.toString(), clazz);
-		
-		clazz.addMethod(method);
-	}
-	
-	private void addMethodGetInsertSQL(CtClass clazz) throws Exception {
-		StringBuffer insertBuf = new StringBuffer();
-		
-//		insertBuf.append(nextRow(1));
-//		insertBuf.append("@Override");
-		insertBuf.append(nextRow(1));
-		insertBuf.append("protected String getInsertSQL(){");
-		insertBuf.append(nextRow(2));
-		insertBuf.append("return this.insert_SQL;");
-		insertBuf.append(nextRow(1));
-		insertBuf.append("}");
-		CtMethod method = CtMethod.make(insertBuf.toString(), clazz);
-		
-		clazz.addMethod(method);
-	}
-
-	private void addMethodGetUpdateSQL(CtClass clazz) throws Exception {
-		StringBuffer updateBuf = new StringBuffer();
-
-//		updateBuf.append(nextRow(1));
-//		updateBuf.append("@Override");
-		updateBuf.append(nextRow(1));
-		updateBuf.append("protected String getUpdateSQL(){");
-		updateBuf.append(nextRow(2));
-		updateBuf.append("return this.update_SQL;");
-		updateBuf.append(nextRow(1));
-		updateBuf.append("}");
-		
-		CtMethod method = CtMethod.make(updateBuf.toString(), clazz);
-		clazz.addMethod(method);
-	}
-
-	private void addMethodGetDeleteSQL(CtClass clazz) throws Exception  {
-		StringBuffer deleteBuf = new StringBuffer();
-		
-//		deleteBuf.append(nextRow(1));
-//		deleteBuf.append("@Override");
-		deleteBuf.append(nextRow(1));
-		deleteBuf.append("protected String getDeleteSQL(){");
-		deleteBuf.append(nextRow(2));
-		deleteBuf.append("return this.delete_SQL;");
-		deleteBuf.append(nextRow(1));
-		deleteBuf.append("}");
-		
-		CtMethod method = CtMethod.make(deleteBuf.toString(), clazz);
-		clazz.addMethod(method);
-	}
-
-	private void addMethodClone(CtClass clazz) throws Exception {
-		if (Type.gameObjectAutoIdType.is(clazz)) {
-			StringBuffer colneBuf = new StringBuffer();
-			
-			colneBuf.append(nextRow(1));
-			colneBuf.append("protected net.itas.core.Game clone(java.lang.Object Id) {");
-			colneBuf.append(nextRow(2));
-			colneBuf.append("int oid =((java.lang.Integer)Id).intValue();");
-			colneBuf.append(nextRow(2));
-			colneBuf.append(String.format("return new %s(oid);", clazz.getName()));
-			colneBuf.append(nextRow(1));
-			colneBuf.append("}");
-			CtMethod method = CtMethod.make(colneBuf.toString(), clazz);
-			clazz.addMethod(method);
-			
-			return;
-		} 
-
-		if (Type.gameObjectType.is(clazz)) {
-			StringBuffer colneBuf = new StringBuffer();
-			
-			colneBuf.append(nextRow(1));
-			colneBuf.append("protected net.itas.core.Game clone(java.lang.Object Id) {");
-			colneBuf.append(nextRow(2));
-			colneBuf.append("String oid =(java.lang.String)Id;");
-			colneBuf.append(nextRow(2));
-			colneBuf.append(String.format("return new %s(oid);", clazz.getName()));
-			colneBuf.append(nextRow(1));
-			colneBuf.append("}");
-			
-			CtMethod method = CtMethod.make(colneBuf.toString(), clazz);
-			clazz.addMethod(method);
-			return;
-		} 
-
-		throw new ItasException("unkown class type:" + clazz.getName());
-	}
-	
-	private void addMethodGetTableName(CtClass clazz) throws Exception {
-		StringBuffer tableNameBuf = new StringBuffer();
-
-//		tableNameBuf.append(nextRow(1));
-//		tableNameBuf.append("@Override");
-		tableNameBuf.append("protected String getTableName() {");
-		tableNameBuf.append(nextRow(2));
-		tableNameBuf.append(String.format("return \"%s\";", getTableName(clazz)));
-		tableNameBuf.append(nextRow(2));
-		tableNameBuf.append("}");
-		
-		CtMethod method = CtMethod.make(tableNameBuf.toString(), clazz);
-		clazz.addMethod(method);
-	}
-	
-	private void addFieldSelectSQL(List<String> columns, StringBuffer buf, CtClass clazz) throws Exception {
-		buf.append(String.join(",", columns));
-		buf.append(String.join("", " FROM `", getTableName(clazz), "` WHERE Id = ?;\";"));
-		
-		CtField field = CtField.make(buf.toString(), clazz);
-		clazz.addField(field);
-	}
-	
-	private void addFieldInsertSQL(List<String> columns, StringBuffer buf, CtClass clazz) throws Exception {
-		buf.append(String.join("", "`", getTableName(clazz), "` ("));
-		buf.append(String.join(",", columns));
-		buf.append(") VALUES (");
-		for (int i = 0; i < columns.size(); i ++) {
-			buf.append("?").append(",");
-		}
-		
-		buf.deleteCharAt(buf.length() - 1);
-		buf.append(");\";");
-		
-		CtField field = CtField.make(buf.toString(), clazz);  
-		clazz.addField(field);
-	}
-	
-	private void addFieldUpdateSQL(List<String> columns, StringBuffer buf, CtClass clazz) throws Exception {
-		buf.append(String.join("", "`", getTableName(clazz), "` SET "));
-		for (String s : columns) {
-			if(!s.equals("`Id`")){buf.append(s).append("=?,");}
-		}
-		
-		buf.deleteCharAt(buf.length() - 1);
-		buf.append(" WHERE `Id` = ?;\";");
-		
-		CtField field = CtField.make(buf.toString(), clazz);
-		clazz.addField(field);
-	}
-	
-	private void addFieldDeleteSQL(StringBuffer buf, CtClass clazz) throws Exception {
-		buf.append(String.join("", "`", getTableName(clazz), "` WHERE `Id` = ?;\";"));
-		
-		CtField field = CtField.make(buf.toString(), clazz);
-		clazz.addField(field);
-	}
 }

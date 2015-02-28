@@ -4,10 +4,13 @@ import java.sql.Timestamp;
 
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtField;
+import net.itas.core.annotation.Size;
 
 import org.itas.core.GameBaseAotuID;
 import org.itas.core.GameObject;
 import org.itas.util.ItasException;
+
 
 
 /**
@@ -27,6 +30,11 @@ public enum Type {
 		public boolean is(CtClass clazz) {
 			return javassistType.boolean_ == clazz || javassistType.booleanWrap == clazz;
 		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` TINYINT(1) ZEROFILL NOT NULL DEFAULT '0'", field.getName());
+		}
 	},
 	byteType {
 		@Override
@@ -37,6 +45,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz) {
 			return javassistType.byte_ == clazz || javassistType.byteWrap == clazz;
+		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` TINYINT(4) NOT NULL DEFAULT '0'", field.getName());
 		}
 	},
 	charType {
@@ -49,6 +62,11 @@ public enum Type {
 		public boolean is(CtClass clazz) {
 			return javassistType.char_ == clazz || javassistType.charWrap == clazz;
 		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` CHAR(1) NOT NULL DEFAULT ' '", field.getName());
+		}
 	},
 	shortType {
 		@Override
@@ -59,6 +77,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz) {
 			return javassistType.short_ == clazz || javassistType.shortWrap == clazz;
+		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` SMALLINT(6) NOT NULL DEFAULT '0'", field.getName());
 		}
 	},
 	intType {
@@ -71,6 +94,11 @@ public enum Type {
 		public boolean is(CtClass clazz) {
 			return javassistType.int_ == clazz || javassistType.intWrap == clazz;
 		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` INT(1) NOT NULL DEFAULT '0'", field.getName());
+		}
 	},
 	longType {
 		@Override
@@ -81,6 +109,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz) {
 			return javassistType.long_ == clazz || javassistType.longWrap == clazz;
+		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` BIGINT(20) NOT NULL DEFAULT '0'", field.getName());
 		}
 	},
 	floatType {
@@ -93,6 +126,11 @@ public enum Type {
 		public boolean is(CtClass clazz) {
 			return javassistType.float_ == clazz || javassistType.floatWrap == clazz;
 		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` FLOAT(8, 2) NOT NULL DEFAULT '0.0'", field.getName());
+		}
 	},
 	doubleType {
 		@Override
@@ -103,6 +141,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz) {
 			return javassistType.double_ == clazz || javassistType.doubleWrap == clazz;
+		}
+
+		@Override
+		public String columnSQL(CtField field) {
+			return String.format("`%s` DOUBLE(14, 4) NOT NULL DEFAULT '0.0'", field.getName());
 		}
 	},
 	stringType {
@@ -115,6 +158,13 @@ public enum Type {
 		public boolean is(CtClass clazz) {
 			return javassistType.string_ == clazz;
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			Object aSize = field.getAnnotation(Size.class);
+			int size = (aSize == null) ? 36 : ((Size)aSize).value();
+			return String.format("`%s` VARCHAR(%s) NOT NULL DEFAULT ''", field.getName(), size);
+		}
 	},
 	simpleType {
 		@Override
@@ -125,6 +175,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz) {
 			return javassistType.simple_ == clazz;
+		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` VARCHAR(36) NOT NULL DEFAULT ''", field.getName());
 		}
 	},
 	resourceType {
@@ -137,6 +192,11 @@ public enum Type {
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.resource_);
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` VARCHAR(24) NOT NULL DEFAULT ''", field.getName());
+		}
 	},
 	enumByteType {
 		@Override
@@ -147,6 +207,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.enumByte_);
+		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` TINYINT(4) NOT NULL DEFAULT '0'", field.getName());
 		}
 	},
 	enumIntType {
@@ -159,6 +224,11 @@ public enum Type {
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.enumInt_);
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` INT(11) NOT NULL DEFAULT '0'", field.getName());
+		}
 	},
 	enumStringType {
 		@Override
@@ -169,6 +239,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.enumString_);
+		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` VARCHAR(24) NOT NULL DEFAULT ''", field.getName());
 		}
 	},
 	listType {
@@ -181,6 +256,11 @@ public enum Type {
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.list_);
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` TEXT", field.getName());
+		}
 	},
 	setType {
 		@Override
@@ -191,6 +271,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.set_);
+		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` TEXT", field.getName());
 		}
 	},
 	mapType {
@@ -203,6 +288,11 @@ public enum Type {
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.map_);
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` TEXT", field.getName());
+		}
 	},
 	timeStampType {
 		@Override
@@ -213,6 +303,11 @@ public enum Type {
 		@Override
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.timeStamp);
+		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			return String.format("`%s` TIMESTAMP NOT NULL", field.getName());
 		}
 	},
 	gameObjectType {
@@ -225,6 +320,11 @@ public enum Type {
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.gameObject);
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			throw new ItasException("unsuppotred GameObject type Persistence");
+		}
 	},
 	gameObjectAutoIdType {
 		@Override
@@ -236,6 +336,11 @@ public enum Type {
 		public boolean is(CtClass clazz)  throws Exception {
 			return clazz.subtypeOf(javassistType.gameBaseAotuID);
 		}
+
+		@Override
+		public String columnSQL(CtField field) throws Exception {
+			throw new ItasException("unsuppotred GameObject type Persistence");
+		}
 	},
 	
 	;
@@ -243,6 +348,8 @@ public enum Type {
 	public abstract boolean is(Class<?> clazz);
 
 	public abstract boolean is(CtClass clazz) throws Exception;
+	
+	public abstract String columnSQL(CtField field) throws Exception;
 	
 	public static class javaType {
 		
