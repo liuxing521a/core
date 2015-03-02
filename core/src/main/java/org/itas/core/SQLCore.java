@@ -45,7 +45,7 @@ abstract class SQLCore {
 			GameBase data = null;
 			if (result.next()) {
 				data = module.clone(Id);
-				data.fillData(result);
+				data.doFill(result);
 			}
 
 			return data;
@@ -82,7 +82,7 @@ abstract class SQLCore {
 			GameBase data;
 			while (result.next()) {
 				data = module.clone(result.getString("Id"));
-				data.fillData(result);
+				data.doFill(result);
 				dataList.add(data);
 			}
 

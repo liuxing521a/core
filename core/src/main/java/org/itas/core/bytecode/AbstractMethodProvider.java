@@ -4,14 +4,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtField;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 
-import org.itas.core.util.Type;
-import org.itas.core.util.Type.javassistType;
+import org.itas.core.bytecode.AbstractTypeProvider.javassistType;
 import org.itas.util.ItasException;
 
 /**
@@ -19,12 +16,16 @@ import org.itas.util.ItasException;
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月28日上午10:14:10
  */
-abstract class AbstractMethodProvider implements Provider {
+abstract class AbstractMethodProvider implements MethodProvider {
 	
+	/**
+	 * 支持属性类型
+	 */
 	private static final Map<CtClass, Type> SUPPORT_TYPE;
-	
+
 	static {
 		Map<CtClass, Type> tmpmap = new HashMap<>();
+		
 		tmpmap.put(javassistType.boolean_, Type.booleanType);
 		tmpmap.put(javassistType.booleanWrap, Type.booleanType);
 		tmpmap.put(javassistType.byte_, Type.byteType);
@@ -53,37 +54,18 @@ abstract class AbstractMethodProvider implements Provider {
 		tmpmap.put(javassistType.timeStamp, Type.timeStampType);
 		
 		SUPPORT_TYPE = Collections.unmodifiableMap(tmpmap);
+		
 	}
 	
 	protected CtClass ctClass;
 	
 	protected StringBuffer buffer;
-
-	/**
-	 * 方法增加field之前预处理
-	 */
-	public abstract void begin(CtClass clazz) throws Exception;
 	
-	/**
-	 * 增加方法相关field信息
-	 * @param field
-	 */
-	public abstract void append(CtField field) throws Exception;
-
-	/**
-	 * 结束添加field后续处理
-	 * @throws Exception
-	 */
-	public void end() throws Exception {
-		
+	@Override
+	public void begin(CtClass clazz) throws Exception {
+		this.ctClass = clazz;
+		this.buffer = new StringBuffer();
 	}
-	
-	/**
-	 * 转成ctMethod
-	 * @return
-	 * @throws CannotCompileException
-	 */
-	public abstract CtMethod toMethod() throws Exception;
 	
 	protected Type getType(CtField field) throws NotFoundException {
 		Type type = SUPPORT_TYPE.get(field.getType());
@@ -94,5 +76,9 @@ abstract class AbstractMethodProvider implements Provider {
 		return type;
 	}
 	
+	@Override
+	public int getAndIncIndex() {
+		return 0;
+	}
 	
 }

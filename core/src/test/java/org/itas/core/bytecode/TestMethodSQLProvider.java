@@ -9,7 +9,6 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 import net.itas.core.annotation.SQLEntity;
@@ -17,12 +16,6 @@ import net.itas.core.annotation.SQLEntity;
 import org.itas.core.GameObject;
 import org.itas.core.Index;
 import org.itas.core.Unique;
-import org.itas.core.bytecode.MethodSQLProvider.SQLAlterProvider;
-import org.itas.core.bytecode.MethodSQLProvider.SQLCreateProvider;
-import org.itas.core.bytecode.MethodSQLProvider.SQLDeleteProvider;
-import org.itas.core.bytecode.MethodSQLProvider.SQLInsertProvider;
-import org.itas.core.bytecode.MethodSQLProvider.SQLSelectProvider;
-import org.itas.core.bytecode.MethodSQLProvider.SQLUpdateProvider;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +31,7 @@ public class TestMethodSQLProvider {
 	
 	@Test
 	public void testSQLCreate() throws Exception {
-		SQLCreateProvider sqlCreate = new SQLCreateProvider();
+		MethodDoCreateProvider sqlCreate = new MethodDoCreateProvider();
 		
 		CtField ctField = ctClass.getDeclaredField("name");
 		sqlCreate.begin(ctClass);
@@ -53,7 +46,7 @@ public class TestMethodSQLProvider {
 				+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		Assert.assertEquals(expected, sqlCreate.toString());
 		
-		sqlCreate = new SQLCreateProvider();
+		sqlCreate = new MethodDoCreateProvider();
 		sqlCreate.begin(ctClass);
 		sqlCreate.append(ctClass.getDeclaredField("identy"));
 		sqlCreate.end();
@@ -67,7 +60,7 @@ public class TestMethodSQLProvider {
 				+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		Assert.assertEquals(expected, sqlCreate.toString());
 		
-		sqlCreate = new SQLCreateProvider();
+		sqlCreate = new MethodDoCreateProvider();
 		ctField = ctClass.getDeclaredField("address");
 		sqlCreate.begin(ctClass);
 		sqlCreate.append(ctField);
@@ -82,13 +75,13 @@ public class TestMethodSQLProvider {
 				+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		Assert.assertEquals(expected, sqlCreate.toString());
 		
-		CtMethod method = sqlCreate.toMethod();
-		ctClass.addMethod(method);
+		sqlCreate.toMethod();
+//		ctClass.addMethod(method);
 	}
 	
 	@Test
 	public void testSqlAlter() throws Exception {
-		SQLAlterProvider sqlAlter = new SQLAlterProvider();
+		MethodDoAlterProvider sqlAlter = new MethodDoAlterProvider();
 		sqlAlter.setExitsColumns(Collections.emptySet());
 		
 		CtField ctField = ctClass.getDeclaredField("name");
@@ -101,13 +94,13 @@ public class TestMethodSQLProvider {
 		String actual = sqlAlter.toString();
 		Assert.assertEquals(expected, actual);
 		
-		CtMethod method = sqlAlter.toMethod();
-		ctClass.addMethod(method);
+		sqlAlter.toMethod();
+//		ctClass.addMethod(method);
 	}
 	
 	@Test
-	public void testSQLSelect() throws NotFoundException, ClassNotFoundException, CannotCompileException, IOException {
-		SQLSelectProvider sqlSelect = new SQLSelectProvider();
+	public void testSQLSelect() throws Exception {
+		MethodSQLSelectProvider sqlSelect = new MethodSQLSelectProvider();
 		
 		CtField ctField = ctClass.getDeclaredField("name");
 		
@@ -119,13 +112,13 @@ public class TestMethodSQLProvider {
 		String actual = sqlSelect.toString();
 		Assert.assertEquals(expected, actual);
 		
-		CtMethod method = sqlSelect.toMethod();
-		ctClass.addMethod(method);
+		sqlSelect.toMethod();
+//		ctClass.addMethod(sqlSelect.toMethod());
 	}
 	
 	@Test
 	public void testSQLInsert() throws Exception {
-		SQLInsertProvider insert = new SQLInsertProvider();
+		MethodSQLInsertProvider insert = new MethodSQLInsertProvider();
 		
 		
 		insert.begin(ctClass);
@@ -136,13 +129,13 @@ public class TestMethodSQLProvider {
 		String actual = insert.toString();
 		Assert.assertEquals(expected, actual);
 		
-		CtMethod method = insert.toMethod();
-		ctClass.addMethod(method);
+		insert.toMethod();
+//		ctClass.addMethod(method);
 	}
 	
 	@Test
 	public void testSQLUpdate() throws Exception {
-		SQLUpdateProvider update = new SQLUpdateProvider();
+		MethodSQLUpdateProvider update = new MethodSQLUpdateProvider();
 		
 		
 		update.begin(ctClass);
@@ -153,13 +146,13 @@ public class TestMethodSQLProvider {
 		String actual = update.toString();
 		Assert.assertEquals(expected, actual);
 		
-		CtMethod method = update.toMethod();
-		ctClass.addMethod(method);
+		update.toMethod();
+//		ctClass.addMethod(method);
 	}
 	
 	@Test
 	public void testSQLDelete() throws Exception {
-		SQLDeleteProvider delete = new SQLDeleteProvider();
+		MethodSQLDeleteProvider delete = new MethodSQLDeleteProvider();
 		
 		
 		delete.begin(ctClass);
@@ -169,8 +162,8 @@ public class TestMethodSQLProvider {
 		String actual = delete.toString();
 		Assert.assertEquals(expected, actual);
 		
-		CtMethod method = delete.toMethod();
-		ctClass.addMethod(method);
+		delete.toMethod();
+//		ctClass.addMethod(method);
 	}
 	
 	@SQLEntity("model")

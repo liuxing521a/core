@@ -2,20 +2,15 @@ package org.itas.core.bytecode;
 
 import javassist.CtClass;
 
-import org.itas.core.util.Type;
 import org.itas.util.ItasException;
 
 /**
- * 容器类型字节码动态生成
+ * 容器数据[field]类型字节码动态生成
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月27日下午4:38:05
  */
 abstract class FieldContainerProvider extends AbstractFieldProvider {
 
-	public FieldContainerProvider(Modify modify) {
-		super(modify);
-	}
-	
 	/**
 	 * 字符串转成泛型具体类型
 	 * @param genericType

@@ -1,9 +1,10 @@
 package org.itas.core.bytecode;
 
+import static org.itas.core.util.ByteCodeUtils.firstKeyUpCase;
 import javassist.CtField;
 
 /**
- * simple类型字节码动态生成
+ * simple数据[field]类型字节码动态生成
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月26日下午5:29:54
  */
@@ -32,18 +33,18 @@ class FieldSimpleProvider extends AbstractFieldProvider {
 			+ "\n\t\t"
 			+ "}";
 
-	public FieldSimpleProvider(Modify modify) {
-		super(modify);
+	public FieldSimpleProvider() {
+		
 	}
-
+	
 	@Override
-	protected String setStatement(CtField field) {
+	public String setStatement(CtField field) {
 		return String.format(STATEMENT_SET, field.getName(), firstKeyUpCase(field.getName()),
-				field.getName(), firstKeyUpCase(field.getName()), modify.incIndex(), field.getName());
+				field.getName(), firstKeyUpCase(field.getName()), provider.getAndIncIndex(), field.getName());
 	}
 
 	@Override
-	protected String getResultSet(CtField field) {
+	public String getResultSet(CtField field) {
 		return String.format(RESULTSET_GET, field.getName(), field.getName(),
 				field.getName(), field.getName(), firstKeyUpCase(field.getName()), field.getName());
 	}

@@ -1,5 +1,6 @@
 package org.itas.core.bytecode;
 
+import static org.itas.core.util.ByteCodeUtils.firstKeyUpCase;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
@@ -9,11 +10,11 @@ import javassist.bytecode.SignatureAttribute.ClassType;
 import net.itas.core.annotation.Clazz;
 import net.itas.core.annotation.Size;
 
-import org.itas.core.util.Type.javassistType;
+import org.itas.core.bytecode.AbstractTypeProvider.javassistType;
 import org.itas.util.Utils.Objects;
 
 /**
- * list类型字节码动态生成
+ * list数据[field]类型字节码动态生成
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月27日下午3:38:27
  */
@@ -51,19 +52,17 @@ class FieldMapProvider extends FieldContainerProvider {
 			+ "}";
 	
 	
+	public FieldMapProvider() {
 
+	}
 	
-	public FieldMapProvider(Modify modify) {
-		super(modify);
+	@Override
+	public String setStatement(CtField field) throws Exception {
+		return String.format(STATEMENT_SET, provider.getAndIncIndex(), firstKeyUpCase(field.getName()));
 	}
 
 	@Override
-	protected String setStatement(CtField field) throws Exception {
-		return String.format(STATEMENT_SET, modify.incIndex(), firstKeyUpCase(field.getName()));
-	}
-
-	@Override
-	protected String getResultSet(CtField field) throws Exception {
+	public String getResultSet(CtField field) throws Exception {
 		ClassType definType = (ClassType)SignatureAttribute.toFieldSignature(field.getGenericSignature());
 		
 		ClassType keyType = (ClassType)(definType.getTypeArguments()[0].getType());
@@ -100,5 +99,5 @@ class FieldMapProvider extends FieldContainerProvider {
 		return ClassPool.getDefault().get(
 				String.format("%s$%s", classType.getDeclaringClass().getName(), classType.getName()));
 	}
-	
+
 }

@@ -7,6 +7,7 @@ import java.io.ObjectOutput;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import junit.framework.Assert;
 
 import org.itas.core.GameBaseAotuID;
@@ -16,16 +17,12 @@ import org.junit.Test;
 
 public class TestFieldSimpleProvider {
 
-	private FieldSimpleProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
-	public void setUP() {
-		codeType = new FieldSimpleProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+	public void setUP() throws NotFoundException {
+		codeType = new FieldSimpleProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

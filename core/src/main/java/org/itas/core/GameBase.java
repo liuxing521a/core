@@ -1,9 +1,13 @@
 package org.itas.core;
 
 import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import net.itas.core.annotation.UnSave;
 
@@ -96,16 +100,16 @@ abstract class GameBase implements Externalizable {
 		switch (status) {
 		case NEW: 
 			setLoaded();
-			insertStatement(statement);
+			doInsert(statement);
 			statement.addBatch();
 			break;
 		case DIRTY:
 			setLoaded();
-			updateStatement(statement);
+			doUpdate(statement);
 			statement.addBatch();
 			break;
 		case DESTROY: 
-			deleteStatement(statement);
+			doDelete(statement);
 			statement.addBatch();
 			break;
 		default: 
@@ -114,7 +118,7 @@ abstract class GameBase implements Externalizable {
 	}
 	
 	final void doResultSet(ResultSet result) throws SQLException {
-		fillData(result);
+		doFill(result);
 		this.status = DataStatus.LOADED;
 	}
 	
@@ -142,24 +146,41 @@ abstract class GameBase implements Externalizable {
 		throw new ItasException("deleteSQL must Override");
 	}
 	
-	protected void insertStatement(PreparedStatement statement) throws java.sql.SQLException {
-		throw new ItasException("insertStatement must Override");
+	protected void doCreate(Statement statement) {
+		throw new ItasException("doCreate must Override");
+	}
+	
+	protected void doALter(Statement statement) {
+		throw new ItasException("doALter must Override");
+	}
+	
+	protected void doInsert(PreparedStatement statement) throws java.sql.SQLException {
+		throw new ItasException("doInsert must Override");
 	}
 
-	protected void updateStatement(PreparedStatement statement) throws java.sql.SQLException {
-		throw new ItasException("updateStatement must Override");
+	protected void doUpdate(PreparedStatement statement) throws java.sql.SQLException {
+		throw new ItasException("doUpdate must Override");
 	}
 	
-	protected void deleteStatement(PreparedStatement statement) throws java.sql.SQLException {
-		throw new ItasException("deleteStatement must Override");
+	protected void doDelete(PreparedStatement statement) throws java.sql.SQLException {
+		throw new ItasException("doDelete must Override");
 	}
 	
-	protected void fillData(ResultSet result) throws java.sql.SQLException {
-		throw new ItasException("fillData must Override");
+	protected void doFill(ResultSet result) throws java.sql.SQLException {
+		throw new ItasException("doFill must Override");
 	}
 
 	protected GameBase clone(String Id) {
 		throw new ItasException("clone(String Id) must Override");
+	}
+	
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		
 	}
 	
 }

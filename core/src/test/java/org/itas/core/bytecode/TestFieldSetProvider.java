@@ -9,6 +9,7 @@ import java.util.Set;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import junit.framework.Assert;
 import net.itas.core.annotation.Clazz;
 import net.itas.core.annotation.Size;
@@ -22,19 +23,14 @@ import org.junit.Test;
 
 public class TestFieldSetProvider {
 
-	private FieldSetProvider codeType;
-	
 	private CtClass clazz;
 	
+	private FieldProvider codeType;
+	
 	@Before
-	public void setUP() throws Exception {
-		codeType = new FieldSetProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
-		
+	public void setUP() throws NotFoundException {
+		codeType = new FieldSetProvider();
+		codeType.setMethodProvider(new TestMethod());
 		ClassPool pool = ClassPool.getDefault();
 		clazz = pool.get(Model.class.getName());
 	}
@@ -59,9 +55,9 @@ public class TestFieldSetProvider {
 				+ "\n\t\t\t"
 				+ "java.util.Set dataArray = new java.util.LinkedHashSet(8);"
 				+ "\n\t\t\t"
-				+ "for (Object value : dataStrList) {"
+				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(new org.itas.core.Simple((String)value));"
+				+ "dataArray.add(new org.itas.core.Simple((String)dataStrList.get(i)));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -93,16 +89,16 @@ public class TestFieldSetProvider {
 				+ "\n\t\t\t"
 				+ "java.util.Set dataArray = new java.util.HashSet(16);"
 				+ "\n\t\t\t"
-				+ "for (Object value : dataStrList) {"
+				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(org.itas.core.Pool.getResource((String)value));"
+				+ "dataArray.add(org.itas.core.Pool.getResource((String)dataStrList.get(i)));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
 				+ "setRs(dataArray);"
 				+ "\n\t\t"
 				+ "}";
-		//						 bsArray.add(%s);
+
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
 	}
@@ -127,9 +123,9 @@ public class TestFieldSetProvider {
 				+ "\n\t\t\t"
 				+ "java.util.Set dataArray = new java.util.HashSet(8);"
 				+ "\n\t\t\t"
-				+ "for (Object value : dataStrList) {"
+				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(java.lang.Integer.valueOf((String)value));"
+				+ "dataArray.add(java.lang.Integer.valueOf((String)dataStrList.get(i)));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -161,9 +157,9 @@ public class TestFieldSetProvider {
 				+ "\n\t\t\t"
 				+ "java.util.Set dataArray = new java.util.HashSet(8);"
 				+ "\n\t\t\t"
-				+ "for (Object value : dataStrList) {"
+				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(org.itas.core.util.Utils.EnumUtils.parse(org.itas.core.EnumByte.class, java.lang.Byte.valueOf((String)value)));"
+				+ "dataArray.add(org.itas.core.util.Utils.EnumUtils.parse(org.itas.core.EnumByte.class, java.lang.Byte.valueOf((String)dataStrList.get(i))));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"

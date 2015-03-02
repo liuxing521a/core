@@ -2,7 +2,6 @@ package org.itas.core.bytecode;
 
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 
@@ -32,7 +31,7 @@ public class TestMethodColneProvider {
 				+ "}";
 		Assert.assertEquals(expected, clone.toString());
 		
-		CtMethod method = clone.toMethod();
-		ctClass.addMethod(method);
+		clone.toMethod();
+//		ctClass.addMethod(method);
 	}
 }

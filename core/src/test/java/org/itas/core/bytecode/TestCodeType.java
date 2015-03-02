@@ -15,34 +15,36 @@ public class TestCodeType {
 	
 	@Before
 	public void setUP() {
-		codeType = new AbstractFieldProvider(null) {
+		codeType = new AbstractFieldProvider() {
+
 			@Override
-			protected String setStatement(CtField field) {
+			public String setStatement(CtField field) throws Exception {
+				// TODO Auto-generated method stub
 				return null;
 			}
-			
+
 			@Override
-			protected String getResultSet(CtField field) {
+			public String getResultSet(CtField field) throws Exception {
+				// TODO Auto-generated method stub
 				return null;
-			}
-		};
+			}};
 	}
 	
 	@Test
 	public void testFirstKeyUPCase() {
-		String result = codeType.firstKeyUpCase("hello");
+		String result = org.itas.core.util.ByteCodeUtils.firstKeyUpCase("hello");
 		Assert.assertEquals("Hello", result);
 		
-		result = codeType.firstKeyUpCase("Hello");
+		result = org.itas.core.util.ByteCodeUtils.firstKeyUpCase("Hello");
 		Assert.assertEquals("Hello", result);
 	}
 
 	@Test
 	public void testFirstKeyLowerCase() {
-		String result = codeType.firstKeyLowerCase("hello");
+		String result = org.itas.core.util.ByteCodeUtils.firstKeyLowerCase("hello");
 		Assert.assertEquals("hello", result);
 		
-		result = codeType.firstKeyLowerCase("Hello");
+		result = org.itas.core.util.ByteCodeUtils.firstKeyLowerCase("Hello");
 		Assert.assertEquals("hello", result);
 	}
 	

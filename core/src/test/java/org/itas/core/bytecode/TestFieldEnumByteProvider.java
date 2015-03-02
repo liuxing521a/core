@@ -16,16 +16,12 @@ import com.mysql.jdbc.PreparedStatement;
 
 public class TestFieldEnumByteProvider {
 
-	private FieldEnumByteProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldEnumByteProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+		codeType = new FieldEnumByteProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

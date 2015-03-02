@@ -1,5 +1,6 @@
 package org.itas.core;
 
+import org.itas.core.bytecode.TestByteCodes;
 import org.itas.core.bytecode.TestCodeType;
 import org.itas.core.bytecode.TestFieldBooleanProvider;
 import org.itas.core.bytecode.TestFieldByteProvider;
@@ -21,7 +22,7 @@ import org.itas.core.bytecode.TestFieldStringProvider;
 import org.itas.core.bytecode.TestFieldTimestampCode;
 import org.itas.core.bytecode.TestMethodColneProvider;
 import org.itas.core.bytecode.TestMethodSQLProvider;
-import org.itas.core.util.TestType;
+import org.itas.core.bytecode.TestType;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -29,7 +30,6 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 //指定运行器
 @Suite.SuiteClasses({ 
-	TestByteCodes.class, 
 	TestCodeType.class, 
 	TestType.class, 
 	TestFieldBooleanProvider.class, 
@@ -52,6 +52,7 @@ import org.junit.runners.Suite;
 	TestFieldMapProvider.class, 
 	TestMethodSQLProvider.class, 
 	TestMethodColneProvider.class, 
+	TestByteCodes.class,
 	})
 public class TestAll {
 	

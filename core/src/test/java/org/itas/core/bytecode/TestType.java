@@ -1,4 +1,4 @@
-package org.itas.core.util;
+package org.itas.core.bytecode;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -12,6 +12,7 @@ import junit.framework.Assert;
 import org.itas.core.EnumByte;
 import org.itas.core.GameObject;
 import org.itas.core.Simple;
+import org.itas.core.bytecode.Type;
 import org.itas.core.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;

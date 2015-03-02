@@ -1,5 +1,6 @@
 package org.itas.core.bytecode;
 
+import static org.itas.core.util.ByteCodeUtils.firstKeyUpCase;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
@@ -9,11 +10,11 @@ import javassist.bytecode.SignatureAttribute.ClassType;
 import net.itas.core.annotation.Clazz;
 import net.itas.core.annotation.Size;
 
-import org.itas.core.util.Type.javassistType;
+import org.itas.core.bytecode.AbstractTypeProvider.javassistType;
 import org.itas.util.Utils.Objects;
 
 /**
- * set类型字节码动态生成
+ * set数据[field]类型字节码动态生成
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月27日下午3:38:22
  */
@@ -34,7 +35,7 @@ class FieldSetProvider extends FieldContainerProvider {
 			+ "\n\t\t\t"
 			+ "%s dataArray = new %s;"
 			+ "\n\t\t\t"
-			+ "for (Object value : dataStrList) {"
+			+ "for (int i = 0; i < dataStrList.size(); i ++) {"
 			+ "\n\t\t\t\t"
 			+ "dataArray.add(%s);"
 			+ "\n\t\t\t"
@@ -44,17 +45,17 @@ class FieldSetProvider extends FieldContainerProvider {
 			+ "\n\t\t"
 			+ "}";
 	
-	public FieldSetProvider(Modify modify) {
-		super(modify);
+	public FieldSetProvider() {
+
+	}
+	
+	@Override
+	public String setStatement(CtField field) throws Exception {
+		return String.format(STATEMENT_SET, provider.getAndIncIndex(), firstKeyUpCase(field.getName()));
 	}
 
 	@Override
-	protected String setStatement(CtField field) throws Exception {
-		return String.format(STATEMENT_SET, modify.incIndex(), firstKeyUpCase(field.getName()));
-	}
-
-	@Override
-	protected String getResultSet(CtField field) throws Exception {
+	public String getResultSet(CtField field) throws Exception {
 		ClassType definType = (ClassType)SignatureAttribute.toFieldSignature(field.getGenericSignature());
 		ClassType chirldType = (ClassType)(definType.getTypeArguments()[0].getType());
 		
@@ -82,7 +83,7 @@ class FieldSetProvider extends FieldContainerProvider {
 		}
 		
 		return String.format(RESULTSET_GET, field.getName(), definType.getName(),
-				listClassName, toObjectCode(genericType, "(String)value"), firstKeyUpCase(field.getName()));
+				listClassName, toObjectCode(genericType, "(String)dataStrList.get(i)"), firstKeyUpCase(field.getName()));
 	}
 	
 }

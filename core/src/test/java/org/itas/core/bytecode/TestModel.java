@@ -1,14 +1,15 @@
 package org.itas.core.bytecode;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.itas.core.annotation.SQLEntity;
 
 import org.itas.core.GameObject;
 import org.itas.core.Index;
 import org.itas.core.Unique;
+import org.itas.core.resource.Resource;
 
 @SQLEntity("model")
 public class TestModel extends GameObject {
@@ -24,6 +25,12 @@ public class TestModel extends GameObject {
 	
 	@Index
 	private String address;
+	
+	private List<String> test;
+	
+	private Map<String, Resource> test1;
+	
+	private Set<Integer> test2;
 
 	public String getName() {
 		return name;
@@ -49,16 +56,28 @@ public class TestModel extends GameObject {
 		this.address = address;
 	}
 
-	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-		
+	public List<String> getTest() {
+		return test;
 	}
 
-	@Override
-	public void readExternal(ObjectInput in) throws IOException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-		
+	public void setTest(List<String> test) {
+		this.test = test;
+	}
+
+	public Map<String, Resource> getTest1() {
+		return test1;
+	}
+
+	public void setTest1(Map<String, Resource> test1) {
+		this.test1 = test1;
+	}
+
+	public Set<Integer> getTest2() {
+		return test2;
+	}
+
+	public void setTest2(Set<Integer> test2) {
+		this.test2 = test2;
 	}
 
 	@Override
@@ -66,6 +85,7 @@ public class TestModel extends GameObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 	@Override
 	protected <T extends GameObject> T autoInstance(String Id) {

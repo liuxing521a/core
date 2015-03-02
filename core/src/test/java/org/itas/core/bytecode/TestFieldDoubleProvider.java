@@ -10,16 +10,12 @@ import org.junit.Test;
 
 public class TestFieldDoubleProvider {
 
-	private FieldDoubleProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldDoubleProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+		codeType = new FieldDoubleProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

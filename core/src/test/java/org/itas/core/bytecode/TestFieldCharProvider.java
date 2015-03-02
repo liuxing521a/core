@@ -10,16 +10,12 @@ import org.junit.Test;
 
 public class TestFieldCharProvider {
 
-	private FieldCharProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldCharProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+		codeType = new FieldCharProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

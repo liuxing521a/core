@@ -3,6 +3,7 @@ package org.itas.core.bytecode;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import junit.framework.Assert;
 
 import org.itas.core.resource.Resource;
@@ -10,17 +11,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestFieldResourcesProvider {
-
-	private FieldResourcesProvider codeType;
+	
+	
+	private FieldProvider codeType;
 	
 	@Before
-	public void setUP() {
-		codeType = new FieldResourcesProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+	public void setUP() throws NotFoundException {
+		codeType = new FieldResourcesProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

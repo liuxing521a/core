@@ -11,6 +11,7 @@ import java.util.Map;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import junit.framework.Assert;
 import net.itas.core.annotation.Clazz;
 import net.itas.core.annotation.Size;
@@ -24,19 +25,14 @@ import org.junit.Test;
 
 public class TestFieldMapProvider {
 
-	private FieldMapProvider codeType;
-	
 	private CtClass clazz;
 	
+	private FieldProvider codeType;
+	
 	@Before
-	public void setUP() throws Exception {
-		codeType = new FieldMapProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
-		
+	public void setUP() throws NotFoundException {
+		codeType = new FieldMapProvider();
+		codeType.setMethodProvider(new TestMethod());
 		ClassPool pool = ClassPool.getDefault();
 		clazz = pool.get(Model.class.getName());
 	}
@@ -76,7 +72,7 @@ public class TestFieldMapProvider {
 				+ "setBs(dataMap);"
 				+ "\n\t\t"
 				+ "}";
-		//						 bsArray.add(%s);
+
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
 	}

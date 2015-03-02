@@ -5,7 +5,6 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-import org.itas.core.util.Type;
 import org.itas.util.ItasException;
 import org.itas.util.Logger;
 
@@ -33,7 +32,6 @@ class MethodCloneProvider extends AbstractMethodProvider {
 	public void end() throws Exception {
 		buffer.append("protected org.itas.core.GameObject clone(java.lang.String oid) {");
 		buffer.append("return new ").append(ctClass.getName()).append("(oid);");
-//		buffer.append("return null;");
 		buffer.append("}");
 	}
 	
@@ -58,6 +56,11 @@ class MethodCloneProvider extends AbstractMethodProvider {
 		} 
 		
 		throw new ItasException("un supported clone:" + clazz.getName());
+	}
+
+	@Override
+	public int getAndIncIndex() {
+		throw new ItasException("clone method not need supprted");
 	}
 	
 }

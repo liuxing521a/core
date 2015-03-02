@@ -10,16 +10,12 @@ import org.junit.Test;
 
 public class TestFieldFloatProvider {
 
-	private FieldFloatProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldFloatProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+		codeType = new FieldFloatProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

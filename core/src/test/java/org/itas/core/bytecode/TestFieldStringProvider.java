@@ -3,6 +3,7 @@ package org.itas.core.bytecode;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -10,16 +11,12 @@ import org.junit.Test;
 
 public class TestFieldStringProvider {
 
-	private FieldStringProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
-	public void setUP() {
-		codeType = new FieldStringProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+	public void setUP() throws NotFoundException {
+		codeType = new FieldStringProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test

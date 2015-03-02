@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -12,16 +13,12 @@ import org.junit.Test;
 
 public class TestFieldTimestampCode {
 
-	private FieldTimestampProvider codeType;
+	private FieldProvider codeType;
 	
 	@Before
-	public void setUP() {
-		codeType = new FieldTimestampProvider(new Modify() {
-			@Override
-			protected String toModify() {
-				return null;
-			}
-		});
+	public void setUP() throws NotFoundException {
+		codeType = new FieldTimestampProvider();
+		codeType.setMethodProvider(new TestMethod());
 	}
 	
 	@Test
