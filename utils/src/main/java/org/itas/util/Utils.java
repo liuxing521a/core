@@ -1154,25 +1154,6 @@ public class Utils {
 	}
 	
 	/** 
-	 * 数据库相关
-	 * @author liuzhen
-	 */
-	public static final class SQLUtils {
-		
-		public static void close(AutoCloseable...autos) {
-			for (AutoCloseable auto : autos) {
-				try {
-					auto.close();
-				} catch (Exception e) {
-					// do nothing
-				}
-			}
-		}
-		
-		private SQLUtils(){}
-	}
-	
-	/** 
 	 * 日期相关
 	 * @author liuzhen
 	 */

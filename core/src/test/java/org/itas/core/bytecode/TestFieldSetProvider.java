@@ -11,12 +11,12 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
-import net.itas.core.annotation.Clazz;
-import net.itas.core.annotation.Size;
 
 import org.itas.core.EnumByte;
 import org.itas.core.GameObject;
 import org.itas.core.Simple;
+import org.itas.core.annotation.Clazz;
+import org.itas.core.annotation.Size;
 import org.itas.core.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;

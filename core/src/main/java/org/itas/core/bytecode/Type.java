@@ -182,11 +182,11 @@ public enum Type {
 	
 	protected abstract TypeProvider provider();
 	
-	boolean is(Class<?> clazz) {
+	public boolean is(Class<?> clazz) {
 		return provider().isType(clazz);
 	}
 
-	boolean is(CtClass clazz) throws Exception {
+	public boolean is(CtClass clazz) throws Exception {
 		return provider().isCtType(clazz);
 	}
 	

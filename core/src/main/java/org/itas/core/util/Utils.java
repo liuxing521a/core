@@ -10,10 +10,10 @@ import java.util.Map;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
-import net.itas.core.annotation.SQLEntity;
 
 import org.itas.core.EnumByte;
 import org.itas.core.EnumString;
+import org.itas.core.annotation.SQLEntity;
 import org.itas.util.ItasException;
 import org.itas.util.Utils.Objects;
 

@@ -6,7 +6,7 @@ import javassist.ClassPool;
 import javassist.CtClass;
 
 import org.itas.core.CallBack;
-import org.itas.core.GameBaseAotuID;
+import org.itas.core.GameObjectAotuID;
 import org.itas.core.GameObject;
 import org.itas.util.ItasException;
 
@@ -76,7 +76,7 @@ abstract class AbstractTypeProvider implements TypeProvider {
 
 		public final static Class<?> gameObject = GameObject.class;
 
-		public final static Class<?> gameBaseAotuID = GameBaseAotuID.class;
+		public final static Class<?> gameBaseAotuID = GameObjectAotuID.class;
 	}
 	
 	static class javassistType {

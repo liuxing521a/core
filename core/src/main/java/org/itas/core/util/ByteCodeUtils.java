@@ -1,11 +1,11 @@
 package org.itas.core.util;
 
 import javassist.CtClass;
-import net.itas.core.annotation.SQLEntity;
 
+import org.itas.core.annotation.SQLEntity;
 import org.itas.util.ItasException;
 
-public interface ByteCodeUtils {
+public final class ByteCodeUtils {
 
 	public static String tableName(CtClass clazz) throws ClassNotFoundException {
 		Object sqlEntity = clazz.getAnnotation(SQLEntity.class);
@@ -42,4 +42,7 @@ public interface ByteCodeUtils {
 		return buffer.toString();
 	}
 	
+	private ByteCodeUtils() {
+		
+	}
 }

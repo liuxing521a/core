@@ -19,9 +19,4 @@ public class ItasException extends RuntimeException {
 	public ItasException(Throwable cause) {
 		super(cause);
 	}
-	
-	@Override
-    public ItasException fillInStackTrace() {
-        return this;
-    }
 }

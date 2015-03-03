@@ -3,13 +3,11 @@ package org.itas.core.resource;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.itas.core.annotation.CanNull;
-import net.itas.core.exception.FieldNotConfigException;
-
+import org.itas.core.FieldNotConfigException;
+import org.itas.core.annotation.CanNull;
 import org.itas.util.ItasException;
 import org.itas.util.Utils.Objects;
 import org.xml.sax.Attributes;
@@ -28,9 +26,8 @@ public class XConfigHandler extends AbstractHandler {
 	/** 当前解析的config文件*/
 	private Conf config;
 	
-	public XConfigHandler(Map<String, Method> scripts) {
+	public XConfigHandler() {
 		super();
-		this.scripts = scripts;
 		this.pattern = Pattern.compile("\\s*|\t|\r|\n");
 	}
 

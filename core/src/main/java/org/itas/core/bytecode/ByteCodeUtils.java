@@ -1,8 +1,8 @@
 package org.itas.core.bytecode;
 
 import javassist.CtClass;
-import net.itas.core.annotation.SQLEntity;
 
+import org.itas.core.annotation.SQLEntity;
 import org.itas.util.ItasException;
 
 public interface ByteCodeUtils {

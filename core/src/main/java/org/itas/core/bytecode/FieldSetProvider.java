@@ -7,9 +7,9 @@ import javassist.CtField;
 import javassist.NotFoundException;
 import javassist.bytecode.SignatureAttribute;
 import javassist.bytecode.SignatureAttribute.ClassType;
-import net.itas.core.annotation.Clazz;
-import net.itas.core.annotation.Size;
 
+import org.itas.core.annotation.Clazz;
+import org.itas.core.annotation.Size;
 import org.itas.core.bytecode.AbstractTypeProvider.javassistType;
 import org.itas.util.Utils.Objects;
 

@@ -1,6 +1,5 @@
 package org.itas.core.resource;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,13 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.itas.core.DoubleException;
 import org.itas.util.ItasException;
 import org.itas.util.Logger;
-import org.itas.util.XResources;
 import org.itas.util.Utils.ClassUtils;
 import org.itas.util.Utils.Objects;
-
-import net.itas.core.exception.DoubleException;
+import org.itas.util.XResources;
 
 import com.typesafe.config.Config;
 
@@ -108,8 +106,8 @@ public final class ResPool {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void loadConfig(String pack, Config share, Map<String, Method> scripts) throws Exception {
-		XConfigHandler handler = new XConfigHandler(scripts);
+	public void loadConfig(String pack, Config share) throws Exception {
+		XConfigHandler handler = new XConfigHandler();
 		List<Class<?>> clazzes = ClassUtils.loadClazz(Conf.class, pack);
 		
 		String path;

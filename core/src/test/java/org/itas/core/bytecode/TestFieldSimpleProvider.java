@@ -10,7 +10,7 @@ import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 
-import org.itas.core.GameBaseAotuID;
+import org.itas.core.GameObjectAotuID;
 import org.itas.core.Simple;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class TestFieldSimpleProvider {
 		
 	}
 	
-	private class TestMode extends GameBaseAotuID {
+	private class TestMode extends GameObjectAotuID {
 
 		protected TestMode(String Id) {
 			super(Id);

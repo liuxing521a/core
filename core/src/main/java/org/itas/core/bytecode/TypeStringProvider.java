@@ -1,6 +1,7 @@
 package org.itas.core.bytecode;
 
-import net.itas.core.annotation.Size;
+import org.itas.core.annotation.Size;
+
 import javassist.CtClass;
 import javassist.CtField;
 

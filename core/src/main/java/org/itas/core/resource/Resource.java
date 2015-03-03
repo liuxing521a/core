@@ -5,17 +5,17 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
+import org.itas.core.FieldNotConfigException;
+import org.itas.core.HashId;
+import org.itas.core.annotation.CanNull;
 import org.itas.util.ItasException;
 import org.itas.util.Utils.ClassUtils;
 import org.itas.util.Utils.Objects;
 
-import net.itas.core.annotation.CanNull;
-import net.itas.core.exception.FieldNotConfigException;
 
 
 
-
-public abstract class Resource extends AbstractXml {
+public abstract class Resource extends AbstractXml implements HashId {
 	
 	/** 资源唯一Id*/
 	private String Id;
@@ -24,6 +24,7 @@ public abstract class Resource extends AbstractXml {
 		this.Id = Id;
 	}
 	
+	@Override
 	public String getId()  {
 		return Id;
 	}

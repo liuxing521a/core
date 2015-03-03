@@ -5,17 +5,16 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collections;
 
-import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
-import net.itas.core.annotation.SQLEntity;
 
 import org.itas.core.GameObject;
-import org.itas.core.Index;
-import org.itas.core.Unique;
+import org.itas.core.annotation.Index;
+import org.itas.core.annotation.SQLEntity;
+import org.itas.core.annotation.Unique;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -103,7 +102,7 @@ public class TestMethodSQLProvider {
 		MethodSQLSelectProvider sqlSelect = new MethodSQLSelectProvider();
 		
 		CtField ctField = ctClass.getDeclaredField("name");
-		
+			
 		sqlSelect.begin(ctClass);
 		sqlSelect.append(ctField);
 		sqlSelect.end();

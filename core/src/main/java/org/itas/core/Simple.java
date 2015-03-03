@@ -6,18 +6,11 @@ package org.itas.core;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014年3月24日
  */
-public final class Simple<T extends GameBase> {
+public final class Simple<T extends GameObject> {
 	
-	/**
-	 * 对象Id
-	 */
 	private final String Id;
 	
-	/**
-	 * 对象相关名称等描述信息
-	 */
 	private String name;
-	
 	
 	public Simple(String Id) {
 		this(Id, "");
@@ -41,9 +34,8 @@ public final class Simple<T extends GameBase> {
 		this.name = name;
 	}
 
-	@SuppressWarnings("unchecked")
 	public T enty() {
-		return (T) Pool.get(Id);
+		return Pool.get(Id);
 	}
 	
 	@Override

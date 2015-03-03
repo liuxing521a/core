@@ -10,9 +10,9 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-import org.itas.core.Index;
-import org.itas.core.Primary;
-import org.itas.core.Unique;
+import org.itas.core.annotation.Index;
+import org.itas.core.annotation.Primary;
+import org.itas.core.annotation.Unique;
 import org.itas.util.Logger;
 
 class MethodDoCreateProvider extends AbstractMethodProvider {

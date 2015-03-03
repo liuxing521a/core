@@ -1,8 +1,18 @@
 package org.itas.core;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
-import net.itas.core.annotation.PrimaryfKey;
+import org.itas.core.annotation.Primary;
+import org.itas.core.annotation.UnSave;
+import org.itas.util.ItasException;
 
 /**
  * <p>自动同步数据库基类</p>
@@ -11,18 +21,25 @@ import net.itas.core.annotation.PrimaryfKey;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:25:47
  */
-public abstract class GameObject extends GameBase implements HashId {
+public abstract class GameObject implements HashId, Externalizable {
 
+	enum DataStatus {
+		unload,		// 未加载
+		load,		// 无状态数据
+		news,		// 新数据
+		modify,		// 修改数据
+		destory,	// 销毁数据
+	}
+	
 	protected GameObject(String Id) {
-		super(Id);
 		this.Id = Id;
 	}
 	
 	/**
 	 * 唯一Id
 	 */
-	@PrimaryfKey
-	protected final String Id;
+	@Primary
+	protected String Id;
 	
 	/** 
 	 * 修改时间 
@@ -34,10 +51,23 @@ public abstract class GameObject extends GameBase implements HashId {
 	 */
 	protected Timestamp createTime;
 	
+	/** 
+	 * 对象当前状态 
+	 */
+	@UnSave private volatile DataStatus status;
+	
 	/**
 	 * id前缀，以次来区分一个字符串id属于那个对象
 	 */
 	protected abstract String PRIFEX();
+	
+	/**
+	 * <p>自动生成对象</p>
+	 * 注:需要指定id
+	 * @param Id 新对象的id
+	 * @return 生成的对象
+	 */
+	protected abstract <T extends GameObject> T autoInstance(String Id);
 	
 	@Override
 	public String getId() {
@@ -63,7 +93,109 @@ public abstract class GameObject extends GameBase implements HashId {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
+	
+	protected void modifyAll() {
+		modify("");
+	}
 
+	protected void modify(String modify) {
+		if (status == DataStatus.load) {
+			status = DataStatus.modify;
+//			sqlTools.addUpdate(this);
+		}
+	}
+
+	public void destroy() {
+		if (status != DataStatus.destory) {
+			status = DataStatus.destory;
+//			sqlTools.addDelete(this);
+		}
+	}
+
+	DataStatus getDataStatus() {
+		return status;
+	}
+
+	final void doStatement(PreparedStatement statement, DataStatus status) throws SQLException {
+		switch (status) {
+		case news: 
+			doInsert(statement);
+			statement.addBatch();
+			status = DataStatus.load;
+			break;
+		case modify:
+			doUpdate(statement);
+			statement.addBatch();
+			status = DataStatus.load;
+			break;
+		case destory: 
+			doDelete(statement);
+			statement.addBatch();
+			break;
+		default: 
+			throw new ItasException(this.getClass().getName() + " unkown data status:" + status);
+		}
+	}
+	
+	final void doResultSet(ResultSet result) throws SQLException {
+		if (status == DataStatus.unload) {
+			doFill(result);
+			this.status = DataStatus.load;
+		}
+	}
+	
+	protected String tableName() {
+		throw new ItasException("getTableName must @Override");
+	}
+	
+	protected String selectSQLArray() {
+		throw new ItasException("selectSQLArray must Override");
+	}
+	
+	protected String selectSQL() {
+		throw new ItasException("selectSQL must Override");
+	}
+	
+	protected String insertSQL() {
+		throw new ItasException("insertSQL must Override");
+	}
+	
+	protected String updateSQL() {
+		throw new ItasException("updateSQL must Override");
+	}
+	
+	protected String deleteSQL() {
+		throw new ItasException("deleteSQL must Override");
+	}
+	
+	protected void doCreate(Statement statement) {
+		throw new ItasException("doCreate must Override");
+	}
+	
+	protected void doALter(Statement statement) {
+		throw new ItasException("doALter must Override");
+	}
+	
+	protected void doInsert(PreparedStatement statement) throws java.sql.SQLException {
+		throw new ItasException("doInsert must Override");
+	}
+
+	protected void doUpdate(PreparedStatement statement) throws java.sql.SQLException {
+		throw new ItasException("doUpdate must Override");
+	}
+	
+	protected void doDelete(PreparedStatement statement) throws java.sql.SQLException {
+		throw new ItasException("doDelete must Override");
+	}
+	
+	protected void doFill(ResultSet result) throws java.sql.SQLException {
+		throw new ItasException("doFill must Override");
+	}
+
+	protected GameObject clone(String Id) {
+		throw new ItasException("clone(String Id) must Override");
+	}
+	
 	@Override
 	public final boolean equals(Object o) {
 		if (o == this) {
@@ -77,17 +209,27 @@ public abstract class GameObject extends GameBase implements HashId {
 		return ((GameObject) o).Id.equals(Id);
 	}
 
+	
 	@Override
 	public final int hashCode() {
 		return 31 + Id.hashCode();
 	}
+	
+	
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeUTF(Id);
+		out.writeObject(updateTime);
+		out.writeObject(createTime);
+		out.writeObject(status);
+	}
 
-	/**
-	 * <p>自动生成对象</p>
-	 * 注:需要指定id
-	 * @param Id 新对象的id
-	 * @return 生成的对象
-	 */
-	protected abstract <T extends GameObject> T autoInstance(String Id);
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		Id = in.readUTF();
+		updateTime = (Timestamp)in.readObject();
+		createTime = (Timestamp)in.readObject();
+		status = (DataStatus)in.readObject();
+	}
 
 }

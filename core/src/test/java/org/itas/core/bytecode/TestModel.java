@@ -4,11 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.itas.core.annotation.SQLEntity;
-
 import org.itas.core.GameObject;
-import org.itas.core.Index;
-import org.itas.core.Unique;
+import org.itas.core.annotation.Index;
+import org.itas.core.annotation.SQLEntity;
+import org.itas.core.annotation.Unique;
 import org.itas.core.resource.Resource;
 
 @SQLEntity("model")

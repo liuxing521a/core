@@ -15,12 +15,11 @@ import java.util.Set;
 import org.itas.core.EnumByte;
 import org.itas.core.EnumString;
 import org.itas.core.Pool;
+import org.itas.core.annotation.Clazz;
 import org.itas.core.resource.Resource;
 import org.itas.core.util.Utils.EnumUtils;
 import org.itas.util.Utils.ClassUtils;
 import org.itas.util.Utils.Objects;
-
-import net.itas.core.annotation.Clazz;
 
 /**
  * <p>泛型处理</p>
