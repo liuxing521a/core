@@ -1,6 +1,5 @@
 package org.itas.core.util;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -19,73 +18,6 @@ import org.itas.util.Utils.Objects;
 
 public final class Utils {
 
-	public static final class CoreUtils {
-		
-		@SuppressWarnings("unchecked")
-		public static <T> T newInstance(Class<?> cls) {
-			try {
-				final Constructor<?> cons = cls.getDeclaredConstructor();
-				final boolean isAccess = cons.isAccessible();
-				
-				cons.setAccessible(true);
-				T t = (T)cons.newInstance();
-				cons.setAccessible(isAccess);
-				
-				return t;
-			} catch (Exception e) {
-				throw new ItasException(e);
-			}
-		}
-		
-		@SuppressWarnings("unchecked")
-		public static <T> T newInstanceInt(Class<?> cls, int paramValue) {
-			try {
-				final Constructor<?> cons = cls.getDeclaredConstructor(int.class);
-				final boolean isAccess = cons.isAccessible();
-				
-				cons.setAccessible(true);
-				T t = (T)cons.newInstance(paramValue);
-				cons.setAccessible(isAccess);
-				
-				return t;
-			} catch (Exception e) {
-				throw new ItasException(e);
-			}
-		}
-		
-		@SuppressWarnings("unchecked")
-		public static <T> T newInstanceLong(Class<?> cls, long paramValue) {
-			try {
-				final Constructor<?> cons = cls.getDeclaredConstructor(long.class);
-				final boolean isAccess = cons.isAccessible();
-				
-				cons.setAccessible(true);
-				T t = (T)cons.newInstance(paramValue);
-				cons.setAccessible(isAccess);
-				
-				return t;
-			} catch (Exception e) {
-				throw new ItasException(e);
-			}
-		}
-		
-		@SuppressWarnings("unchecked")
-		public static <T> T newInstanceString(Class<?> cls, String paramValue) {
-			try {
-			    final Constructor<?> cons = cls.getDeclaredConstructor(String.class);
-			    final boolean isAccess = cons.isAccessible();
-	
-			    cons.setAccessible(true);
-			    T t = (T)cons.newInstance(paramValue);
-			    cons.setAccessible(isAccess);
-	
-				return t;
-			} catch (Exception e) {
-				throw new ItasException(e);
-			}
-	    }
-	}
-	
 	public static final class CtClassUtils {
 		
 		public static List<CtClass> getAllClass(CtClass clazz) throws Exception {

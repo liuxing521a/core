@@ -22,7 +22,8 @@ public class ByteCodeMethods {
 			new MethodDoDeleteProvider(),
 			new MethodDoInsertProvider(),
 			new MethodDoSelectProvider(),
-			new MethodDoUpdateProvider()
+			new MethodDoUpdateProvider(),
+			new MethodSetMethodModifyProvider()
 		};
 		
 		for (MethodProvider method : methods) {

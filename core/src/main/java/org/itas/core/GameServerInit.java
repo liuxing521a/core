@@ -21,7 +21,6 @@ public abstract class GameServerInit {
 	}
 
 	public void onServiceStartup() throws Exception {
-		dbsyncInit.onStartup(config, modules);
 		
 		onStartup();
 	}

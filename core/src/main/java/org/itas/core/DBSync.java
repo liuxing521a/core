@@ -9,44 +9,44 @@ import org.itas.util.collection.CircularQueue;
 
 public interface DBSync {
 
-	/**
-	 * <p>根据对象创建数据库表 </p>
-	 * @param gameObject 模版对象
-	 * @return 创建结果
-	 * @throws SQLException
-	 */
-	abstract int[] createTable(GameObject gameObject) throws SQLException;
+  /**
+   * <p>根据对象创建数据库表 </p>
+   * @param gameObject 模版对象
+   * @return 创建结果
+   * @throws SQLException
+   */
+  abstract int[] createTable(GameObject gameObject) throws SQLException;
 
-	/**
-	 * <p>根据对象修改已存在数据库表</p>
-	 * @param gameObject 模版对象
-	 * @return 修改结果
-	 * @throws SQLException
-	 */
-	abstract int[] alterTable(GameObject gameObject) throws SQLException;
+  /**
+   * <p>根据对象修改已存在数据库表</p>
+   * @param gameObject 模版对象
+   * @return 修改结果
+   * @throws SQLException
+   */
+  abstract int[] alterTable(GameObject gameObject) throws SQLException;
 	
-	/**
-	 * <p>绑定处理对象</p>
-	 * @param gameObject
-	 */
-	abstract void bind(GameObject gameObject);
+  /**
+   * <p>绑定处理对象</p>
+   * @param gameObject
+   */
+  abstract void bind(GameObject gameObject);
 
-	/**
-	 * <p>获取数据库表字段名</p>
-	 * @param tableName 表名
-	 * @return 字段列表
-	 * @throws SQLException
-	 */
-	abstract Set<String> tableColumns(String tableName) throws SQLException;
+  /**
+   * <p>获取数据库表字段名</p>
+   * @param tableName 表名
+   * @return 字段列表
+   * @throws SQLException
+   */
+  abstract Set<String> tableColumns(String tableName) throws SQLException;
 	
-	/**
-	 * <p>加载数据 </p>
-	 * @param gameObject 模型数据
-	 * @param Id 加载的数据Id
-	 * @return 加载后对像
-	 * @throws SQLException
-	 */
-	abstract GameObject loadData(GameObject gameObject, String Id)throws SQLException;
+  /**
+   * <p>加载数据 </p>
+   * @param gameObject 模型数据
+   * @param Id 加载的数据Id
+   * @return 加载后对像
+   * @throws SQLException
+   */
+  abstract GameObject loadData(GameObject gameObject, String Id);
 
 	/**
 	 * <p>加载数据列表 </p>

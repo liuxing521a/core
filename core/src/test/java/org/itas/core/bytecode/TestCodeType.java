@@ -6,10 +6,11 @@ import java.util.Map;
 import javassist.CtField;
 import junit.framework.Assert;
 
+import org.itas.core.util.FirstChar;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestCodeType {
+public class TestCodeType implements FirstChar {
 
 	protected AbstractFieldProvider codeType;
 	
@@ -32,19 +33,19 @@ public class TestCodeType {
 	
 	@Test
 	public void testFirstKeyUPCase() {
-		String result = org.itas.core.util.ByteCodeUtils.firstKeyUpCase("hello");
+		String result = upCase("hello");
 		Assert.assertEquals("Hello", result);
 		
-		result = org.itas.core.util.ByteCodeUtils.firstKeyUpCase("Hello");
+		result = upCase("Hello");
 		Assert.assertEquals("Hello", result);
 	}
 
 	@Test
 	public void testFirstKeyLowerCase() {
-		String result = org.itas.core.util.ByteCodeUtils.firstKeyLowerCase("hello");
+		String result = lowerCase("hello");
 		Assert.assertEquals("hello", result);
 		
-		result = org.itas.core.util.ByteCodeUtils.firstKeyLowerCase("Hello");
+		result = lowerCase("Hello");
 		Assert.assertEquals("hello", result);
 	}
 	

@@ -1,249 +1,184 @@
 package org.itas.core;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.itas.core.bytecode.ByteCodes;
 import org.itas.core.bytecode.Type;
-import org.itas.core.util.Utils.CoreUtils;
+import org.itas.core.util.Constructors;
 import org.itas.util.ItasException;
+import org.itas.util.Utils.Objects;
 import org.itas.util.Utils.TimeUtil;
 import org.itas.util.cache.Cache;
 import org.itas.util.cache.LocalCache;
 
-import com.typesafe.config.Config;
+import com.google.common.collect.Maps;
 
 /**
  * <p>对象池 </p>
- * 
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014-3-19
  */
-final class DataPool {
+final class DataPool implements Constructors {
 
-	/** 字节码操作*/
-	private ByteCodes operate;
+  /** 数据库操作工具*/
+  private DBSync dbSync;
 	
-	/** 数据库操作工具*/
-	private DBSync dbSync;
+  /** 模型数据集 */
+  private final Map<Class<?>, GameObject> classModules;
 	
-	/** 模型数据集 */
-	private final Map<Class<?>, GameObject> classModules;
-	
-	/** 前缀和class映射*/
-	private final Map<String, GameObject> prefixModules;
+  /** 前缀和class映射*/
+  private final Map<String, GameObject> prefixModules;
 
-	/** 对象缓存的缓存 */
-	private final Map<Class<?>, Cache<String, GameObject>> dataCaches;
+  /** 对象缓存的缓存 */
+  private final Map<String, Cache<String, GameObject>> dataCaches;
 	
+  private DataPool() {
+	classModules = Maps.newHashMap();
+	prefixModules = new HashMap<>();
+	dataCaches = new HashMap<>();
+  }
 
-	private DataPool() {
-		this.classModules = new HashMap<>();
-		this.prefixModules = new HashMap<>();
-		
-		this.dataCaches = new HashMap<>();
-//		this.operate = Factory.getInstance(ByteCodes.class);
-//		this.dbSync = Factory.getInstance(SQLDirtys.class);
+  void bind(List<Class<? extends GameObject>> classList) throws Exception {
+	int  capicity = Integer.parseInt(System.getProperty("capicity"));
+	long lifeTime = 
+	    Long.parseLong(System.getProperty("aliveTime"))*TimeUtil.MILLIS_PER_HOUR;
+
+	for (Class<?> clazz : classList) {
+      if (Type.gameObjectType.is(clazz)) {
+    	GameObject gameObject = newInstance(clazz, new Object[]{""});
+//		Cache<String, GameObject> cache = new LocalCache<>(clazz.getSimpleName(), 1024, lifeTime + TimeUtil.MILLIS_PER_HOUR);
+		Cache<String, GameObject> gameObjectCache = new LocalCache<>(
+				clazz.getSimpleName(), capicity*1024, lifeTime);
+		classModules.put(clazz, gameObject);
+		prefixModules.put(gameObject.PRIFEX(), gameObject);
+		dataCaches.put(gameObject.PRIFEX(), gameObjectCache);
+		continue;
+      } 
+
+      throw new ItasException(
+    	  "error:class must extends from Game[" + clazz.getName() + "]");
+	}
+  }
+
+  protected void put(GameObject data) {
+	obtainCache(data).put(data.getId(), data);
+  }
+
+  protected GameObject get(String Id) {
+	  GameObject gameObject = loadGameObject(Id);
+	  if (Objects.nonNull(gameObject)) {
+		  gameObject.setUpdateTime(TimeUtil.systemTime());
+	  } else {
+		  gameObject = obtainModule(Id).autoInstance(Id);
+	  }
+	  
+	  return gameObject;
+  }
+  
+  protected GameObject get(Class<? extends GameObject> clazz, String Id) {
+	GameObject gameObject = loadGameObject(clazz, Id);
+	if (Objects.nonNull(gameObject)) {
+	  gameObject.setUpdateTime(TimeUtil.systemTime());
+	} else {
+		gameObject = obtainModule(clazz).autoInstance(Id);
 	}
 
-	void bind(Config config, String pack) throws Exception {
-		int  capicity = config.getInt("capicity");
-		long lifeTime = config.getLong("aliveTime")*TimeUtil.MILLIS_PER_HOUR;
-		
-		Type type;
-		List<Class<?>> classList = operate.loadDynamicClass(pack);
-		for (Class<?> clazz : classList) {
-			
-			if (Type.gameObjectType.is(GameObject.class)) {
+	return gameObject;
+  }
 
-				GameObject gameObject = CoreUtils.newInstanceString(clazz, "");
-//				Cache<String, GameObject> cache = new LocalCache<>(clazz.getSimpleName(), gameObject.getCachedSize()*capicity, lifeTime + TimeUtil.MILLIS_PER_HOUR);
-				Cache<String, GameObject> cache = new LocalCache<>(clazz.getSimpleName(), 1024, lifeTime + TimeUtil.MILLIS_PER_HOUR);
-				classModules.put(clazz, gameObject);
-				prefixModules.put(gameObject.PRIFEX(), gameObject);
+  protected GameObject remove(String Id) {
+	  return obtainCache(obtainModule(Id)).remove(Id);
+  }
+
+  protected GameObject remove(Class<? extends GameObject> clazz, Integer Id) {
+	return obtainCache(obtainModule(clazz)).remove(Id);
+  }
+	
+  protected GameObject newInstance(Class<? extends GameObject> clazz, String Id) {
+	  return newInstance(obtainModule(clazz), Id);
+  }
+	
+  protected GameObject newInstance(String Id) {
+	return newInstance(obtainModule(Id), Id);
+  }
+  
+  private GameObject newInstance(GameObject module, String Id) {
+	Cache<String, GameObject> gameObjectCache = obtainCache(module);
+	synchronized (module) {
+	  GameObject gameObject = gameObjectCache.get(Id);
+	  if (Objects.nonNull(gameObject)) {
+		return gameObject;
+	  }			
 				
-				dataCaches.put(clazz, cache);
-				continue;
-			} 
-
-			throw new ItasException("error:class must extends from Game[" + clazz.getName() + "]");
-		}
+	  gameObject = module.clone(Id);
+//	  data.initialize0(); TODO init data
+	  gameObjectCache.put(gameObject.getId(), gameObject);
+	  return gameObject;
+	}
+  }
+	
+  private GameObject loadGameObject(Class<? extends GameObject> clazz, String Id) {
+	return loadGameObject(obtainModule(clazz), Id);
+  }
+	
+  private GameObject loadGameObject(String Id) {
+    return loadGameObject(obtainModule(Id), Id);
+  }
+  
+  private GameObject loadGameObject(GameObject module, String Id) {
+	Cache<String, GameObject> gameObjectCache = obtainCache(module);
+	GameObject gameObject = gameObjectCache.get(Id);
+	if (Objects.nonNull(gameObject)) {
+	  return gameObject; 
 	}
 	
-
-	Collection<GameBase> getModelList() {
-		return Collections.unmodifiableCollection(modules.values());
-	}
-
-	void destoryed() {
-		modules.clear();
-		dataIntCaches.clear();
-		dataStringCaches.clear();
-	}
-
-	protected void put(GameObject data) {
-		dataIntCaches.get(data.getClass()).put(data.getId(), data);
-	}
-	
-	protected void put(GameBaseAotuID data) {
-		dataStringCaches.get(data.getClass()).put(data.getId(), data);
-	}
-
-	protected GameObject get(Class<? extends GameObject> clazz, Integer Id) {
-		GameObject data = loadData(clazz, Id);
-		
-		if (Objects.nonNull(data)) {
-			data.setUpdateTime(TimeUtil.systemTime());
-		} else {
-			GameObject mould = (GameObject)modules.get(clazz);
-			data = mould.autoGen(Id);
-		}
-
-		return data;
-	}
-
-	protected GameBaseAotuID get(Class<? extends GameBaseAotuID> clazz, String Id) {
-		GameBaseAotuID data = loadData(clazz, Id);
-		if (Objects.nonNull(data)) {
-			data.setUpdateTime(TimeUtil.systemTime());
-		}
-		
-		return data;
-	}
-
-	protected GameBaseAotuID get(String Id) {
-		GameBaseAotuID data = loadData(parsePrifex(Id), Id);
-		if (Objects.nonNull(data)) {
-			data.setUpdateTime(TimeUtil.systemTime());
-		}
-	
-		return data;
-	}
-
-	
-	protected GameObject remove(Class<? extends GameObject> clazz, Integer Id) {
-		return dataIntCaches.get(clazz).remove(Id);
-	}
-	
-	protected GameBaseAotuID remove(Class<? extends GameBaseAotuID> clazz, String Id) {
-		return dataStringCaches.get(clazz).remove(Id);
-	}
-
-	
-	protected GameObject newInstance(Class<? extends GameObject> clazz, Integer Id) {
-		synchronized (clazz) {
-			Cache<Integer, GameObject> cache = dataIntCaches.get(clazz);
-			
-			GameObject data = cache.get(Id);
-			if (Objects.nonNull(data)) {
-				return data;
-			}
-			
-			data = (GameObject)modules.get(clazz).clone(Id);
-			data.initialize0();
-			cache.put(data.getId(), data);
-		 
-			return data;
-		}
-	}
-	
-	protected GameBaseAotuID newInstance(Class<? extends GameBaseAotuID> clazz, String Id) {
-		synchronized (clazz) {
-			Cache<String, GameBaseAotuID> cache = dataStringCaches.get(clazz);
-			
-			GameBaseAotuID data;
-			if (Objects.nonEmpty(Id) && Objects.nonNull(data = cache.get(Id))) {
-				return data;
-			} 
-			
-			data = (GameBaseAotuID)modules.get(clazz).clone(Id);
-			data.initialize0();
-			cache.put(data.getId(), data);
-			return data;
-		}
-	}
-	
-	// ===================================================
-	/**
-	 * <p>数据库加载数据 </P>
-	 * @param clazz 加载的类
-	 * @param Id   参数
-	 * @return 加载后数据，如果数据库不存在返回null
-	 */
-	private GameObject loadData(Class<? extends GameObject> clazz, Integer Id) {
-		if (Id == 0)  {
+	synchronized (Id.intern()) {
+	  gameObject = dbSync.loadData(module, Id);
+		if (Objects.isNull(gameObject)) {
 			return null;
 		}
-		
-		Cache<Integer, GameObject> cache = dataIntCaches.get(clazz);
-		GameObject data = cache.get(Id);
-		if (Objects.nonNull(data)) {
-			return data;
-		}
-		 
-		return loadGameBaseFromDB(cache, clazz, Id);
-	}
-	
-	/**
-	 * <p>数据库加载数据 </P>
-	 * @param clazz 加载的类
-	 * @param Id   参数
-	 * @return 加载后数据，如果数据库不存在返回null
-	 */
-	private GameBaseAotuID loadData(Class<? extends GameBaseAotuID> clazz, String Id) {
-		if (Objects.isEmpty(Id) || Objects.isNull(clazz)) {
-			return null;
-		}
-		
-		Cache<String, GameBaseAotuID> cache = dataStringCaches.get(clazz);
-		GameBaseAotuID data = cache.get(Id);
-		if (Objects.nonNull(data)) {
-			return data;
-		}
-		 
-		return loadGameBaseStringFromDB(cache, clazz, Id);
-	}
-	
-	private GameObject loadGameBaseFromDB(Cache<Integer, GameObject> cache, Class<?> clazz, Integer Id) {
-		synchronized (Id) {
-			GameBase tmp = sQLTools.loadData(modules.get(clazz), Id);
-			if (Objects.isNull(tmp)) {
-				return null;
-			}
 			
-			GameObject data = (GameObject)tmp;
-			cache.putIfAbsent(data.getId(), data);
-			return data;
-		}
+		gameObjectCache.putIfAbsent(gameObject.getId(), gameObject);
+		return gameObject;
 	}
-	
-	private GameBaseAotuID loadGameBaseStringFromDB(Cache<String, GameBaseAotuID> cache, Class<?> clazz, String Id) {
-		synchronized (Id) {
-			GameBase tmp = sQLTools.loadData(modules.get(clazz), Id);
-			if (Objects.isNull(tmp)) {
-				return null;
-			}
-			
-			GameBaseAotuID data = (GameBaseAotuID)tmp;
-			cache.putIfAbsent(data.getId(), data);
-			return data;
-		}
-	}
-	
+  }
 
-	private Class<? extends GameBaseAotuID> parsePrifex(String Id) {
-		if (Objects.isEmpty(Id)) {
-			return null;
-		}
-		
-		int index = Id.indexOf('_');
-		if (index != 2) {
-			throw new ItasException("PRIFEX must like:[ps_]");
-		}
-		
-		return dataStringPrifex.get(Id.substring(0, index + 1));
+  private GameObject obtainModule(String Id) {
+	if (Id == null || Id.length() < 3) {
+	  return null;
 	}
+		
+	String prifex = Id.substring(0, 3);
+	if (prifex.charAt(2) != '_') {
+	  throw new IllegalArgumentException("PRIFEX must endwith [_]");
+	}
+		
+	GameObject module = prefixModules.get(prifex);
+	if (Objects.isNull(module)) {
+	  throw new ItasException("illness Id:" + Id);
+	}
+	
+	return module;
+  }
+  
+  private GameObject obtainModule(Class<? extends GameObject> clazz) {
+	GameObject module = classModules.get(clazz);
+	
+	if (Objects.isNull(module)) {
+	  throw new IllegalAccessError("unkown class type:" + clazz.getName());
+	}
+	
+	return module;
+  }
+  
+  private Cache<String, GameObject> obtainCache(GameObject module) {
+	Cache<String, GameObject> gameObjectCache = dataCaches.get(module.PRIFEX());
+	if (Objects.isNull(gameObjectCache)) {
+	  throw new NullPointerException("class cache:" + module.getClass());
+	}
+	
+	return gameObjectCache;
+  }
+  
 }

@@ -1,6 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.ByteCodeUtils.firstKeyUpCase;
 import javassist.CtField;
 
 /**
@@ -32,13 +31,13 @@ class FieldEnumByteProvider extends AbstractFieldProvider {
 
 	@Override
 	public String setStatement(CtField field) {
-		return String.format(STATEMENT_SET, field.getName(), firstKeyUpCase(field.getName()), 
-				field.getName(), firstKeyUpCase(field.getName()), provider.getAndIncIndex(), field.getName());
+		return String.format(STATEMENT_SET, field.getName(), upCase(field.getName()), 
+				field.getName(), upCase(field.getName()), provider.getAndIncIndex(), field.getName());
 	}
 
 	@Override
 	public String getResultSet(CtField field) throws Exception {
-		return String.format(RESULTSET_GET, firstKeyUpCase(field.getName()), 
+		return String.format(RESULTSET_GET, upCase(field.getName()), 
 				field.getType().getName(), field.getName());
 	}
 

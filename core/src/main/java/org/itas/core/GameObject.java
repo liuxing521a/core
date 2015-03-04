@@ -94,11 +94,7 @@ public abstract class GameObject implements HashId, Externalizable {
 		this.updateTime = updateTime;
 	}
 	
-	protected void modifyAll() {
-		modify("");
-	}
-
-	protected void modify(String modify) {
+	protected void modify() {
 		if (status == DataStatus.load) {
 			status = DataStatus.modify;
 //			sqlTools.addUpdate(this);

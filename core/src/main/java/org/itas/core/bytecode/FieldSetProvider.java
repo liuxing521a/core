@@ -1,6 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.ByteCodeUtils.firstKeyUpCase;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
@@ -51,7 +50,7 @@ class FieldSetProvider extends FieldContainerProvider {
 	
 	@Override
 	public String setStatement(CtField field) throws Exception {
-		return String.format(STATEMENT_SET, provider.getAndIncIndex(), firstKeyUpCase(field.getName()));
+		return String.format(STATEMENT_SET, provider.getAndIncIndex(), upCase(field.getName()));
 	}
 
 	@Override
@@ -83,7 +82,7 @@ class FieldSetProvider extends FieldContainerProvider {
 		}
 		
 		return String.format(RESULTSET_GET, field.getName(), definType.getName(),
-				listClassName, toObjectCode(genericType, "(String)dataStrList.get(i)"), firstKeyUpCase(field.getName()));
+				listClassName, toObjectCode(genericType, "(String)dataStrList.get(i)"), upCase(field.getName()));
 	}
 	
 }

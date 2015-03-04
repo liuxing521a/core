@@ -1,6 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.ByteCodeUtils.firstKeyUpCase;
 import javassist.CtField;
 
 /**
@@ -39,14 +38,14 @@ class FieldSimpleProvider extends AbstractFieldProvider {
 	
 	@Override
 	public String setStatement(CtField field) {
-		return String.format(STATEMENT_SET, field.getName(), firstKeyUpCase(field.getName()),
-				field.getName(), firstKeyUpCase(field.getName()), provider.getAndIncIndex(), field.getName());
+		return String.format(STATEMENT_SET, field.getName(), upCase(field.getName()),
+				field.getName(), upCase(field.getName()), provider.getAndIncIndex(), field.getName());
 	}
 
 	@Override
 	public String getResultSet(CtField field) {
 		return String.format(RESULTSET_GET, field.getName(), field.getName(),
-				field.getName(), field.getName(), firstKeyUpCase(field.getName()), field.getName());
+				field.getName(), field.getName(), upCase(field.getName()), field.getName());
 	}
 
 }

@@ -36,7 +36,9 @@ public final class ByteCodes {
 		methods.end();
 		
 		for (CtMethod ctMethod : methods.toMethods()) {
-			clazz.addMethod(ctMethod);
+			if (ctMethod != null) {
+				clazz.addMethod(ctMethod);
+			}
 		}
 		
 		clazz.writeFile("D:/");
