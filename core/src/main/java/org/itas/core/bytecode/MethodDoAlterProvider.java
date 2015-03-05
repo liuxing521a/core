@@ -1,7 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.ByteCodeUtils.tableName;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,7 +53,7 @@ class MethodDoAlterProvider extends AbstractMethodProvider {
 	public CtMethod toMethod() throws CannotCompileException {
 		StringBuffer methodBuf = new StringBuffer();
 		
-		methodBuf.append("protected void alterSQL(java.sql.Statement stmt) {");
+		methodBuf.append("protected void doAlter(java.sql.Statement stmt) {");
 		for (String alter : alters) {
 			methodBuf.append("stmt.addBatch(\"").append(alter).append("\");");
 		}

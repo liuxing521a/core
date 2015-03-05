@@ -6,70 +6,89 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.itas.core.AbstractDBSync;
+import org.itas.core.Builder;
+import org.itas.core.DBPool;
+import org.itas.core.DBSync;
 import org.itas.core.GameObject;
 import org.itas.util.collection.CircularQueue;
 
 class DBSyncImpl extends AbstractDBSync {
 
-	private final Map<Class<?>, CircularQueue<GameObject>> insertDatas;
-	private final Map<Class<?>, CircularQueue<GameObject>> updateDatas;
-	private final Map<Class<?>, CircularQueue<GameObject>> deleteDatas;
+  private final DBPool dbPool;
+  private final Map<Class<?>, CircularQueue<GameObject>> insertDatas;
+  private final Map<Class<?>, CircularQueue<GameObject>> updateDatas;
+  private final Map<Class<?>, CircularQueue<GameObject>> deleteDatas;
 	
-	DBSyncImpl() {
-		this.insertDatas = new HashMap<>();
-		this.updateDatas = new HashMap<>();
-		this.deleteDatas = new HashMap<>();
+  DBSyncImpl(DBPool dbPool) {
+	this.dbPool = dbPool;
+	this.insertDatas = new HashMap<>();
+	this.updateDatas = new HashMap<>();
+	this.deleteDatas = new HashMap<>();
+  }
+	
+  @Override
+  public void bind(GameObject gameObject) {
+	insertDatas.put(gameObject.getClass(), new CircularQueue<>());
+	updateDatas.put(gameObject.getClass(), new CircularQueue<>());
+	deleteDatas.put(gameObject.getClass(), new CircularQueue<>());
+  }
+	
+  @Override
+  protected Connection getConnection() throws SQLException {
+	return dbPool.getConnection();
+  }
+	
+  protected void addInsert(GameObject gameObject) {
+	CircularQueue<GameObject> items = insertDatas.get(gameObject.getClass());
+   	synchronized (items) {
+	  items.push(gameObject);
+	}
+  }
+
+  protected void addUpdate(GameObject gameObject) {
+	CircularQueue<GameObject> items = updateDatas.get(gameObject.getClass());
+	synchronized (items) {
+	  items.push(gameObject);
+	}
+  }
+	
+  protected void addDelete(GameObject gameObject) {
+	CircularQueue<GameObject> items = updateDatas.get(gameObject.getClass());
+   	synchronized (items) {
+	  items.push(gameObject);
+	}
+  }
+	
+  public void doPersistent() {
+	for (CircularQueue<GameObject> gameObjects : insertDatas.values()) {
+	  insertData(gameObjects);
+	}
+
+	for (CircularQueue<GameObject> gameObjects : updateDatas.values()) {
+	  modifyData(gameObjects);
+	}
+
+	for (CircularQueue<GameObject> gameObjects : deleteDatas.values()) {
+	  deleteData(gameObjects);
+	}
+  }
+  
+  public static class DBSyncBuilder implements Builder {
+	  
+	private DBPool dbPool;
+	  
+	public DBSyncBuilder() {
+	}
+	
+	public DBSyncBuilder setDBPool(DBPool dbPool) {
+	  this.dbPool = dbPool;
+	  return this;
 	}
 	
 	@Override
-	public void bind(GameObject gameObject) {
-		insertDatas.put(gameObject.getClass(), new CircularQueue<>());
-		updateDatas.put(gameObject.getClass(), new CircularQueue<>());
-		deleteDatas.put(gameObject.getClass(), new CircularQueue<>());
+	public DBSync builder() {
+		return new DBSyncImpl(this.dbPool);
 	}
-	
-	@Override
-	protected Connection getConnection() throws SQLException {
-		return DBPool.getConnection();
-	}
-	
-	void addInsert(GameObject gameObject) {
-		CircularQueue<GameObject> items = insertDatas.get(gameObject.getClass());
-    	
-    	synchronized (items) {
-			items.push(gameObject);
-		}
-	}
-
-	void addUpdate(GameObject gameObject) {
-		CircularQueue<GameObject> items = updateDatas.get(gameObject.getClass());
-    	
-    	synchronized (items) {
-			items.push(gameObject);
-		}
-	}
-	
-	void addDelete(GameObject gameObject) {
-		CircularQueue<GameObject> items = updateDatas.get(gameObject.getClass());
-    	
-    	synchronized (items) {
-			items.push(gameObject);
-		}
-	}
-	
-	@Override
-	public void doPersistent() {
-		for (CircularQueue<GameObject> gameObjects : insertDatas.values()) {
-			insertData(gameObjects);
-		}
-
-		for (CircularQueue<GameObject> gameObjects : updateDatas.values()) {
-			modifyData(gameObjects);
-		}
-
-		for (CircularQueue<GameObject> gameObjects : deleteDatas.values()) {
-			deleteData(gameObjects);
-		}
-	}
+  }
 
 }

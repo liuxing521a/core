@@ -40,6 +40,8 @@ public class TestMethodSQLProvider {
 		String expected = 
 				"CREATE TABLE IF NOT EXISTS `model`("
 				+ "\n\t"
+				+ "`Id` INT(11) NOT NULL DEFAULT '0',"
+				+ "\n\t"
 				+ "`name` VARCHAR(36) NOT NULL DEFAULT ''"
 				+ "\n"
 				+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -51,6 +53,8 @@ public class TestMethodSQLProvider {
 		sqlCreate.end();
 		expected = 
 				"CREATE TABLE IF NOT EXISTS `model`("
+				+ "\n\t"
+				+ "`Id` INT(11) NOT NULL DEFAULT '0',"
 				+ "\n\t"
 				+ "`identy` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"
@@ -66,6 +70,8 @@ public class TestMethodSQLProvider {
 		sqlCreate.end();
 		expected = 
 				"CREATE TABLE IF NOT EXISTS `model`("
+				+ "\n\t"
+				+ "`Id` INT(11) NOT NULL DEFAULT '0',"
 				+ "\n\t"
 				+ "`address` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"

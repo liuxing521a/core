@@ -47,9 +47,9 @@
         </appender>
 
        
-        <!--<logger name="com.jolbox.bonecp" additivity="false" level="TRACE">-->
-        	 <!--<appender-ref ref="log-debug" />-->
-        <!--</logger>-->
+        <logger name="com.jolbox.bonecp" additivity="false" level="TRACE">
+        	 <appender-ref ref="log-debug" />
+        </logger>
         
         <logger name="log-trace" additivity="false" level="TRACE">
 			<appender-ref ref="log-trace" />

@@ -37,7 +37,7 @@ class MethodDoDeleteProvider extends AbstractMethodProvider {
 	public void end() throws Exception {
 		Type type = getType(idField);
 		
-		buffer.append("protected void deleteStatement(java.sql.PreparedStatement state) throws java.sql.SQLException {");
+		buffer.append("protected void doDelete(java.sql.PreparedStatement state) throws java.sql.SQLException {");
 		
 		type.fieldProcessing(this, new CallBack<FieldProvider>() {
 			@Override

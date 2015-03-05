@@ -29,7 +29,7 @@ class MethodDoUpdateProvider extends AbstractMethodProvider {
 		super.begin(clazz);
 		
 		this.index = 0;
-		buffer.append("protected void updateStatement(java.sql.PreparedStatement state) throws java.sql.SQLException {");
+		buffer.append("protected void doUpdate(java.sql.PreparedStatement state) throws java.sql.SQLException {");
 	}
 
 	@Override

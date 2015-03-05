@@ -1,7 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.ByteCodeUtils.tableName;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +26,16 @@ class MethodDoCreateProvider extends AbstractMethodProvider {
 		buffer.append("CREATE TABLE IF NOT EXISTS `");
 		buffer.append(tableName(clazz));
 		buffer.append("`(");
+		buffer.append("`Id` INT(11) NOT NULL DEFAULT '0',");
 	}
 
 	@Override
 	public void append(CtField field) throws Exception {
-		buffer.append(getType(field).columnSQL(field));
-		buffer.append(",");
+		if (!"Id".equals(field.getName())) {
+			buffer.append(getType(field).columnSQL(field));
+			buffer.append(",");
+		}
+		
 		
 		if (field.hasAnnotation(Primary.class)) {
 			keys.add(String.format("PRIMARY KEY `%s` (`%s`)", field.getName(), field.getName()));
@@ -46,7 +48,6 @@ class MethodDoCreateProvider extends AbstractMethodProvider {
 	
 	@Override
 	public void end() {
-		
 		for (String index : keys) {
 			buffer.append(index);
 			buffer.append(",");
@@ -61,7 +62,7 @@ class MethodDoCreateProvider extends AbstractMethodProvider {
 	public CtMethod toMethod() throws CannotCompileException {
 		StringBuffer methodBuf = new StringBuffer();
 		
-		methodBuf.append("protected void createSQL(java.sql.Statement stmt) {");
+		methodBuf.append("protected void doCreate(java.sql.Statement stmt) {");
 		methodBuf.append("stmt.addBatch(\"").append(buffer.toString()).append("\");");
 		methodBuf.append("}");
 		

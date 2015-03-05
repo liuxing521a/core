@@ -29,7 +29,7 @@ class MethodDoSelectProvider extends AbstractMethodProvider {
 		super.begin(clazz);
 
 		this.index = 0;
-		buffer.append("protected void selectStatement(java.sql.PreparedStatement state) throws java.sql.SQLException {");
+		buffer.append("protected void doSelect(java.sql.PreparedStatement state) throws java.sql.SQLException {");
 	}
 
 	@Override

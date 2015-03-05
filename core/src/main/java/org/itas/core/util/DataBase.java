@@ -5,9 +5,9 @@ import javassist.CtClass;
 import org.itas.core.annotation.SQLEntity;
 import org.itas.util.ItasException;
 
-public interface ByteCodeUtils {
+public interface DataBase {
 
-  public static String tableName(CtClass clazz) throws ClassNotFoundException {
+  default String tableName(CtClass clazz) throws ClassNotFoundException {
 	Object sqlEntity = clazz.getAnnotation(SQLEntity.class);
 	if (sqlEntity == null) {
 	  throw new ItasException(clazz.getName() + " module must has annotation[SQLEntity|UnPersistence]");

@@ -48,37 +48,35 @@ public interface DBSync {
    */
   abstract GameObject loadData(GameObject gameObject, String Id);
 
-	/**
-	 * <p>加载数据列表 </p>
-	 * @param gameObject 模型数据
-	 * @param IdArray 加载对性id列表
-	 * @return 加载后对象列表
-	 * @throws SQLException
-	 */
-	abstract List<GameObject> loadDataArray(GameObject gameObject, Collection<String> IdArray) throws SQLException;
+  /**
+   * <p>加载数据列表 </p>
+   * @param gameObject 模型数据
+   * @param IdArray 加载对性id列表
+   * @return 加载后对象列表
+   * @throws SQLException
+   */
+  abstract List<GameObject> loadDataArray(GameObject gameObject, 
+		Collection<String> IdArray) throws SQLException;
 	
-	/**
-	 * <p>数据库新增数据 </p>
-	 * @param gameObject 新增对象
-	 * @throws SQLException
-	 */
-	abstract void insertData(CircularQueue<GameObject> gameObject)throws SQLException;
+  /**
+   * <p>数据库新增数据 </p>
+   * @param gameObject 新增对象
+   * @throws SQLException
+   */
+  abstract void insertData(CircularQueue<GameObject> gameObject)throws SQLException;
 	
-	/**
-	 * <p>修改数据库</p>
-	 * @param modifyDatas 要修改对象队列
-	 * @throws SQLException
-	 */
-	abstract void modifyData(CircularQueue<GameObject> modifyDatas) throws SQLException;
+  /**
+   * <p>修改数据库</p>
+   * @param modifyDatas 要修改对象队列
+   * @throws SQLException
+   */
+  abstract void modifyData(CircularQueue<GameObject> modifyDatas) throws SQLException;
 	
-	/**
-	 * <p>删除数据库</p>
-	 * @param deletDatas 要删除对象队列
-	 * @throws SQLException
-	 */
-	abstract void deleteData(CircularQueue<GameObject> deletDatas) throws SQLException;
-	
-	
-	abstract void doPersistent();
+  /**
+   * <p>删除数据库</p>
+   * @param deletDatas 要删除对象队列
+   * @throws SQLException
+   */
+  abstract void deleteData(CircularQueue<GameObject> deletDatas) throws SQLException;
 
 }

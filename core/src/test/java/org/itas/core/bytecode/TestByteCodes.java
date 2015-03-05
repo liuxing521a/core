@@ -10,6 +10,6 @@ public class TestByteCodes {
 	@Test
 	public void testByteCodeClass() throws Exception {
 		CtClass ctClass = ClassPool.getDefault().get(TestModel.class.getName());
-		ByteCodes.generate(ctClass);
+		ByteCodes.testToClass(ctClass);
 	}
 }

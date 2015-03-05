@@ -1,6 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.ByteCodeUtils.tableName;
 import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtField;

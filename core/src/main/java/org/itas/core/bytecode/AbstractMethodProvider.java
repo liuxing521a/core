@@ -9,6 +9,7 @@ import javassist.CtField;
 import javassist.NotFoundException;
 
 import org.itas.core.bytecode.AbstractTypeProvider.javassistType;
+import org.itas.core.util.DataBase;
 import org.itas.util.ItasException;
 
 /**
@@ -16,7 +17,7 @@ import org.itas.util.ItasException;
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月28日上午10:14:10
  */
-abstract class AbstractMethodProvider implements MethodProvider {
+abstract class AbstractMethodProvider implements MethodProvider, DataBase {
 	
 	/**
 	 * 支持属性类型

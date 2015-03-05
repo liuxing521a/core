@@ -27,7 +27,7 @@ class MethodDoInsertProvider extends AbstractMethodProvider {
 		super.begin(clazz);
 
 		this.index = 0;
-		buffer.append("protected void insertStatement(java.sql.PreparedStatement state) throws java.sql.SQLException {");
+		buffer.append("protected void doInsert(java.sql.PreparedStatement state) throws java.sql.SQLException {");
 	}
 
 	@Override

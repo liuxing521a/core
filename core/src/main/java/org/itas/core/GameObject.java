@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import org.itas.core.annotation.Primary;
 import org.itas.core.annotation.UnSave;
 import org.itas.util.ItasException;
+import org.itas.util.cache.Cacheable;
 
 /**
  * <p>自动同步数据库基类</p>
@@ -21,7 +22,7 @@ import org.itas.util.ItasException;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:25:47
  */
-public abstract class GameObject implements HashId, Externalizable {
+public abstract class GameObject implements HashId, Externalizable, Cacheable {
 
 	enum DataStatus {
 		unload,		// 未加载
@@ -68,6 +69,10 @@ public abstract class GameObject implements HashId, Externalizable {
 	 * @return 生成的对象
 	 */
 	protected abstract <T extends GameObject> T autoInstance(String Id);
+	
+	protected void initialize() {
+		
+	}
 	
 	@Override
 	public String getId() {
@@ -211,6 +216,9 @@ public abstract class GameObject implements HashId, Externalizable {
 		return 31 + Id.hashCode();
 	}
 	
+	public int getCachedSize() {
+		return 86;
+	}
 	
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {

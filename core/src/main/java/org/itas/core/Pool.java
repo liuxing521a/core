@@ -1,15 +1,12 @@
 package org.itas.core;
 
-import org.itas.core.resource.ResPool;
 import org.itas.core.resource.Resource;
-import org.itas.util.ItasException;
-import org.itas.util.Utils.Objects;
 
 
-public final class Pool {
+public interface Pool {
 	
 	/** 资源池*/
-	private static ResPool resPool;
+//	private static ResPool resPool;
 
 //	/** 数据池*/
 //	private static DataPool dataPool;
@@ -63,12 +60,13 @@ public final class Pool {
 //	
 	@SuppressWarnings("unchecked")
 	public static <T extends Resource> T getResource(String Rid) {
-		Resource resource = resPool.get(Rid);
-		if (Objects.isNull(resource)) {
-			return null;
-		}
-		
-		return (T) resource;
+//		Resource resource = resPool.get(Rid);
+//		if (Objects.isNull(resource)) {
+//			return null;
+//		}
+//		
+//		return (T) resource;
+		return null;
 	}
 //
 //	@SuppressWarnings("unchecked")
@@ -76,7 +74,4 @@ public final class Pool {
 //		return (List<T>) resPool.get(clazz);
 //	}
 	
-	private Pool() {
-		throw new ItasException("can not new instance");
-	}
 }

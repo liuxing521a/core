@@ -96,4 +96,9 @@ public abstract class User extends GameObject {
 	public void setCallBack(CallBack<SendAble> callBack) {
 		this.callBack = callBack;
 	}
+	
+	@Override
+	public int getCachedSize() {
+		return 42 + super.getCachedSize();
+	}
 }

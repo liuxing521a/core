@@ -1,7 +1,6 @@
 package org.itas.core;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.itas.core.bytecode.Type;
@@ -13,16 +12,18 @@ import org.itas.util.cache.Cache;
 import org.itas.util.cache.LocalCache;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import com.typesafe.config.Config;
 
 /**
  * <p>对象池 </p>
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014-3-19
  */
-final class DataPool implements Constructors {
+abstract class DataPool implements Constructors {
 
   /** 数据库操作工具*/
-  private DBSync dbSync;
+  @Inject private DBSync dbSync;
 	
   /** 模型数据集 */
   private final Map<Class<?>, GameObject> classModules;
@@ -32,33 +33,35 @@ final class DataPool implements Constructors {
 
   /** 对象缓存的缓存 */
   private final Map<String, Cache<String, GameObject>> dataCaches;
+  
+  /** 在缓存中最大存放数量*/
+  private final long capacity;
+
+  /** 缓存生命周期*/
+  private final long lifeTime;
 	
-  private DataPool() {
+  private DataPool(long capacity, long lifeTime) {
 	classModules = Maps.newHashMap();
 	prefixModules = new HashMap<>();
 	dataCaches = new HashMap<>();
+	this.capacity = capacity;
+	this.lifeTime = lifeTime * TimeUtil.MILLIS_PER_HOUR;;
   }
 
-  void bind(List<Class<? extends GameObject>> classList) throws Exception {
-	int  capicity = Integer.parseInt(System.getProperty("capicity"));
-	long lifeTime = 
-	    Long.parseLong(System.getProperty("aliveTime"))*TimeUtil.MILLIS_PER_HOUR;
+  GameObject bind(Class<?> clazz) throws Exception {
+    if (Type.gameObjectType.is(clazz)) {
+	  GameObject module = newInstance(clazz, new Object[]{""});
+	  Cache<String, GameObject> gameObjectCache = new LocalCache<>(
+	      clazz.getSimpleName(), module.getCachedSize()*capacity, lifeTime);
+	  classModules.put(clazz, module);
+	  prefixModules.put(module.PRIFEX(), module);
+	  dataCaches.put(module.PRIFEX(), gameObjectCache);
+	  
+	  return module;
+    } 
 
-	for (Class<?> clazz : classList) {
-      if (Type.gameObjectType.is(clazz)) {
-    	GameObject gameObject = newInstance(clazz, new Object[]{""});
-//		Cache<String, GameObject> cache = new LocalCache<>(clazz.getSimpleName(), 1024, lifeTime + TimeUtil.MILLIS_PER_HOUR);
-		Cache<String, GameObject> gameObjectCache = new LocalCache<>(
-				clazz.getSimpleName(), capicity*1024, lifeTime);
-		classModules.put(clazz, gameObject);
-		prefixModules.put(gameObject.PRIFEX(), gameObject);
-		dataCaches.put(gameObject.PRIFEX(), gameObjectCache);
-		continue;
-      } 
-
-      throw new ItasException(
-    	  "error:class must extends from Game[" + clazz.getName() + "]");
-	}
+    throw new ItasException(
+        "must extends from GameObject class:" + clazz.getClass().getName());
   }
 
   protected void put(GameObject data) {
@@ -112,7 +115,7 @@ final class DataPool implements Constructors {
 	  }			
 				
 	  gameObject = module.clone(Id);
-//	  data.initialize0(); TODO init data
+	  gameObject.initialize();
 	  gameObjectCache.put(gameObject.getId(), gameObject);
 	  return gameObject;
 	}
@@ -179,6 +182,28 @@ final class DataPool implements Constructors {
 	}
 	
 	return gameObjectCache;
+  }
+  
+  public static DataPoolBuilder makeBuilder() {
+	return new DataPoolBuilder();
+  }
+  
+  public static class DataPoolBuilder implements Builder {
+
+	private Config share;
+	
+	private DataPoolBuilder() {
+	}
+	
+	public DataPoolBuilder setShared(Config share) {
+	  this.share = share;
+	  return this;
+	}
+
+	@Override
+	public DataPool builder() {
+	  return new DataPool(share.getLong("capicity"), share.getLong("aliveTime")){ };
+	}
   }
   
 }

@@ -24,7 +24,7 @@ class MethodDoFillProvider extends AbstractMethodProvider {
 	public void begin(CtClass clazz) throws Exception {
 		super.begin(clazz);
 
-		buffer.append("protected void fillData(java.sql.ResultSet result) throws java.sql.SQLException {");
+		buffer.append("protected void doFill(java.sql.ResultSet result) throws java.sql.SQLException {");
 	}
 
 	@Override
