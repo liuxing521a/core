@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.itas.core.AbstractDBSync;
 import org.itas.core.Builder;
-import org.itas.core.DBPool;
 import org.itas.core.DBSync;
 import org.itas.core.GameObject;
+import org.itas.core.Pool.DBPool;
 import org.itas.util.collection.CircularQueue;
 
 class DBSyncImpl extends AbstractDBSync {
@@ -25,12 +25,20 @@ class DBSyncImpl extends AbstractDBSync {
 	this.updateDatas = new HashMap<>();
 	this.deleteDatas = new HashMap<>();
   }
-	
+
   @Override
-  public void bind(GameObject gameObject) {
-	insertDatas.put(gameObject.getClass(), new CircularQueue<>());
-	updateDatas.put(gameObject.getClass(), new CircularQueue<>());
-	deleteDatas.put(gameObject.getClass(), new CircularQueue<>());
+  public void setUP(Called...back) {
+	final Class<?> clazz = back[0].callBack();
+	insertDatas.put(clazz, new CircularQueue<>());
+	updateDatas.put(clazz, new CircularQueue<>());
+	deleteDatas.put(clazz, new CircularQueue<>());
+  }
+  
+  @Override
+  public void destoried() {
+	insertDatas.clear();
+	updateDatas.clear();
+	deleteDatas.clear();
   }
 	
   @Override

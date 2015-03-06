@@ -3,7 +3,7 @@ package org.itas.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.itas.core.bytecode.Type;
+import org.itas.core.Pool.DataPool;
 import org.itas.core.util.Constructors;
 import org.itas.util.ItasException;
 import org.itas.util.Utils.Objects;
@@ -12,7 +12,6 @@ import org.itas.util.cache.Cache;
 import org.itas.util.cache.LocalCache;
 
 import com.google.common.collect.Maps;
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
 
 /**
@@ -20,10 +19,10 @@ import com.typesafe.config.Config;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014-3-19
  */
-abstract class DataPool implements Constructors {
+abstract class DataPoolImpl implements Constructors, DataPool {
 
   /** 数据库操作工具*/
-  @Inject private DBSync dbSync;
+  private final DBSync dbSync;
 	
   /** 模型数据集 */
   private final Map<Class<?>, GameObject> classModules;
@@ -40,35 +39,39 @@ abstract class DataPool implements Constructors {
   /** 缓存生命周期*/
   private final long lifeTime;
 	
-  private DataPool(long capacity, long lifeTime) {
-	classModules = Maps.newHashMap();
-	prefixModules = new HashMap<>();
-	dataCaches = new HashMap<>();
+  private DataPoolImpl(DBSync dbSync, long capacity, long lifeTime) {
+	this.classModules = Maps.newHashMap();
+	this.prefixModules = new HashMap<>();
+	this.dataCaches = new HashMap<>();
+	this.dbSync = dbSync;
 	this.capacity = capacity;
-	this.lifeTime = lifeTime * TimeUtil.MILLIS_PER_HOUR;;
+	this.lifeTime = lifeTime * TimeUtil.MILLIS_PER_HOUR;
+  }
+  
+  @Override
+  public void setUP(Called...back) {
+	final GameObject module = back[0].callBack();
+	Cache<String, GameObject> cache = new LocalCache<>(
+		module.getClass().getSimpleName(), module.getCachedSize()*this.capacity, this.lifeTime);
+	classModules.put(module.getClass(), module);
+	prefixModules.put(module.PRIFEX(), module);
+	dataCaches.put(module.PRIFEX(), cache);
   }
 
-  GameObject bind(Class<?> clazz) throws Exception {
-    if (Type.gameObjectType.is(clazz)) {
-	  GameObject module = newInstance(clazz, new Object[]{""});
-	  Cache<String, GameObject> gameObjectCache = new LocalCache<>(
-	      clazz.getSimpleName(), module.getCachedSize()*capacity, lifeTime);
-	  classModules.put(clazz, module);
-	  prefixModules.put(module.PRIFEX(), module);
-	  dataCaches.put(module.PRIFEX(), gameObjectCache);
-	  
-	  return module;
-    } 
-
-    throw new ItasException(
-        "must extends from GameObject class:" + clazz.getClass().getName());
+  @Override
+  public void destoried() {
+	prefixModules.clear();
+    classModules.clear();
+    dataCaches.clear();
   }
-
-  protected void put(GameObject data) {
+  
+  @Override
+  public void put(GameObject data) {
 	obtainCache(data).put(data.getId(), data);
   }
 
-  protected GameObject get(String Id) {
+  @Override
+  public GameObject get(String Id) {
 	  GameObject gameObject = loadGameObject(Id);
 	  if (Objects.nonNull(gameObject)) {
 		  gameObject.setUpdateTime(TimeUtil.systemTime());
@@ -79,7 +82,8 @@ abstract class DataPool implements Constructors {
 	  return gameObject;
   }
   
-  protected GameObject get(Class<? extends GameObject> clazz, String Id) {
+  @Override
+  public GameObject get(Class<? extends GameObject> clazz, String Id) {
 	GameObject gameObject = loadGameObject(clazz, Id);
 	if (Objects.nonNull(gameObject)) {
 	  gameObject.setUpdateTime(TimeUtil.systemTime());
@@ -90,19 +94,23 @@ abstract class DataPool implements Constructors {
 	return gameObject;
   }
 
-  protected GameObject remove(String Id) {
+  @Override
+  public GameObject remove(String Id) {
 	  return obtainCache(obtainModule(Id)).remove(Id);
   }
 
-  protected GameObject remove(Class<? extends GameObject> clazz, Integer Id) {
+  @Override
+  public GameObject remove(Class<? extends GameObject> clazz, Integer Id) {
 	return obtainCache(obtainModule(clazz)).remove(Id);
   }
 	
-  protected GameObject newInstance(Class<? extends GameObject> clazz, String Id) {
+  @Override
+  public GameObject newInstance(Class<? extends GameObject> clazz, String Id) {
 	  return newInstance(obtainModule(clazz), Id);
   }
 	
-  protected GameObject newInstance(String Id) {
+  @Override
+  public GameObject newInstance(String Id) {
 	return newInstance(obtainModule(Id), Id);
   }
   
@@ -116,6 +124,7 @@ abstract class DataPool implements Constructors {
 				
 	  gameObject = module.clone(Id);
 	  gameObject.initialize();
+	  ((AbstractDBSync)dbSync).addInsert(gameObject);
 	  gameObjectCache.put(gameObject.getId(), gameObject);
 	  return gameObject;
 	}
@@ -188,21 +197,29 @@ abstract class DataPool implements Constructors {
 	return new DataPoolBuilder();
   }
   
-  public static class DataPoolBuilder implements Builder {
+  public static class DataPoolBuilder implements Builder, Constructors {
 
 	private Config share;
+	
+	private DBSync dbSync;
 	
 	private DataPoolBuilder() {
 	}
 	
 	public DataPoolBuilder setShared(Config share) {
-	  this.share = share;
+		this.share = share;
+		return this;
+	}
+	
+	public DataPoolBuilder setDbSync(DBSync dbSync) {
+	  this.dbSync = dbSync;
 	  return this;
 	}
 
 	@Override
 	public DataPool builder() {
-	  return new DataPool(share.getLong("capicity"), share.getLong("aliveTime")){ };
+	  return new DataPoolImpl(dbSync,
+	      share.getLong("capicity"), share.getLong("aliveTime")){ };
 	}
   }
   

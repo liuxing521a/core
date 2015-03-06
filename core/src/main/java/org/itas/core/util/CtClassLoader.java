@@ -42,11 +42,27 @@ public interface CtClassLoader {
 	final CtClass[] ctClasss = new CtClass[fileList.size()];
 	
 	final ClassPool classPool = ClassPool.getDefault();
+	String fileName;
 	for (int i = 0; i < fileList.size(); i ++) {
-	  ctClasss[i] = classPool.get(
-	      String.format("%s.%s", packageName, fileList.get(i).getFileName()));
+	  fileName = fileList.get(i).getFileName().toString();
+	  ctClasss[i] = classPool.get(String.format("%s.%s", packageName, 
+		  fileName.substring(0, fileName.length() - 6)));
 	}
 	
 	return ctClasss;
+  }
+  
+  default Class<?>[] loadClass(String packageName) throws Exception {
+    final List<Path> fileList =  loadFile(packageName, ".class"); 
+	final Class<?>[] clazzArray = new Class<?>[fileList.size()];
+		
+	String fileName;
+	for (int i = 0; i < fileList.size(); i ++) {
+	  fileName = fileList.get(i).getFileName().toString();
+	  clazzArray[i] = Class.forName(String.format("%s.%s", packageName, 
+		  fileName.substring(0, fileName.length() - 6)));
+	}
+		
+	return clazzArray;
   }
 }

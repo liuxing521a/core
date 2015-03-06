@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import org.itas.core.annotation.Primary;
 import org.itas.core.annotation.UnSave;
@@ -55,7 +56,13 @@ public abstract class GameObject implements HashId, Externalizable, Cacheable {
 	/** 
 	 * 对象当前状态 
 	 */
-	@UnSave private volatile DataStatus status;
+	@UnSave private volatile DataStatus status = DataStatus.unload;
+	
+	@UnSave private static final DBSync dbSync;
+	
+	static {
+		dbSync = Ioc.Ioc.getInstance(DBSync.class);
+	}
 	
 	/**
 	 * id前缀，以次来区分一个字符串id属于那个对象
@@ -71,7 +78,7 @@ public abstract class GameObject implements HashId, Externalizable, Cacheable {
 	protected abstract <T extends GameObject> T autoInstance(String Id);
 	
 	protected void initialize() {
-		
+		status = DataStatus.news;
 	}
 	
 	@Override
@@ -102,14 +109,14 @@ public abstract class GameObject implements HashId, Externalizable, Cacheable {
 	protected void modify() {
 		if (status == DataStatus.load) {
 			status = DataStatus.modify;
-//			sqlTools.addUpdate(this);
+//			dbSync.addUpdate(this);
 		}
 	}
 
 	public void destroy() {
 		if (status != DataStatus.destory) {
 			status = DataStatus.destory;
-//			sqlTools.addDelete(this);
+//			dbSync.addDelete(this);
 		}
 	}
 
@@ -173,8 +180,8 @@ public abstract class GameObject implements HashId, Externalizable, Cacheable {
 		throw new ItasException("doCreate must Override");
 	}
 	
-	protected void doALter(Statement statement) {
-		throw new ItasException("doALter must Override");
+	protected void doAlter(Statement statement, Set<String> excludeColums) throws java.sql.SQLException {
+		throw new ItasException("doAlter must Override");
 	}
 	
 	protected void doInsert(PreparedStatement statement) throws java.sql.SQLException {

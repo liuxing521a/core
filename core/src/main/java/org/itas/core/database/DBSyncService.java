@@ -2,7 +2,7 @@ package org.itas.core.database;
 
 import org.itas.core.Builder;
 import org.itas.core.DBSync;
-import org.itas.core.Service;
+import org.itas.core.OnService;
 import org.itas.util.ItasException;
 import org.itas.util.Logger;
 import org.itas.util.Utils.TimeUtil;
@@ -12,13 +12,13 @@ import org.itas.util.Utils.TimeUtil;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014-3-17
  */
-final class DBSyncService implements Runnable, Service {
+final class DBSyncService implements Runnable, OnService {
 	
   DBSyncService(DBSync sync, long interval) {
     this.sync = (DBSyncImpl)sync;
     this.interval = interval;
     this.lastTime  = TimeUtil.systemTime();
-    this.worker = new Thread("persistent DB");
+    this.worker = new Thread(this, "persistent DB");
     this.worker.setDaemon(true);
   }
 	
@@ -39,7 +39,7 @@ final class DBSyncService implements Runnable, Service {
 
 	
   @Override
-  public void startUP() {
+  public void setUP(Called...called) {
 	if (worker.isAlive()) {
 	  throw new ItasException("thread is alive");
     }
@@ -47,16 +47,16 @@ final class DBSyncService implements Runnable, Service {
 	isFlag = false;
 	worker.start();
   }
-
+  
   @Override
-  public void shutDown() {
+  public void destoried() {
     isFlag = true;
   }
 
   @Override
   public void run() {
-	synchronized (worker) {
-	  while (!isFlag) {
+    while (!isFlag) {
+	  synchronized (worker) {
 	    try {
 		  if (TimeUtil.systemTime() - lastTime > interval) {
 		    sync.doPersistent();
@@ -70,7 +70,7 @@ final class DBSyncService implements Runnable, Service {
 	      Logger.error("", e);
 	    }
 	  }
-	}
+    }
   }
   
   public static class DBSyncThreadBuilder implements Builder {
@@ -93,7 +93,6 @@ final class DBSyncService implements Runnable, Service {
 	public DBSyncService builder() {
 	  return new DBSyncService(this.sync, this.interval);
 	}
-	  
   }
 	
 }

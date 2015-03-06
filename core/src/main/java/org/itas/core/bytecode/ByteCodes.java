@@ -3,6 +3,7 @@ package org.itas.core.bytecode;
 import static org.itas.core.util.Utils.CtClassUtils.getAllField;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javassist.ClassPool;
@@ -19,15 +20,38 @@ import org.itas.core.util.CtClassLoader;
  * @author liuzhen
  */
 public final class ByteCodes implements CtClassLoader {
+
+  public enum ClassType { CTCLASS, CLASS }
 	
   private static final ByteCodes instance = new ByteCodes();
   
-  public static List<Class<?>> loadClass(
-	  Class<?> parent, String packageName) throws Exception {
-	  return instance.loadClass0(parent, packageName);
+  public static List<Class<?>> loadClass(Class<?> parent, 
+      String packageName, ClassType classType) throws Exception {
+	if (ClassType.CTCLASS == classType) {
+	  return instance.loadFromCtClass(parent, packageName);
+	} else if (ClassType.CLASS == classType) {
+	  return instance.loadFromJavaClass(parent, packageName);
+	} else {
+	  return Collections.emptyList();
+	}
   }
 	
-  private List<Class<?>> loadClass0(
+  private List<Class<?>> loadFromJavaClass (
+	  Class<?> parent, String packageName) throws Exception {
+	final Class<?>[] classArray = loadClass(packageName);
+    final List<Class<?>> classList = 
+		new ArrayList<Class<?>>(classArray.length);
+    
+    for (Class<?> clazz : classArray) {
+      if (parent.isAssignableFrom(clazz)) {
+    	  classList.add(clazz);
+      }
+    }
+    
+    return classList;
+  }
+  
+  private List<Class<?>> loadFromCtClass(
       Class<?> parent, String packageName) throws Exception {
 	final CtClass[] ctClassArray = loadCtClass(packageName);
 	final List<Class<?>> classList = 
@@ -44,28 +68,27 @@ public final class ByteCodes implements CtClassLoader {
   }
 	
   private Class<?> toClass(CtClass ctClass) throws Exception {
-	  ByteCodeMethods methods = new ByteCodeMethods();
-	  methods.begin(ctClass);
+	ByteCodeMethods methods = new ByteCodeMethods();
+	methods.begin(ctClass);
 	  
-	  List<CtField> fields = getAllField(ctClass);
-	  for (CtField field : fields) {
-		  if (field.hasAnnotation(UnSave.class) || 
-				  Modifier.isStatic(field.getModifiers())) {
-			  continue;
-		  } 
+	List<CtField> fields = getAllField(ctClass);
+	for (CtField field : fields) {
+	  if (field.hasAnnotation(UnSave.class) || 
+	      Modifier.isStatic(field.getModifiers())) {
+			continue;
+	  } 
 		  
-		  methods.append(field);
+	  methods.append(field);
+	}
+	methods.end();
+	for (CtMethod ctMethod : methods.toMethods()) {
+	  if (ctMethod != null) {
+	    ctClass.addMethod(ctMethod);
 	  }
-	  methods.end();
+	}
 	  
-	  for (CtMethod ctMethod : methods.toMethods()) {
-		  if (ctMethod != null) {
-			  ctClass.addMethod(ctMethod);
-		  }
-	  }
-	  
-//		clazz.writeFile("D:/");
-	  return ctClass.toClass();
+	ctClass.writeFile("D:/");
+	return ctClass.toClass();
   }
   
   static Class<?> testToClass(CtClass ctClass) throws Exception {

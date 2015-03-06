@@ -3,7 +3,6 @@ package org.itas.core.bytecode;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.Collections;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -87,8 +86,6 @@ public class TestMethodSQLProvider {
 	@Test
 	public void testSqlAlter() throws Exception {
 		MethodDoAlterProvider sqlAlter = new MethodDoAlterProvider();
-		sqlAlter.setExitsColumns(Collections.emptySet());
-		
 		CtField ctField = ctClass.getDeclaredField("name");
 		
 		sqlAlter.begin(ctClass);

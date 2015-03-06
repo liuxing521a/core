@@ -26,7 +26,7 @@ class MethodDoCreateProvider extends AbstractMethodProvider {
 		buffer.append("CREATE TABLE IF NOT EXISTS `");
 		buffer.append(tableName(clazz));
 		buffer.append("`(");
-		buffer.append("`Id` INT(11) NOT NULL DEFAULT '0',");
+		buffer.append("`Id` VARCHAR(36) NOT NULL DEFAULT '',");
 	}
 
 	@Override

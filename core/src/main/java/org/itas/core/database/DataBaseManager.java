@@ -4,7 +4,7 @@ import org.itas.core.database.DBPoolImpl.DBPoolBuilder;
 import org.itas.core.database.DBSyncImpl.DBSyncBuilder;
 import org.itas.core.database.DBSyncService.DBSyncThreadBuilder;
 
-public final class DataBases {
+public final class DataBaseManager {
 
   public static DBPoolBuilder makdDBPoolBuilder() {
 	return new DBPoolBuilder();
@@ -18,7 +18,7 @@ public final class DataBases {
 	return new DBSyncThreadBuilder();
   }
   
-  private DataBases() {
+  private DataBaseManager() {
   }
 	
 }

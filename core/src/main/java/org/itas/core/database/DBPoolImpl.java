@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.itas.core.Builder;
-import org.itas.core.DBPool;
+import org.itas.core.Pool.DBPool;
 import org.itas.util.ItasException;
 
 import com.jolbox.bonecp.BoneCP;
@@ -73,7 +73,6 @@ final class DBPoolImpl implements DBPool {
 	  	dbPool.shutdown();
 	  }
 	}
-	
   }
 	
   public static class DBPoolBuilder implements Builder {

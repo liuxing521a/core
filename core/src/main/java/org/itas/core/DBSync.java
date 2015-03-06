@@ -3,11 +3,10 @@ package org.itas.core;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.itas.util.collection.CircularQueue;
 
-public interface DBSync {
+public interface DBSync extends OnService {
 
   /**
    * <p>根据对象创建数据库表 </p>
@@ -24,20 +23,6 @@ public interface DBSync {
    * @throws SQLException
    */
   abstract int[] alterTable(GameObject gameObject) throws SQLException;
-	
-  /**
-   * <p>绑定处理对象</p>
-   * @param gameObject
-   */
-  abstract void bind(GameObject gameObject);
-
-  /**
-   * <p>获取数据库表字段名</p>
-   * @param tableName 表名
-   * @return 字段列表
-   * @throws SQLException
-   */
-  abstract Set<String> tableColumns(String tableName) throws SQLException;
 	
   /**
    * <p>加载数据 </p>

@@ -40,7 +40,7 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 	  GameObject data = null;
 	  if (result.next()) {
 	    data = gameObject.clone(Id);
-		data.doFill(result);
+		data.doResultSet(result);
 	  }
 
 	  return data;
@@ -72,7 +72,7 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 	  GameObject data;
 	  while (result.next()) {
 	    data = gameObject.clone(result.getString("Id"));
-	    data.doFill(result);
+	    data.doResultSet(result);
 	    dataList.add(data);
 	  }
 
@@ -197,15 +197,16 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 	}
   }
 
-
   @Override
   public int[] alterTable(GameObject gameObject) throws SQLException {
+	Set<String> excludeColums = tableColumns(gameObject.tableName());
+	
 	Connection conn = null;
 	Statement statement = null;
 	try {
 	  conn = getConnection();
 	  statement = conn.createStatement();
-	  gameObject.doALter(statement);
+	  gameObject.doAlter(statement, excludeColums);
 			
 	  return statement.executeBatch();
 	} finally {
@@ -213,8 +214,7 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 	}
   }
 
-  @Override
-  public Set<String> tableColumns(String tableName) throws SQLException {
+  private Set<String> tableColumns(String tableName) throws SQLException {
 	Connection conn = null;
 	PreparedStatement ppst = null;
 	ResultSet rs = null;
@@ -230,7 +230,7 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 		columns.add(rs.getString("column_name"));
 	  }
 
-		return columns;
+	  return columns;
 	} finally {
 	  close(conn, ppst, rs);
 	}

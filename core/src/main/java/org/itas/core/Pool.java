@@ -1,12 +1,15 @@
 package org.itas.core;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.itas.core.resource.Resource;
 
 
 public interface Pool {
 	
 	/** 资源池*/
-//	private static ResPool resPool;
+//	private DataPool resPool;
 
 //	/** 数据池*/
 //	private static DataPool dataPool;
@@ -74,4 +77,29 @@ public interface Pool {
 //		return (List<T>) resPool.get(clazz);
 //	}
 	
+  public interface DBPool {
+
+	abstract Connection getConnection() throws SQLException;
+		
+	abstract void shutdown();
+		
+  }
+	
+  public interface DataPool extends OnService {
+	  
+	abstract void put(GameObject data);
+	  
+	abstract GameObject get(String Id);
+	  
+	abstract GameObject get(Class<? extends GameObject> clazz, String Id);
+
+	abstract GameObject remove(String Id);
+
+	abstract GameObject remove(Class<? extends GameObject> clazz, Integer Id);
+	  
+	abstract GameObject newInstance(Class<? extends GameObject> clazz, String Id);
+		
+	abstract GameObject newInstance(String Id);
+	  
+  }
 }
