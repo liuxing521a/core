@@ -1,20 +1,16 @@
 package org.itas.core.bytecode;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import junit.framework.Assert;
 
 import org.itas.core.EnumByte;
+import org.itas.core.Enums;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysql.jdbc.PreparedStatement;
-
-public class TestFieldEnumByteProvider {
+public class TestFieldEnumByteProvider implements Enums {
 
 	private FieldProvider codeType;
 	
@@ -63,19 +59,6 @@ public class TestFieldEnumByteProvider {
 
 		public void setBs(EnumByte bs) {
 			this.bs = bs;
-		}
-		
-		public void setState(PreparedStatement state) throws SQLException {
-			byte ebyte_bs = 0;
-			if (getBs() != null) {
-				ebyte_bs = getBs().key();
-			}
-			
-			state.setByte(1, ebyte_bs);
-		}
-		
-		public void getResult(ResultSet result) throws SQLException {
-			setBs(org.itas.core.util.Utils.EnumUtils.parse(EnumByte.class, result.getByte("bs")));
 		}
 	}
 	

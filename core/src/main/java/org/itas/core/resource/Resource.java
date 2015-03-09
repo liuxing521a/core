@@ -43,7 +43,7 @@ public abstract class Resource extends AbstractXml implements HashId {
 				if (Objects.nonNull(value)) {
 					boolean access = field.isAccessible();
 					field.setAccessible(true);
-					fillField(field, value, null);
+					fill(field, value);
 					field.setAccessible(access);
 					continue;
 				}

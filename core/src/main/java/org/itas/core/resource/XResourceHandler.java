@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 
-public class XResourceHandler extends AbstractHandler {
+class XResourceHandler extends AbstractXmlHandler {
 	
 	/** 解析后对象和属性*/
 	private List<Map<String, String>> xmlList;
@@ -46,7 +46,8 @@ public class XResourceHandler extends AbstractHandler {
 	}
 
 	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+	public void startElement(String uri, String localName, 
+	    String qName, Attributes attributes) throws SAXException {
 		if (clazz.getSimpleName().equals(qName)) {
 			Map<String, String> attributeMap = new HashMap<>();
 			for (int i = 0; i < attributes.getLength(); i++) {
@@ -54,6 +55,11 @@ public class XResourceHandler extends AbstractHandler {
 			}
 			this.xmlList.add(attributeMap);
 		}
+	}
+	
+	@Override
+	public void endElement(String uri, String localName, String qName) throws SAXException {
+		
 	}
 	
 }

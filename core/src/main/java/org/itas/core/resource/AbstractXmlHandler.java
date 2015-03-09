@@ -1,7 +1,6 @@
 package org.itas.core.resource;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +12,7 @@ import org.itas.util.Utils.ClassUtils;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public abstract class AbstractHandler extends DefaultHandler {
-
+abstract class AbstractXmlHandler extends DefaultHandler {
 	
 	/** 要解析的xml类名*/
 	protected Class<?> clazz;
@@ -22,10 +20,8 @@ public abstract class AbstractHandler extends DefaultHandler {
 	protected SAXParserFactory factory;
 	/** field缓存*/
 	protected Map<String, Field> fieldMap;
-	/** 脚本文件*/
-	protected Map<String, Method> scripts;
 	
-	protected AbstractHandler() {
+	protected AbstractXmlHandler() {
 		this.fieldMap = new HashMap<String, Field>();
 		this.factory = SAXParserFactory.newInstance();
 	}
@@ -42,11 +38,11 @@ public abstract class AbstractHandler extends DefaultHandler {
 		this.clazz = null;
 	}
 	
-	protected void fillField(AbstractXml source, Map<String, Method> scripts, Field field, String value) throws Exception {
+	protected void fillField(AbstractXml source, Field field, String value) throws Exception {
 		boolean isAcess = field.isAccessible();
 		try  {
 			field.setAccessible(true);
-			source.fillField(field, value, scripts);
+			source.fill(field, value);
 		} finally  {
 			field.setAccessible(isAcess);
 		}

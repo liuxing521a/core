@@ -66,7 +66,7 @@ public class TestFieldEnumIntProvider {
 		}
 		
 		public void setState(PreparedStatement state) throws SQLException {
-			byte ebyte_bs = 0;
+			int ebyte_bs = 0;
 			if (getBs() != null) {
 				ebyte_bs = getBs().key();
 			}

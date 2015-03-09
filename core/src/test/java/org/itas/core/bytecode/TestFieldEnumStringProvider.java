@@ -1,8 +1,5 @@
 package org.itas.core.bytecode;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
@@ -11,8 +8,6 @@ import junit.framework.Assert;
 import org.itas.core.EnumString;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.mysql.jdbc.PreparedStatement;
 
 public class TestFieldEnumStringProvider {
 
@@ -63,19 +58,6 @@ public class TestFieldEnumStringProvider {
 
 		public void setBs(EnumString bs) {
 			this.bs = bs;
-		}
-		
-		public void setState(PreparedStatement state) throws SQLException {
-			String ebyte_bs = "";
-			if (getBs() != null) {
-				ebyte_bs = getBs().key();
-			}
-			
-			state.setString(1, ebyte_bs);
-		}
-		
-		public void getResult(ResultSet result) throws SQLException {
-			setBs(org.itas.core.util.Utils.EnumUtils.parse(EnumString.class, result.getString("bs")));
 		}
 	}
 	

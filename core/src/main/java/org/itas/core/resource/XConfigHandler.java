@@ -14,7 +14,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 
-public class XConfigHandler extends AbstractHandler {
+class XConfigHandler extends AbstractXmlHandler {
 	
 	/** 标签*/
 	private String tag;
@@ -92,7 +92,7 @@ public class XConfigHandler extends AbstractHandler {
 	
 	private void setValue(Field field, String value) throws Exception {
 		if (value != null) {
-			fillField(config, scripts, field, value);
+			fillField(config, field, value);
 			return;
 		}
 		

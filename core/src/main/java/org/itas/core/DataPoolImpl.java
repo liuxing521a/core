@@ -51,8 +51,9 @@ abstract class DataPoolImpl implements Constructors, DataPool {
   @Override
   public void setUP(Called...back) {
 	final GameObject module = back[0].callBack();
-	Cache<String, GameObject> cache = new LocalCache<>(
-		module.getClass().getSimpleName(), module.getCachedSize()*this.capacity, this.lifeTime);
+	final Cache<String, GameObject> cache = new LocalCache<>(
+	    module.getClass().getSimpleName(), 
+	    module.getCachedSize()*this.capacity, this.lifeTime);
 	classModules.put(module.getClass(), module);
 	prefixModules.put(module.PRIFEX(), module);
 	dataCaches.put(module.PRIFEX(), cache);
@@ -95,12 +96,24 @@ abstract class DataPoolImpl implements Constructors, DataPool {
   }
 
   @Override
+  public boolean isCached(String Id) {
+	final GameObject module = obtainModule(Id);
+	return obtainCache(module).containsKey(Id);
+  }
+
+  @Override
+  public boolean isCached(Class<? extends GameObject> clazz, String Id) {
+	final GameObject module = obtainModule(clazz);
+	return obtainCache(module).containsKey(Id);
+  }
+	
+  @Override
   public GameObject remove(String Id) {
 	  return obtainCache(obtainModule(Id)).remove(Id);
   }
 
   @Override
-  public GameObject remove(Class<? extends GameObject> clazz, Integer Id) {
+  public GameObject remove(Class<? extends GameObject> clazz, String Id) {
 	return obtainCache(obtainModule(clazz)).remove(Id);
   }
 	

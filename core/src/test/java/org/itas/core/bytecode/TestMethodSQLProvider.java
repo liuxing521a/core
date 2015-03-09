@@ -39,7 +39,7 @@ public class TestMethodSQLProvider {
 		String expected = 
 				"CREATE TABLE IF NOT EXISTS `model`("
 				+ "\n\t"
-				+ "`Id` INT(11) NOT NULL DEFAULT '0',"
+				+ "`Id` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"
 				+ "`name` VARCHAR(36) NOT NULL DEFAULT ''"
 				+ "\n"
@@ -53,7 +53,7 @@ public class TestMethodSQLProvider {
 		expected = 
 				"CREATE TABLE IF NOT EXISTS `model`("
 				+ "\n\t"
-				+ "`Id` INT(11) NOT NULL DEFAULT '0',"
+				+ "`Id` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"
 				+ "`identy` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"
@@ -70,7 +70,7 @@ public class TestMethodSQLProvider {
 		expected = 
 				"CREATE TABLE IF NOT EXISTS `model`("
 				+ "\n\t"
-				+ "`Id` INT(11) NOT NULL DEFAULT '0',"
+				+ "`Id` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"
 				+ "`address` VARCHAR(36) NOT NULL DEFAULT '',"
 				+ "\n\t"

@@ -9,7 +9,7 @@ import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-class ServerModule implements Module {
+final class ServerModule implements Module {
 
   ServerModule() {
   }

@@ -10,7 +10,7 @@ import javassist.CtField;
 class FieldEnumStringProvider extends AbstractFieldProvider {
 	
 	private static final String STATEMENT_SET = 
-			"\t\t" 
+					"\t\t" 
 					+ "String estr_%s = \"\";"
 					+ "\n\t\t"
 					+ "if (get%s() != null) {"
