@@ -43,7 +43,7 @@ public class TestFieldMapProvider {
 		
 		String expected = 
 				"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getBs()));";
+						+ "state.setString(1, toString(getBs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -53,19 +53,17 @@ public class TestFieldMapProvider {
 				+ "\n\t\t\t"
 				+ "String datas = result.getString(\"bs\");"
 				+ "\n\t\t\t"
-				+ "java.util.Map dataStrMap = org.itas.core.util.GameObjects.parseMap(datas);"
+				+ "org.itas.util.Pair[] dataArray = parsePair(datas);"
 				+ "\n\t\t\t"
 				+ "java.util.Map dataMap = new java.util.LinkedHashMap(8);"
 				+ "\n\t\t\t"
-				+ "java.util.Iterator it = dataStrMap.entrySet().iterator();"
+				+ "org.itas.util.Pair pair;"
 				+ "\n\t\t\t"
-				+ "java.util.Map.Entry entry;"
-				+ "\n\t\t\t"
-				+ "while (it.hasNext()) {"
+				+ "for (int i = 0; i < dataArray.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "entry = (java.util.Map.Entry)it.next();"
+				+ "pair = dataArray[i];"
 				+ "\n\t\t\t\t"
-				+ "dataMap.put(new org.itas.core.Simple((String)entry.getKey()), (String)entry.getValue());"
+				+ "dataMap.put(new org.itas.core.Simple((String)pair.getKey()), (String)pair.getValue());"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -83,7 +81,7 @@ public class TestFieldMapProvider {
 		
 		String expected = 
 				"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getRs()));";
+						+ "state.setString(1, toString(getRs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -93,19 +91,17 @@ public class TestFieldMapProvider {
 				+ "\n\t\t\t"
 				+ "String datas = result.getString(\"rs\");"
 				+ "\n\t\t\t"
-				+ "java.util.Map dataStrMap = org.itas.core.util.GameObjects.parseMap(datas);"
+				+ "org.itas.util.Pair[] dataArray = parsePair(datas);"
 				+ "\n\t\t\t"
 				+ "java.util.Map dataMap = new java.util.HashMap(16);"
 				+ "\n\t\t\t"
-				+ "java.util.Iterator it = dataStrMap.entrySet().iterator();"
+				+ "org.itas.util.Pair pair;"
 				+ "\n\t\t\t"
-				+ "java.util.Map.Entry entry;"
-				+ "\n\t\t\t"
-				+ "while (it.hasNext()) {"
+				+ "for (int i = 0; i < dataArray.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "entry = (java.util.Map.Entry)it.next();"
+				+ "pair = dataArray[i];"
 				+ "\n\t\t\t\t"
-				+ "dataMap.put(org.itas.core.Pool.getResource((String)entry.getKey()), java.lang.Integer.valueOf((String)entry.getValue()));"
+				+ "dataMap.put(org.itas.core.Pool.getResource((String)pair.getKey()), java.lang.Integer.valueOf((String)pair.getValue()));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -123,7 +119,7 @@ public class TestFieldMapProvider {
 		
 		String expected = 
 				"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getAs()));";
+						+ "state.setString(1, toString(getAs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -133,19 +129,17 @@ public class TestFieldMapProvider {
 				+ "\n\t\t\t"
 				+ "String datas = result.getString(\"as\");"
 				+ "\n\t\t\t"
-				+ "java.util.Map dataStrMap = org.itas.core.util.GameObjects.parseMap(datas);"
+				+ "org.itas.util.Pair[] dataArray = parsePair(datas);"
 				+ "\n\t\t\t"
 				+ "java.util.Map dataMap = new java.util.HashMap(8);"
 				+ "\n\t\t\t"
-				+ "java.util.Iterator it = dataStrMap.entrySet().iterator();"
+				+ "org.itas.util.Pair pair;"
 				+ "\n\t\t\t"
-				+ "java.util.Map.Entry entry;"
-				+ "\n\t\t\t"
-				+ "while (it.hasNext()) {"
+				+ "for (int i = 0; i < dataArray.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "entry = (java.util.Map.Entry)it.next();"
+				+ "pair = dataArray[i];"
 				+ "\n\t\t\t\t"
-				+ "dataMap.put(java.lang.Integer.valueOf((String)entry.getKey()), new org.itas.core.Simple((String)entry.getValue()));"
+				+ "dataMap.put(java.lang.Integer.valueOf((String)pair.getKey()), new org.itas.core.Simple((String)pair.getValue()));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -163,7 +157,7 @@ public class TestFieldMapProvider {
 		
 		String expected = 
 						"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getEs()));";
+						+ "state.setString(1, toString(getEs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -173,19 +167,17 @@ public class TestFieldMapProvider {
 				+ "\n\t\t\t"
 				+ "String datas = result.getString(\"es\");"
 				+ "\n\t\t\t"
-				+ "java.util.Map dataStrMap = org.itas.core.util.GameObjects.parseMap(datas);"
+				+ "org.itas.util.Pair[] dataArray = parsePair(datas);"
 				+ "\n\t\t\t"
 				+ "java.util.Map dataMap = new java.util.HashMap(8);"
 				+ "\n\t\t\t"
-				+ "java.util.Iterator it = dataStrMap.entrySet().iterator();"
+				+ "org.itas.util.Pair pair;"
 				+ "\n\t\t\t"
-				+ "java.util.Map.Entry entry;"
-				+ "\n\t\t\t"
-				+ "while (it.hasNext()) {"
+				+ "for (int i = 0; i < dataArray.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "entry = (java.util.Map.Entry)it.next();"
+				+ "pair = dataArray[i];"
 				+ "\n\t\t\t\t"
-				+ "dataMap.put(org.itas.core.util.Utils.EnumUtils.parse(org.itas.core.EnumByte.class, java.lang.Byte.valueOf((String)entry.getKey())), java.lang.Float.valueOf((String)entry.getValue()));"
+				+ "dataMap.put(org.itas.core.util.Utils.EnumUtils.parse(org.itas.core.EnumByte.class, java.lang.Byte.valueOf((String)pair.getKey())), java.lang.Float.valueOf((String)pair.getValue()));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"

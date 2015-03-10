@@ -21,7 +21,7 @@ class FieldMapProvider extends FieldContainerProvider {
 
 	private static final String STATEMENT_SET = 
 			"\t\t" 
-			+ "state.setString(%s, org.itas.core.util.GameObjects.toString(get%s()));" ;
+			+ "state.setString(%s, toString(get%s()));" ;
 
 
 	private static final String RESULTSET_GET = 
@@ -30,17 +30,15 @@ class FieldMapProvider extends FieldContainerProvider {
 			+ "\n\t\t\t"
 			+ "String datas = result.getString(\"%s\");"
 			+ "\n\t\t\t"
-			+ "java.util.Map dataStrMap = org.itas.core.util.GameObjects.parseMap(datas);"
+			+ "org.itas.util.Pair[] dataArray = parsePair(datas);"
 			+ "\n\t\t\t"
 			+ "%s dataMap = new %s;"
 			+ "\n\t\t\t"
-			+ "java.util.Iterator it = dataStrMap.entrySet().iterator();"
+			+ "org.itas.util.Pair pair;"
 			+ "\n\t\t\t"
-			+ "java.util.Map.Entry entry;"
-			+ "\n\t\t\t"
-			+ "while (it.hasNext()) {"
+			+ "for (int i = 0; i < dataArray.length; i ++) {"
 			+ "\n\t\t\t\t"
-			+ "entry = (java.util.Map.Entry)it.next();"
+			+ "pair = dataArray[i];"
 			+ "\n\t\t\t\t"
 			+ "dataMap.put(%s, %s);"
 			+ "\n\t\t\t"
@@ -86,8 +84,8 @@ class FieldMapProvider extends FieldContainerProvider {
 		}
 		
 		return String.format(RESULTSET_GET, field.getName(), definType.getName(), listClassName,
-				toObjectCode(keyCtClassType, "(String)entry.getKey()"),
-				toObjectCode(valueCtClassType, "(String)entry.getValue()"), upCase(field.getName()));
+				toObjectCode(keyCtClassType, "(String)pair.getKey()"),
+				toObjectCode(valueCtClassType, "(String)pair.getValue()"), upCase(field.getName()));
 	}
 
 	private CtClass toCtClassType(ClassType classType) throws NotFoundException {

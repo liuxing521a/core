@@ -6,7 +6,7 @@ import javassist.CtField;
 import junit.framework.Assert;
 
 import org.itas.core.EnumByte;
-import org.itas.core.Enums;
+import org.itas.core.util.Enums;
 import org.junit.Before;
 import org.junit.Test;
 

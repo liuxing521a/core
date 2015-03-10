@@ -1,13 +1,21 @@
-package org.itas.core;
+package org.itas.core.util;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.itas.core.EnumByte;
+import org.itas.core.EnumInt;
+import org.itas.core.EnumString;
 import org.itas.util.ItasException;
 
 import com.google.common.collect.Maps;
 
+/**
+ * 支持枚举处理
+ * @author liuzhen(liuxing521a@gmail.com)
+ * @crateTime 2015年3月10日上午11:01:53
+ */
 public interface Enums {
 
   default <T extends Enum<T>> T parse(Class<?> clazz, byte key) {

@@ -21,7 +21,7 @@ class FieldSetProvider extends FieldContainerProvider {
 
 	private static final String STATEMENT_SET = 
 			"\t\t" 
-			+ "state.setString(%s, org.itas.core.util.GameObjects.toString(get%s()));" ;
+			+ "state.setString(%s, toString(get%s()));" ;
 
 
 	private static final String RESULTSET_GET = 
@@ -30,11 +30,11 @@ class FieldSetProvider extends FieldContainerProvider {
 			+ "\n\t\t\t"
 			+ "String data = result.getString(\"%s\");"
 			+ "\n\t\t\t"
-			+ "java.util.List dataStrList = org.itas.core.util.GameObjects.parseList(data);"
+			+ "java.lang.String[] dataStrList = parseArray(data);"
 			+ "\n\t\t\t"
 			+ "%s dataArray = new %s;"
 			+ "\n\t\t\t"
-			+ "for (int i = 0; i < dataStrList.size(); i ++) {"
+			+ "for (int i = 0; i < dataStrList.length; i ++) {"
 			+ "\n\t\t\t\t"
 			+ "dataArray.add(%s);"
 			+ "\n\t\t\t"
@@ -82,7 +82,7 @@ class FieldSetProvider extends FieldContainerProvider {
 		}
 		
 		return String.format(RESULTSET_GET, field.getName(), definType.getName(),
-				listClassName, toObjectCode(genericType, "(String)dataStrList.get(i)"), upCase(field.getName()));
+				listClassName, toObjectCode(genericType, "dataStrList[i]"), upCase(field.getName()));
 	}
 	
 }

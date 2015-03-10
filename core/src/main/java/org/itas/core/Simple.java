@@ -5,7 +5,7 @@ package org.itas.core;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014年3月24日
  */
-public final class Simple<T extends GameObject> {
+public final class Simple<T extends GameObject> implements HashId {
 	
   private final String Id;
 	
@@ -23,6 +23,7 @@ public final class Simple<T extends GameObject> {
 	this.name = name;
   }
 	
+  @Override
   public String getId() {
 	return Id;
   }

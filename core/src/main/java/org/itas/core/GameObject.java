@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.itas.core.annotation.Primary;
 import org.itas.core.annotation.UnSave;
+import org.itas.core.util.DataContainers;
 import org.itas.util.ItasException;
 import org.itas.util.cache.Cacheable;
 
@@ -23,7 +24,8 @@ import org.itas.util.cache.Cacheable;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:25:47
  */
-public abstract class GameObject implements HashId, Externalizable, Cacheable {
+public abstract class GameObject implements HashId, 
+    Externalizable, Cacheable, DataContainers {
 
 	enum DataStatus {
 		unload,		// 未加载

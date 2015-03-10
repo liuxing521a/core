@@ -23,6 +23,7 @@ import org.itas.core.bytecode.TestFieldTimestampCode;
 import org.itas.core.bytecode.TestMethodColneProvider;
 import org.itas.core.bytecode.TestMethodSQLProvider;
 import org.itas.core.bytecode.TestType;
+import org.itas.core.util.DataContainersTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -53,6 +54,7 @@ import org.junit.runners.Suite;
 	TestMethodSQLProvider.class, 
 	TestMethodColneProvider.class, 
 	TestByteCodes.class,
+	DataContainersTest.class,
 	})
 public class TestAll {
 	

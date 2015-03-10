@@ -41,7 +41,7 @@ public class TestFieldListProvider {
 		
 		String expected = 
 				"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getBs()));";
+						+ "state.setString(1, toString(getBs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -51,13 +51,13 @@ public class TestFieldListProvider {
 				+ "\n\t\t\t"
 				+ "String data = result.getString(\"bs\");"
 				+ "\n\t\t\t"
-				+ "java.util.List dataStrList = org.itas.core.util.GameObjects.parseList(data);"
+				+ "java.lang.String[] dataStrList = parseArray(data);"
 				+ "\n\t\t\t"
 				+ "java.util.List dataArray = new java.util.LinkedList();"
 				+ "\n\t\t\t"
-				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
+				+ "for (int i = 0; i < dataStrList.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(new org.itas.core.Simple((String)dataStrList.get(i)));"
+				+ "dataArray.add(new org.itas.core.Simple(dataStrList[i]));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -75,7 +75,7 @@ public class TestFieldListProvider {
 		
 		String expected = 
 				"\t\t"
-				+ "state.setString(1, org.itas.core.util.GameObjects.toString(getRs()));";
+				+ "state.setString(1, toString(getRs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -85,13 +85,13 @@ public class TestFieldListProvider {
 				+ "\n\t\t\t"
 				+ "String data = result.getString(\"rs\");"
 				+ "\n\t\t\t"
-				+ "java.util.List dataStrList = org.itas.core.util.GameObjects.parseList(data);"
+				+ "java.lang.String[] dataStrList = parseArray(data);"
 				+ "\n\t\t\t"
 				+ "java.util.List dataArray = new java.util.ArrayList(16);"
 				+ "\n\t\t\t"
-				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
+				+ "for (int i = 0; i < dataStrList.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(org.itas.core.Pool.getResource((String)dataStrList.get(i)));"
+				+ "dataArray.add(org.itas.core.Pool.getResource(dataStrList[i]));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -109,7 +109,7 @@ public class TestFieldListProvider {
 		
 		String expected = 
 				"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getAs()));";
+						+ "state.setString(1, toString(getAs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -119,13 +119,13 @@ public class TestFieldListProvider {
 				+ "\n\t\t\t"
 				+ "String data = result.getString(\"as\");"
 				+ "\n\t\t\t"
-				+ "java.util.List dataStrList = org.itas.core.util.GameObjects.parseList(data);"
+				+ "java.lang.String[] dataStrList = parseArray(data);"
 				+ "\n\t\t\t"
 				+ "java.util.List dataArray = new java.util.ArrayList(8);"
 				+ "\n\t\t\t"
-				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
+				+ "for (int i = 0; i < dataStrList.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(java.lang.Integer.valueOf((String)dataStrList.get(i)));"
+				+ "dataArray.add(java.lang.Integer.valueOf(dataStrList[i]));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"
@@ -143,7 +143,7 @@ public class TestFieldListProvider {
 		
 		String expected = 
 						"\t\t"
-						+ "state.setString(1, org.itas.core.util.GameObjects.toString(getEs()));";
+						+ "state.setString(1, toString(getEs()));";
 		String content = codeType.setStatement(field);
 		Assert.assertEquals(expected, content);
 		
@@ -153,13 +153,13 @@ public class TestFieldListProvider {
 				+ "\n\t\t\t"
 				+ "String data = result.getString(\"es\");"
 				+ "\n\t\t\t"
-				+ "java.util.List dataStrList = org.itas.core.util.GameObjects.parseList(data);"
+				+ "java.lang.String[] dataStrList = parseArray(data);"
 				+ "\n\t\t\t"
 				+ "java.util.List dataArray = new java.util.ArrayList(8);"
 				+ "\n\t\t\t"
-				+ "for (int i = 0; i < dataStrList.size(); i ++) {"
+				+ "for (int i = 0; i < dataStrList.length; i ++) {"
 				+ "\n\t\t\t\t"
-				+ "dataArray.add(org.itas.core.util.Utils.EnumUtils.parse(org.itas.core.EnumByte.class, java.lang.Byte.valueOf((String)dataStrList.get(i))));"
+				+ "dataArray.add(org.itas.core.util.Utils.EnumUtils.parse(org.itas.core.EnumByte.class, java.lang.Byte.valueOf(dataStrList[i])));"
 				+ "\n\t\t\t"
 				+ "}"
 				+ "\n\t\t\t"

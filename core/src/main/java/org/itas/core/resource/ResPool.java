@@ -79,7 +79,7 @@ public final class ResPool {
 		}
 		
 		for (Map<String, String> attribute : attrs) {
-			allResources.get(attribute.get("Id")).load(attribute);
+			allResources.get(attribute.get("Id")).load(null, attribute);
 		}
 		Logger.trace("res size is :{}", allResources.size());
 	}
@@ -97,7 +97,7 @@ public final class ResPool {
 				
 				List<Map<String, String>> attributeList = handler.getXml((Class<? extends Resource>)res.getClass(), XResources.getResourceAsInputStream(path));
 				for (Map<String, String> attribute : attributeList) {
-					allResources.get(attribute.get("Id")).load(attribute);
+					allResources.get(attribute.get("Id")).load(null, attribute);
 				}
 			} catch (Exception e) {
 				throw new ItasException(e);
