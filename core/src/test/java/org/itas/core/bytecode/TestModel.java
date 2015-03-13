@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.itas.core.GameObject;
+import org.itas.core.Resource;
 import org.itas.core.annotation.Index;
 import org.itas.core.annotation.SQLEntity;
 import org.itas.core.annotation.Unique;
-import org.itas.core.resource.Resource;
 
 @SQLEntity("model")
 public class TestModel extends GameObject {

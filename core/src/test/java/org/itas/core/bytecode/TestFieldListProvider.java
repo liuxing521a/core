@@ -14,10 +14,10 @@ import junit.framework.Assert;
 
 import org.itas.core.EnumByte;
 import org.itas.core.GameObject;
+import org.itas.core.Resource;
 import org.itas.core.Simple;
 import org.itas.core.annotation.Clazz;
 import org.itas.core.annotation.Size;
-import org.itas.core.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 

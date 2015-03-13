@@ -6,7 +6,7 @@ import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 
-import org.itas.core.resource.Resource;
+import org.itas.core.Resource;
 import org.junit.Before;
 import org.junit.Test;
 

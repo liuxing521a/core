@@ -69,7 +69,7 @@ public final class Simple<T extends GameObject> implements HashId {
 
   private String avilidPrefix(String Id) {
 	if (Id == null || Id.length() < 3) {
-	  throw new IllegaException("PRIFEX must endwith [_]," + Id);
+	  throw new IllnessException("PRIFEX must endwith [_]," + Id);
 	}
 			
 	String prifex = Id.substring(0, 3);

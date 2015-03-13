@@ -7,7 +7,7 @@ public interface OnService {
    * @param bind 绑定参数
    * @throws Exception
    */
-  abstract void setUP(Called...back);
+  abstract void setUP(Called...called);
   
   /**
    * 销毁

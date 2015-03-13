@@ -54,7 +54,7 @@ abstract class AbstractTypeProvider implements TypeProvider {
 		
 		public final static Class<?> simple_ = org.itas.core.Simple.class;
 		
-		public final static Class<?> resource_ = org.itas.core.resource.Resource.class;
+		public final static Class<?> resource_ = org.itas.core.Resource.class;
 		
 		public final static Class<?> enumByte_ = org.itas.core.EnumByte.class;
 		

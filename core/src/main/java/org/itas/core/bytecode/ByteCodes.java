@@ -1,7 +1,5 @@
 package org.itas.core.bytecode;
 
-import static org.itas.core.util.Utils.CtClassUtils.getAllField;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,17 +11,17 @@ import javassist.CtMethod;
 import javassist.Modifier;
 
 import org.itas.core.annotation.UnSave;
-import org.itas.core.util.CtClassLoader;
+import org.itas.core.util.ClassLoaders;
 
 /**
  * 字节码操作
  * @author liuzhen
  */
-public final class ByteCodes implements CtClassLoader {
+public final class ByteCodes implements ClassLoaders {
 
   public enum ClassType { CTCLASS, CLASS }
 	
-  private static final ByteCodes instance = new ByteCodes();
+  static final ByteCodes instance = new ByteCodes();
   
   public static List<Class<?>> loadClass(Class<?> parent, 
       String packageName, ClassType classType) throws Exception {
@@ -91,7 +89,7 @@ public final class ByteCodes implements CtClassLoader {
 	return ctClass.toClass();
   }
   
-  static Class<?> testToClass(CtClass ctClass) throws Exception {
+  Class<?> testToClass(CtClass ctClass) throws Exception {
 	ByteCodeMethods methods = new ByteCodeMethods();
 	methods.begin(ctClass);
 		

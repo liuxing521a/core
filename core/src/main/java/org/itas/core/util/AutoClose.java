@@ -7,7 +7,7 @@ public interface AutoClose {
 	  try {
 		auto.close();
 	  } catch (Exception e) {
-				// do nothing
+	    // do nothing
 	  }
 	}
   }

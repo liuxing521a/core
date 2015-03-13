@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.itas.core.IllegaException;
+import org.itas.core.IllnessException;
 import org.itas.core.Pool;
+import org.itas.core.Resource;
 import org.itas.core.annotation.Clazz;
-import org.itas.core.resource.Resource;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -54,7 +54,7 @@ public interface XmlContainers extends Enums {
 	  return Boolean.TRUE;
     }
 	  
-    throw new IllegaException("boolean type must 0|1");
+    throw new IllnessException("boolean type must 0|1");
   }
 	  
   default Byte parseByte(String text) {

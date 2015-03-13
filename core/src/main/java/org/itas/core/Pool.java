@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.itas.core.resource.Resource;
 import org.itas.util.ItasException;
 
 @SuppressWarnings("unchecked")
@@ -100,15 +99,15 @@ public final class Pool implements Ioc {
 	  
   }
   
-  public interface ConfigPool extends OnService {
+  public interface ConfigPool {
 	  
   }
   
-  public interface ResPool extends OnService {
+  public interface ResPool {
 	  
 	abstract Resource get(String rid);
 	  
-	abstract List<Resource> get(Class<?> clazz);
+	abstract List<Resource> get(Class<? extends Resource> clazz);
 	  
   }
   

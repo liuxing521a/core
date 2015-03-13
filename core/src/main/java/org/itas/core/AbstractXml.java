@@ -1,4 +1,4 @@
-package org.itas.core.resource;
+package org.itas.core;
 
 import static org.itas.core.bytecode.Type.booleanType;
 import static org.itas.core.bytecode.Type.byteType;
@@ -20,13 +20,16 @@ import static org.itas.core.bytecode.Type.timeStampType;
 
 import java.lang.reflect.Field;
 
-import org.itas.core.Pool;
 import org.itas.core.util.XmlContainers;
 import org.itas.util.ItasException;
 
 abstract class AbstractXml implements XmlContainers {
 	
   void fill(Field field, String text) throws Exception {
+	if (!field.isAccessible()) {
+	  field.setAccessible(true);
+	}
+	
 	if (booleanType.is(field.getType())) {
 	  field.setBoolean(this, parseBoolean(text));
 	} else if (byteType.is(field.getType())) {

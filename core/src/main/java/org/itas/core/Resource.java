@@ -1,12 +1,10 @@
-package org.itas.core.resource;
+package org.itas.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
-import org.itas.core.FieldNotConfigException;
-import org.itas.core.HashId;
 import org.itas.core.annotation.CanNull;
 import org.itas.util.Utils.Objects;
 
@@ -24,19 +22,16 @@ public abstract class Resource extends AbstractXml implements HashId {
 	return Id;
   }
 
-  void load(List<Field> fieldList, Map<String, String> attributes) throws Exception {
-	for (Field field : fieldList) {
+  void load(Collection<Field> fields, Map<String, String> attributes) throws Exception {
+	for (Field field : fields) {
 	  if (Modifier.isFinal(field.getModifiers()) || 
 	      Modifier.isStatic(field.getModifiers())) {
-			continue;
+		continue;
 	  }
 				
 	  String value = attributes.get(field.getName());
 	  if (Objects.nonNull(value)) {
-	    final boolean access = field.isAccessible();
-		field.setAccessible(true);
 		fill(field, value);
-		field.setAccessible(access);
 		continue;
 	  }
 				
