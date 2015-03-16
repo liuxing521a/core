@@ -2,43 +2,58 @@ package org.itas.core.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.itas.core.AbstractDBSync;
+import org.itas.core.Binding;
 import org.itas.core.Builder;
 import org.itas.core.DBSync;
 import org.itas.core.GameObject;
+import org.itas.core.IllnessException;
 import org.itas.core.Pool.DBPool;
 import org.itas.util.collection.CircularQueue;
 
-class DBSyncImpl extends AbstractDBSync {
+class DBSyncImpl extends AbstractDBSync implements Binding {
 
   private final DBPool dbPool;
-  private final Map<Class<?>, CircularQueue<GameObject>> insertDatas;
-  private final Map<Class<?>, CircularQueue<GameObject>> updateDatas;
-  private final Map<Class<?>, CircularQueue<GameObject>> deleteDatas;
+  private static Map<Class<?>, CircularQueue<GameObject>> insertDatas;
+  private static Map<Class<?>, CircularQueue<GameObject>> updateDatas;
+  private static Map<Class<?>, CircularQueue<GameObject>> deleteDatas;
 	
   DBSyncImpl(DBPool dbPool) {
 	this.dbPool = dbPool;
-	this.insertDatas = new HashMap<>();
-	this.updateDatas = new HashMap<>();
-	this.deleteDatas = new HashMap<>();
   }
 
   @Override
-  public void setUP(Called...back) {
-	final Class<?> clazz = back[0].callBack();
-	insertDatas.put(clazz, new CircularQueue<>());
-	updateDatas.put(clazz, new CircularQueue<>());
-	deleteDatas.put(clazz, new CircularQueue<>());
+  public void bind(Called back) {
+	checkInitialized();
+	final List<GameObject> gameObjects = back.callBack();
+	final Map<Class<?>, CircularQueue<GameObject>> insertMap = 
+			new HashMap<>(gameObjects.size());
+	final Map<Class<?>, CircularQueue<GameObject>> updateMap = 
+			new HashMap<>(gameObjects.size());
+	final Map<Class<?>, CircularQueue<GameObject>> deleteMap = 
+	    new HashMap<>(gameObjects.size());
+	
+	for (final GameObject gameObject : gameObjects) {
+	  insertMap.put(gameObject.getClass(), new CircularQueue<>());
+	  updateMap.put(gameObject.getClass(), new CircularQueue<>());
+	  deleteMap.put(gameObject.getClass(), new CircularQueue<>());
+	}
+	
+	insertDatas = Collections.unmodifiableMap(insertMap);
+	updateDatas = Collections.unmodifiableMap(updateMap);
+	deleteDatas = Collections.unmodifiableMap(deleteMap);
   }
   
   @Override
-  public void destoried() {
-	insertDatas.clear();
-	updateDatas.clear();
-	deleteDatas.clear();
+  public void unBind() {
+	insertDatas = null;
+	updateDatas = null;
+	deleteDatas = null;
   }
 	
   @Override
@@ -78,6 +93,12 @@ class DBSyncImpl extends AbstractDBSync {
 
 	for (CircularQueue<GameObject> gameObjects : deleteDatas.values()) {
 	  deleteData(gameObjects);
+	}
+  }
+  
+  private void checkInitialized() {
+	if (insertDatas != null || updateDatas != null || deleteDatas != null) {
+	  throw new IllnessException("can't init agin");
 	}
   }
   

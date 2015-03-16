@@ -2,7 +2,7 @@ package org.itas.core.database;
 
 import org.itas.core.Builder;
 import org.itas.core.DBSync;
-import org.itas.core.OnService;
+import org.itas.core.DBSyncService;
 import org.itas.util.ItasException;
 import org.itas.util.Logger;
 import org.itas.util.Utils.TimeUtil;
@@ -12,9 +12,9 @@ import org.itas.util.Utils.TimeUtil;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014-3-17
  */
-final class DBSyncService implements Runnable, OnService {
+final class DBSyncServiceImpl implements Runnable, DBSyncService {
 	
-  DBSyncService(DBSync sync, long interval) {
+  DBSyncServiceImpl(DBSync sync, long interval) {
     this.sync = (DBSyncImpl)sync;
     this.interval = interval;
     this.lastTime  = TimeUtil.systemTime();
@@ -37,9 +37,8 @@ final class DBSyncService implements Runnable, OnService {
   /** 执行线程*/
   private final Thread worker;
 
-	
   @Override
-  public void setUP(Called...called) {
+  public void onInitialized() {
 	if (worker.isAlive()) {
 	  throw new ItasException("thread is alive");
     }
@@ -49,7 +48,7 @@ final class DBSyncService implements Runnable, OnService {
   }
   
   @Override
-  public void destoried() {
+  public void onDestroyed() {
     isFlag = true;
   }
 
@@ -90,8 +89,8 @@ final class DBSyncService implements Runnable, OnService {
 	}
 
 	@Override
-	public DBSyncService builder() {
-	  return new DBSyncService(this.sync, this.interval);
+	public DBSyncServiceImpl builder() {
+	  return new DBSyncServiceImpl(this.sync, this.interval);
 	}
   }
 	

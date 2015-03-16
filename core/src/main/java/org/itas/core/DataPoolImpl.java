@@ -1,6 +1,8 @@
 package org.itas.core;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.itas.core.Pool.DataPool;
@@ -11,7 +13,6 @@ import org.itas.util.Utils.TimeUtil;
 import org.itas.util.cache.Cache;
 import org.itas.util.cache.LocalCache;
 
-import com.google.common.collect.Maps;
 import com.typesafe.config.Config;
 
 /**
@@ -19,19 +20,11 @@ import com.typesafe.config.Config;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014-3-19
  */
-abstract class DataPoolImpl implements Constructors, DataPool {
+@SuppressWarnings("unchecked")
+final class DataPoolImpl implements Constructors, DataPool, Binding {
 
   /** 数据库操作工具*/
   private final DBSync dbSync;
-	
-  /** 模型数据集 */
-  private final Map<Class<?>, GameObject> classModules;
-	
-  /** 前缀和class映射*/
-  private final Map<String, GameObject> prefixModules;
-
-  /** 对象缓存的缓存 */
-  private final Map<String, Cache<String, GameObject>> dataCaches;
   
   /** 在缓存中最大存放数量*/
   private final long capacity;
@@ -39,31 +32,51 @@ abstract class DataPoolImpl implements Constructors, DataPool {
   /** 缓存生命周期*/
   private final long lifeTime;
 	
+  /** 模型数据集 */
+  private static Map<Class<?>, GameObject> classModules;
+	
+  /** 前缀和class映射*/
+  private static Map<String, GameObject> prefixModules;
+
+  /** 对象缓存的缓存 */
+  private static Map<String, Cache<String, GameObject>> dataCaches;
+  
+	
   private DataPoolImpl(DBSync dbSync, long capacity, long lifeTime) {
-	this.classModules = Maps.newHashMap();
-	this.prefixModules = new HashMap<>();
-	this.dataCaches = new HashMap<>();
 	this.dbSync = dbSync;
 	this.capacity = capacity;
 	this.lifeTime = lifeTime * TimeUtil.MILLIS_PER_HOUR;
   }
   
   @Override
-  public void setUP(Called...back) {
-	final GameObject module = back[0].callBack();
-	final Cache<String, GameObject> cache = new LocalCache<>(
-	    module.getClass().getSimpleName(), 
-	    module.getCachedSize()*this.capacity, this.lifeTime);
-	classModules.put(module.getClass(), module);
-	prefixModules.put(module.PRIFEX(), module);
-	dataCaches.put(module.PRIFEX(), cache);
+  public void bind(Called back) {
+	checkInitialized();
+	final List<GameObject> gameObjects = back.callBack();
+	
+	final int size = gameObjects.size();
+	final Map<Class<?>, GameObject> clsMap = new HashMap<>(size);
+	final Map<String, GameObject> prefixMap = new HashMap<>(size);
+	final Map<String, Cache<String, GameObject>> cacheMap = new HashMap<>(size);
+	for (final GameObject gameObject : gameObjects) {
+	  final Cache<String, GameObject> cache = new LocalCache<>(
+	      gameObject.getClass().getSimpleName(), 
+		  gameObject.getCachedSize()*this.capacity, this.lifeTime);
+	  
+	  clsMap.put(gameObject.getClass(), gameObject);
+	  prefixMap.put(gameObject.PRIFEX(), gameObject);
+	  cacheMap.put(gameObject.PRIFEX(), cache);
+	}
+	
+	classModules = Collections.unmodifiableMap(clsMap);
+	prefixModules = Collections.unmodifiableMap(prefixMap);
+	dataCaches = Collections.unmodifiableMap(cacheMap);
   }
 
   @Override
-  public void destoried() {
-	prefixModules.clear();
-    classModules.clear();
-    dataCaches.clear();
+  public void unBind() {
+	prefixModules = null;
+    classModules = null;
+    dataCaches = null;
   }
   
   @Override
@@ -71,8 +84,9 @@ abstract class DataPoolImpl implements Constructors, DataPool {
 	obtainCache(data).put(data.getId(), data);
   }
 
+  
   @Override
-  public GameObject get(String Id) {
+  public <T extends GameObject> T get(String Id) {
 	  GameObject gameObject = loadGameObject(Id);
 	  if (Objects.nonNull(gameObject)) {
 		  gameObject.setUpdateTime(TimeUtil.systemTime());
@@ -80,11 +94,11 @@ abstract class DataPoolImpl implements Constructors, DataPool {
 		  gameObject = obtainModule(Id).autoInstance(Id);
 	  }
 	  
-	  return gameObject;
+	  return (T) gameObject;
   }
   
   @Override
-  public GameObject get(Class<? extends GameObject> clazz, String Id) {
+  public <T extends GameObject> T get(Class<? extends GameObject> clazz, String Id) {
 	GameObject gameObject = loadGameObject(clazz, Id);
 	if (Objects.nonNull(gameObject)) {
 	  gameObject.setUpdateTime(TimeUtil.systemTime());
@@ -92,7 +106,7 @@ abstract class DataPoolImpl implements Constructors, DataPool {
 		gameObject = obtainModule(clazz).autoInstance(Id);
 	}
 
-	return gameObject;
+	return (T) gameObject;
   }
 
   @Override
@@ -108,23 +122,23 @@ abstract class DataPoolImpl implements Constructors, DataPool {
   }
 	
   @Override
-  public GameObject remove(String Id) {
-	  return obtainCache(obtainModule(Id)).remove(Id);
+  public <T extends GameObject> T remove(String Id) {
+	  return (T) obtainCache(obtainModule(Id)).remove(Id);
   }
 
   @Override
-  public GameObject remove(Class<? extends GameObject> clazz, String Id) {
-	return obtainCache(obtainModule(clazz)).remove(Id);
+  public <T extends GameObject> T remove(Class<? extends GameObject> clazz, String Id) {
+	return (T) obtainCache(obtainModule(clazz)).remove(Id);
   }
 	
   @Override
-  public GameObject newInstance(Class<? extends GameObject> clazz, String Id) {
-	  return newInstance(obtainModule(clazz), Id);
+  public <T extends GameObject> T newInstance(Class<? extends GameObject> clazz, String Id) {
+	  return (T) newInstance(obtainModule(clazz), Id);
   }
 	
   @Override
-  public GameObject newInstance(String Id) {
-	return newInstance(obtainModule(Id), Id);
+  public <T extends GameObject> T newInstance(String Id) {
+	return (T) newInstance(obtainModule(Id), Id);
   }
   
   private GameObject newInstance(GameObject module, String Id) {
@@ -206,6 +220,12 @@ abstract class DataPoolImpl implements Constructors, DataPool {
 	return gameObjectCache;
   }
   
+  private void checkInitialized() {
+	if (classModules != null || prefixModules != null || dataCaches != null) {
+	  throw new DoubleException("can't initialized agin");
+	}
+  }
+  
   public static DataPoolBuilder makeBuilder() {
 	return new DataPoolBuilder();
   }
@@ -232,7 +252,7 @@ abstract class DataPoolImpl implements Constructors, DataPool {
 	@Override
 	public DataPool builder() {
 	  return new DataPoolImpl(dbSync,
-	      share.getLong("capicity"), share.getLong("aliveTime")){ };
+	      share.getLong("capicity"), share.getLong("aliveTime"));
 	}
   }
   

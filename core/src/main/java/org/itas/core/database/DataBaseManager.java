@@ -2,7 +2,7 @@ package org.itas.core.database;
 
 import org.itas.core.database.DBPoolImpl.DBPoolBuilder;
 import org.itas.core.database.DBSyncImpl.DBSyncBuilder;
-import org.itas.core.database.DBSyncService.DBSyncThreadBuilder;
+import org.itas.core.database.DBSyncServiceImpl.DBSyncThreadBuilder;
 
 public final class DataBaseManager {
 

@@ -1,7 +1,15 @@
 package org.itas.core;
 
-public interface Binding {
+public interface Binding extends Ioc {
 
-  abstract void bind() throws Exception;
+  abstract void bind(Called call) throws Exception;
+  
+  abstract void unBind() throws Exception;
+  
+  interface Called {
+	  
+	abstract <T> T callBack();
+	
+  }
 	
 }

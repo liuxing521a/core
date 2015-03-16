@@ -3,20 +3,19 @@ package org.itas.core;
 import static org.itas.core.bytecode.Type.resourceType;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.itas.core.BindManager.ModuleBinding.ModuleBindingBuilder;
-import org.itas.core.BindManager.XmlConfigBinding.ConfigBindingBuilder;
-import org.itas.core.OnService.Called;
-import org.itas.core.Pool.DataPool;
+import org.itas.core.BindManager.XmlResourceBinding.ConfigBindingBuilder;
+import org.itas.core.Binding.Called;
 import org.itas.core.XmlInfo.XmlInfoBuilder;
 import org.itas.core.bytecode.ByteCodes;
 import org.itas.core.bytecode.ByteCodes.ClassType;
 import org.itas.core.util.Constructors;
-import org.itas.util.Utils.Objects;
 
-public final class BindManager {
+public class BindManager {
 
   public static ModuleBindingBuilder makeModuleBinding() {
 	return new ModuleBindingBuilder();
@@ -26,71 +25,76 @@ public final class BindManager {
 	return new ConfigBindingBuilder();
   }
   
-  protected abstract static class BindingImpl implements Builder {
+  public interface BeanBinding {
+	
+	abstract void bind() throws Exception;
+	
+	abstract void unBind() throws Exception;
+  
+  }
+  
+  abstract static class BindingImplBuilder implements Builder {
 	  
 	protected Class<?> parent;
 	
 	protected String pack;
-
-	public BindingImpl setParent(Class<?> parent) {
-	  this.parent = parent;
-	  return this;
-	}
-
-	public BindingImpl setPack(String pack) {
-	  this.pack = pack;
-	  return this;
-	}
 	  
   }
 	
-  static class ModuleBinding implements Constructors, Binding {
+  static class ModuleBinding implements Constructors, BeanBinding {
 
     private final Class<?> parent;
     private final String pack;
     private final DBSync dbSync;
-    private final DataPool dataPool;
+    private final Binding binding;
 	
     private ModuleBinding(Class<?> parent, 
-        String pack, DBSync dbSync, DataPool dataPool) {
+        String pack, DBSync dbSync, Binding dataPool) {
 	  this.parent = parent;
       this.pack = pack;
 	  this.dbSync = dbSync;
-	  this.dataPool = dataPool;
+	  this.binding = dataPool;
     }
 	 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public void bind() throws Exception {
 	  final List<Class<?>> classList = 
 	      ByteCodes.loadClass(parent, pack, ClassType.CTCLASS);
 	 
+	  final List<GameObject> gameObjects = new ArrayList<>(classList.size());
+	  GameObject gameObject;
 	  for (final Class<?> clazz : classList) {
-		final GameObject gameObject = newInstance(clazz, new Object[]{""});
-	   
-		dataPool.setUP(new Called() {
-		  @Override @SuppressWarnings("unchecked")
-		  public <T> T callBack() {
-			return (T)gameObject;
-		  }
-		});
-		
-	    dbSync.setUP(new Called() {
-	      @Override @SuppressWarnings("unchecked")
-		  public <T> T callBack() {
-		    return (T)gameObject.getClass();
-		  }
-		});
-	    
-	    dbSync.createTable(gameObject);
-	    dbSync.alterTable(gameObject);
+		gameObject = newInstance(clazz, new Object[]{""});
+		gameObjects.add(gameObject);
 	  }
+	  
+	  dbSync.bind(new Called() {
+		@Override
+		public <T> T callBack() {
+		  return (T) gameObjects;
+		}
+	  });
+	  binding.bind(new Called() {
+		@Override
+		public <T> T callBack() {
+		  return (T) gameObjects;
+		}
+	  });
+	  
+	  dbSync.createTable(gameObjects);
+	  dbSync.alterTable(gameObjects);
+    }
+    
+    @Override
+    public void unBind() throws Exception {
+	  dbSync.unBind();
     }
 	
-    public static class ModuleBindingBuilder extends BindingImpl {
+    public static class ModuleBindingBuilder extends BindingImplBuilder {
 
 	  private DBSync dbSync;
 		 
-	  private DataPool dataPool;
+	  private Binding binding;
 		
 	  private ModuleBindingBuilder() {
 	  }
@@ -100,95 +104,109 @@ public final class BindManager {
 	    return this;
 	  }
 
-	  public ModuleBindingBuilder setDataPool(DataPool dataPool) {
-	    this.dataPool = dataPool;
+	  public ModuleBindingBuilder setBinding(Binding binding) {
+	    this.binding = binding;
 	    return this;
 	  }
 	  
-	  @Override
 	  public ModuleBindingBuilder setParent(Class<?> parent) {
 	    this.parent = parent;
 	    return this;
 	  }
 
-	  @Override
 	  public ModuleBindingBuilder setPack(String pack) {
 	    this.pack = pack;
 	    return this;
 	  }
 
-	  public Binding builder() {
-	    return new ModuleBinding(parent, pack, dbSync, dataPool);
+	  public BeanBinding builder() {
+	    return new ModuleBinding(parent, pack, dbSync, binding);
 	  }
     }
   }
   
-  static class XmlConfigBinding implements Constructors, Binding {
+  static class XmlResourceBinding implements Constructors, BeanBinding {
 	  
     private final Class<?> parent;
     private final String pack;
+    private final Binding binding;
 	
-    private XmlConfigBinding(Class<?> parent, String pack) {
+    private XmlResourceBinding(Class<?> parent, String pack, Binding binding) {
 	  this.parent = parent;
-      this.pack = pack;
+	  this.pack = pack;
+      this.binding = binding;
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void bind() throws Exception {
 	  final List<Class<?>> classList = 
           ByteCodes.loadClass(parent, pack, ClassType.CLASS);
-	   
-		for (final Class<?> clazz : classList) {
-		  if (!resourceType.is(clazz) ||
-		      Modifier.isAbstract(clazz.getModifiers())) {
-			continue;
-		  }
+	  
+	  final List<XmlInfo> xmlInfos = new ArrayList<>(classList.size());
+	  
+	  for (final Class<?> clazz : classList) {
+	    if (!resourceType.is(clazz) ||
+	        Modifier.isAbstract(clazz.getModifiers())) {
+		  continue;
+	    }
 		  
-		  final XmlHandler handle = new ResourceHandler((Class<? extends Resource>)clazz);
-		  final List<Map<String, String>> attributes = handle.parse(back[0].callBack());
-	      final XmlInfoBuilder xmlInfoBuild = XmlInfo.newXmlInfoBuilder()
-	            .setHandle(handle);
+	    final XmlHandler handle = new ResourceHandler((Class<? extends Resource>)clazz);
+	    final XmlInfoBuilder xmlInfoBuild = XmlInfo.newXmlInfoBuilder();
+		xmlInfoBuild.setHandle(handle);
 	      
-	      Resource source;
-	      for (Map<String, String> attribute : attributes) {
-			source = newInstance(clazz, new Object[]{attribute.get("Id")});
-			XmlInfo xmlInfo = xmlInfoBuild.addAttribute(attribute)
-			      .addXmlBean(source).builder();
-			loads.add(xmlInfo);
-			
-			if (Objects.nonNull(resMap.put(source.getId(), source))) {
-			  throw new DoubleException("class:" + source.getClass().getSimpleName() + 
-			      " and class:" + clazz.getSimpleName() + " with same id=" + source.getId());
-			}
-		  }
+		Resource source;
+		final List<Map<String, String>> attributes = handle.parse(pack);
+		for (Map<String, String> attribute : attributes) {
+		  source = newInstance(clazz, new Object[]{attribute.get("Id")});
+		  xmlInfoBuild.addAttribute(attribute).addXmlBean(source);
 		}
 		
+		xmlInfos.add(xmlInfoBuild.builder());
+	  }
+		
+	  binding.bind(new Called() {
+		@Override
+		public <T> T callBack() {
+		  return (T) xmlInfos;
+		}
+	  });
 	}
 	
-    public static class ConfigBindingBuilder extends BindingImpl {
+	@Override
+	public void unBind() throws Exception {
+	  binding.unBind();
+	}
+	
+    public static class ConfigBindingBuilder extends BindingImplBuilder {
 
 	  private ConfigBindingBuilder() {
 	  }
+	  
+	  private Binding binding;
 		
-	  @Override
 	  public ConfigBindingBuilder setParent(Class<?> parent) {
 	    this.parent = parent;
 	    return this;
 	  }
 
-	  @Override
 	  public ConfigBindingBuilder setPack(String pack) {
 	    this.pack = pack;
 	    return this;
 	  }
+	  
+	  public ConfigBindingBuilder setBinding(Binding binding) {
+	    this.binding = binding;
+	    return this;
+	  }
 
-	  public Binding builder() {
-	    return new XmlConfigBinding(parent, pack);
+	  public BeanBinding builder() {
+	    return new XmlResourceBinding(parent, pack, binding);
 	  }
     }
   }
   
-  private static class ResourceBinding {
+  private static class XmlConfigBinding {
 
 	public void bind(Class<?> clazz, String pack) {
 		

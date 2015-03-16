@@ -60,10 +60,10 @@ public abstract class GameObject implements HashId,
 	 */
 	@UnSave private volatile DataStatus status = DataStatus.unload;
 	
-	@UnSave private static final DBSync dbSync;
+	@UnSave private static final AbstractDBSync dbSync;
 	
 	static {
-		dbSync = Ioc.Ioc.getInstance(DBSync.class);
+		dbSync = (AbstractDBSync)Ioc.Ioc.getInstance(DBSync.class);
 	}
 	
 	/**
@@ -111,14 +111,14 @@ public abstract class GameObject implements HashId,
 	protected void modify() {
 		if (status == DataStatus.load) {
 			status = DataStatus.modify;
-//			dbSync.addUpdate(this);
+			dbSync.addUpdate(this);
 		}
 	}
 
 	public void destroy() {
 		if (status != DataStatus.destory) {
 			status = DataStatus.destory;
-//			dbSync.addDelete(this);
+			dbSync.addDelete(this);
 		}
 	}
 

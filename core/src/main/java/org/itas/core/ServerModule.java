@@ -2,6 +2,7 @@ package org.itas.core;
 
 import org.itas.core.Pool.DBPool;
 import org.itas.core.Pool.DataPool;
+import org.itas.core.Pool.ResPool;
 import org.itas.core.database.DataBaseManager;
 
 import com.google.inject.Binder;
@@ -26,17 +27,22 @@ final class ServerModule implements Module {
 		.setDBPool(dbPool).builder();
 		
 	final Config sharedConfig = config.getConfig("shared");
-	final OnService service = DataBaseManager.makdDBSyncThreadBuilder()
+	final DBSyncService syncService = DataBaseManager.makdDBSyncThreadBuilder()
 		.setSync(dbSync).setInterval(sharedConfig.getLong("interval"))
 		.builder();
-	service.setUP();
 	
 	final DataPool dataPool = DataPoolImpl.makeBuilder()
 		.setShared(sharedConfig).setDbSync(dbSync).builder();
 	
+	final ResPool resPool = ResPoolImpl.makeBuilder().builder();
+	
 	binder.bind(DBSync.class).toInstance(dbSync);
     binder.bind(DBPool.class).toInstance(dbPool);
+    binder.bind(DBSyncService.class).toInstance(syncService);
+
     binder.bind(DataPool.class).toInstance(dataPool);
+    binder.bind(ResPool.class).toInstance(resPool);
+    
     binder.bind(Config.class).toInstance(config);
   }
 	

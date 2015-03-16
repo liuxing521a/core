@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.itas.util.collection.CircularQueue;
 
-public interface DBSync extends OnService {
+public interface DBSync extends Binding {
 
   /**
    * <p>根据对象创建数据库表 </p>
@@ -14,7 +14,7 @@ public interface DBSync extends OnService {
    * @return 创建结果
    * @throws SQLException
    */
-  abstract int[] createTable(GameObject gameObject) throws SQLException;
+  int[] createTable(List<GameObject> gameObjects) throws SQLException;
 
   /**
    * <p>根据对象修改已存在数据库表</p>
@@ -22,8 +22,8 @@ public interface DBSync extends OnService {
    * @return 修改结果
    * @throws SQLException
    */
-  abstract int[] alterTable(GameObject gameObject) throws SQLException;
-	
+  int[] alterTable(List<GameObject> gameObjects) throws SQLException;
+  
   /**
    * <p>加载数据 </p>
    * @param gameObject 模型数据
@@ -31,7 +31,7 @@ public interface DBSync extends OnService {
    * @return 加载后对像
    * @throws SQLException
    */
-  abstract GameObject loadData(GameObject gameObject, String Id);
+  GameObject loadData(GameObject gameObject, String Id);
 
   /**
    * <p>加载数据列表 </p>
@@ -40,7 +40,7 @@ public interface DBSync extends OnService {
    * @return 加载后对象列表
    * @throws SQLException
    */
-  abstract List<GameObject> loadDataArray(GameObject gameObject, 
+  List<GameObject> loadDataArray(GameObject gameObject, 
 		Collection<String> IdArray) throws SQLException;
 	
   /**
@@ -48,20 +48,20 @@ public interface DBSync extends OnService {
    * @param gameObject 新增对象
    * @throws SQLException
    */
-  abstract void insertData(CircularQueue<GameObject> gameObject)throws SQLException;
+  void insertData(CircularQueue<GameObject> gameObject)throws SQLException;
 	
   /**
    * <p>修改数据库</p>
    * @param modifyDatas 要修改对象队列
    * @throws SQLException
    */
-  abstract void modifyData(CircularQueue<GameObject> modifyDatas) throws SQLException;
+  void modifyData(CircularQueue<GameObject> modifyDatas) throws SQLException;
 	
   /**
    * <p>删除数据库</p>
    * @param deletDatas 要删除对象队列
    * @throws SQLException
    */
-  abstract void deleteData(CircularQueue<GameObject> deletDatas) throws SQLException;
+  void deleteData(CircularQueue<GameObject> deletDatas) throws SQLException;
 
 }

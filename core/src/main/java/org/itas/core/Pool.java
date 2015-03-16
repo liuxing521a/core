@@ -77,25 +77,25 @@ public final class Pool implements Ioc {
 		
   }
 	
-  public interface DataPool extends OnService {
+  public interface DataPool extends Binding {
 	  
 	abstract void put(GameObject data);
 	  
-	abstract GameObject get(String Id);
+	abstract <T extends GameObject> T get(String Id);
 	  
-	abstract GameObject get(Class<? extends GameObject> clazz, String Id);
+	abstract <T extends GameObject> T get(Class<? extends GameObject> clazz, String Id);
 
 	abstract boolean isCached(String Id);
 
 	abstract boolean isCached(Class<? extends GameObject> clazz, String Id);
 	
-	abstract GameObject remove(String Id);
+	abstract <T extends GameObject> T remove(String Id);
 
-	abstract GameObject remove(Class<? extends GameObject> clazz, String Id);
+	abstract <T extends GameObject> T remove(Class<? extends GameObject> clazz, String Id);
 	  
-	abstract GameObject newInstance(Class<? extends GameObject> clazz, String Id);
+	abstract <T extends GameObject> T newInstance(Class<? extends GameObject> clazz, String Id);
 		
-	abstract GameObject newInstance(String Id);
+	abstract <T extends GameObject> T newInstance(String Id);
 	  
   }
   
@@ -103,7 +103,7 @@ public final class Pool implements Ioc {
 	  
   }
   
-  public interface ResPool {
+  public interface ResPool extends Binding {
 	  
 	abstract Resource get(String rid);
 	  

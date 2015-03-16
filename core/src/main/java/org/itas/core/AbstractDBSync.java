@@ -183,13 +183,15 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
   }
 	
   @Override
-  public int[] createTable(GameObject gameObject) throws SQLException {
+  public int[] createTable(List<GameObject> gameObjects) throws SQLException {
 	Connection conn = null;
 	Statement statement = null;
 	try {
 	  conn = getConnection();
 	  statement = conn.createStatement();
-	  gameObject.doCreate(statement);
+	  for (GameObject gameObject : gameObjects) {
+	    gameObject.doCreate(statement);
+	  }
 			
 	  return statement.executeBatch();
 	} finally {
@@ -198,15 +200,18 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
   }
 
   @Override
-  public int[] alterTable(GameObject gameObject) throws SQLException {
-	Set<String> excludeColums = tableColumns(gameObject.tableName());
-	
+  public int[] alterTable(List<GameObject> gameObjects) throws SQLException {
 	Connection conn = null;
 	Statement statement = null;
 	try {
 	  conn = getConnection();
 	  statement = conn.createStatement();
-	  gameObject.doAlter(statement, excludeColums);
+	  
+	  Set<String> clumns;
+	  for (GameObject gameObject : gameObjects) {
+	    clumns = tableColumns(gameObject.tableName());
+	    gameObject.doAlter(statement, clumns);
+	  }
 			
 	  return statement.executeBatch();
 	} finally {
