@@ -12,14 +12,17 @@ public abstract class Service<T> {
 	
 	/**
 	 * <p>事件头版半部分</p>
-	 * @return
+	 * @return 事件头
 	 */
 	public abstract byte PREFIX();
 
-	/**
-	 * <p>事件分配器</p>
-	 * @param message 事件附带信息 
-	 */
+    /**
+     * <p>事件分配器</p>
+     * @param user 用户
+     * @param suffix
+     * @param buffer
+     * @throws Exception
+     */
 	public abstract void dispatch(T user, byte suffix, ByteBuffer buffer) throws Exception;
 	
 }

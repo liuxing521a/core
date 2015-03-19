@@ -30,32 +30,32 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 //指定运行器
-@Suite.SuiteClasses({ 
-	TestCodeType.class, 
-	TestType.class, 
-	TestFieldBooleanProvider.class, 
-	TestFieldByteProvider.class, 
-	TestFieldCharProvider.class, 
-	TestFieldDoubleProvider.class, 
-	TestFieldFloatProvider.class, 
-	TestFieldIntProvider.class, 
-	TestFieldLongProvider.class, 
-	TestFieldResourcesProvider.class, 
-	TestFieldShortProvider.class, 
-	TestFieldStringProvider.class, 
-	TestFieldSimpleProvider.class, 
-	TestFieldListProvider.class, 
-	TestFieldSetProvider.class, 
-	TestFieldTimestampCode.class, 
-	TestFieldEnumByteProvider.class, 
-	TestFieldEnumIntProvider.class, 
-	TestFieldEnumStringProvider.class, 
-	TestFieldMapProvider.class, 
-	TestMethodSQLProvider.class, 
-	TestMethodColneProvider.class, 
-	TestByteCodes.class,
-	DataContainersTest.class,
-	})
+@Suite.SuiteClasses(value = {
+        TestCodeType.class,
+        TestType.class,
+        TestFieldBooleanProvider.class,
+        TestFieldByteProvider.class,
+        TestFieldCharProvider.class,
+        TestFieldDoubleProvider.class,
+        TestFieldFloatProvider.class,
+        TestFieldIntProvider.class,
+        TestFieldLongProvider.class,
+        TestFieldResourcesProvider.class,
+        TestFieldShortProvider.class,
+        TestFieldStringProvider.class,
+        TestFieldSimpleProvider.class,
+        TestFieldListProvider.class,
+        TestFieldSetProvider.class,
+        TestFieldTimestampCode.class,
+        TestFieldEnumByteProvider.class,
+        TestFieldEnumIntProvider.class,
+        TestFieldEnumStringProvider.class,
+        TestFieldMapProvider.class,
+        TestMethodSQLProvider.class,
+        TestMethodColneProvider.class,
+        TestByteCodes.class,
+        DataContainersTest.class,
+})
 public class TestAll {
 	
 }

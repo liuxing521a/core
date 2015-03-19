@@ -101,4 +101,5 @@ public abstract class User extends GameObject {
 	public int getCachedSize() {
 		return 42 + super.getCachedSize();
 	}
+
 }

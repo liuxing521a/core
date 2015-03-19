@@ -26,6 +26,4 @@ public class HookDispatch implements Hook {
 		Logger.debug("Method excuteTime:{}, method:{}", (System.nanoTime() - beginTime), o);
 	}
 
-	
-
 }

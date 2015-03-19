@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.itas.core.bytecode.TestFieldMapProvider" tests="8" skipped="0" failures="0" errors="0" timestamp="2015-03-18T09:48:59" hostname="liu" time="1.32">
+  <properties/>
+  <testcase name="testEnum" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.006"/>
+  <testcase name="testSimple" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.004"/>
+  <testcase name="testResource" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.002"/>
+  <testcase name="testJavaBase" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.001"/>
+  <testcase name="testEnum" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.0"/>
+  <testcase name="testSimple" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.001"/>
+  <testcase name="testResource" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.0"/>
+  <testcase name="testJavaBase" classname="org.itas.core.bytecode.TestFieldMapProvider" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

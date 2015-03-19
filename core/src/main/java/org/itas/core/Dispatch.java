@@ -58,7 +58,8 @@ public abstract class Dispatch {
 	public void dispatch(User user, Message message) throws IOException {
 		Handle event = getHandle(message.getClazz());
 		if (Objects.isNull(event)) {
-			Logger.error("error protocol heard:head={}, clazz={}, method={}", new Object[]{message.getHexHead(), message.getHexClazz(), message.getHexMethod()}); 
+			Logger.error("error protocol heard:head={}, clazz={}, method={}",
+                new Object[]{message.getHexHead(), message.getHexClazz(), message.getHexMethod()});
 			return;
 		}
 		

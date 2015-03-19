@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.itas.core.bytecode.TestMethodSQLProvider" tests="12" skipped="0" failures="0" errors="0" timestamp="2015-03-18T09:48:59" hostname="liu" time="1.425">
+  <properties/>
+  <testcase name="testSQLCreate" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.703"/>
+  <testcase name="testSQLSelect" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.01"/>
+  <testcase name="testSQLUpdate" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.012"/>
+  <testcase name="testSQLInsert" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.005"/>
+  <testcase name="testSqlAlter" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.026"/>
+  <testcase name="testSQLDelete" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.017"/>
+  <testcase name="testSQLCreate" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.007"/>
+  <testcase name="testSQLSelect" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.0"/>
+  <testcase name="testSQLUpdate" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.001"/>
+  <testcase name="testSQLInsert" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.0"/>
+  <testcase name="testSqlAlter" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.002"/>
+  <testcase name="testSQLDelete" classname="org.itas.core.bytecode.TestMethodSQLProvider" time="0.001"/>
+  <system-out><![CDATA[17:48:59,169 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+17:48:59,169 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback-test.xml] at [file:/F:/sources/itas-core/core/build/classes/test/logback-test.xml]
+17:48:59,170 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback-test.xml] occurs multiple times on the classpath.
+17:48:59,170 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback-test.xml] occurs at [jar:file:/F:/sources/itas-core/utils/build/libs/utils-1.1.1.jar!/logback-test.xml]
+17:48:59,170 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback-test.xml] occurs at [file:/F:/sources/itas-core/core/build/resources/main/logback-test.xml]
+17:48:59,170 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback-test.xml] occurs at [file:/F:/sources/itas-core/core/build/classes/test/logback-test.xml]
+17:48:59,170 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback-test.xml] occurs at [file:/F:/sources/itas-core/core/build/classes/main/logback-test.xml]
+17:48:59,348 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+17:48:59,356 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:48:59,363 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+17:48:59,427 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:48:59,427 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [log-trace]
+17:48:59,433 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:48:59,433 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [log-debug]
+17:48:59,435 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:48:59,435 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [log-info]
+17:48:59,438 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+17:48:59,438 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [log-error]
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [com.jolbox.bonecp] to TRACE
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [com.jolbox.bonecp] to false
+17:48:59,440 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [log-debug] to Logger[com.jolbox.bonecp]
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [log-trace] to TRACE
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [log-trace] to false
+17:48:59,440 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [log-trace] to Logger[log-trace]
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [log-debug] to DEBUG
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [log-debug] to false
+17:48:59,440 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [log-debug] to Logger[log-debug]
+17:48:59,440 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [log-error] to ERROR
+17:48:59,441 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [log-error] to false
+17:48:59,441 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [log-error] to Logger[log-error]
+17:48:59,441 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+17:48:59,441 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+17:48:59,441 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+17:48:59,442 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@102fa3ce - Registering current configuration as safe fallback point
+
+2015-48-18 17:48:59[Test worker][TRACE]: 
+CREATE TABLE IF NOT EXISTS `model`(
+	`Id` VARCHAR(36) NOT NULL DEFAULT '',
+	`name` VARCHAR(36) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+2015-48-18 17:48:59[Test worker][TRACE]: 
+CREATE TABLE IF NOT EXISTS `model`(
+	`Id` VARCHAR(36) NOT NULL DEFAULT '',
+	`identy` VARCHAR(36) NOT NULL DEFAULT '',
+	UNIQUE KEY `identy` (`identy`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+2015-48-18 17:48:59[Test worker][TRACE]: 
+CREATE TABLE IF NOT EXISTS `model`(
+	`Id` VARCHAR(36) NOT NULL DEFAULT '',
+	`address` VARCHAR(36) NOT NULL DEFAULT '',
+	KEY `address` (`address`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+2015-48-18 17:48:59[Test worker][TRACE]: protected void doCreate(java.sql.Statement stmt) {stmt.addBatch("CREATE TABLE IF NOT EXISTS `model`(`Id` VARCHAR(36) NOT NULL DEFAULT '',`address` VARCHAR(36) NOT NULL DEFAULT '',KEY `address` (`address`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");}
+2015-48-18 17:48:59[Test worker][TRACE]: 
+SELECT `name` FROM `model` WHERE Id = ?;
+2015-48-18 17:48:59[Test worker][TRACE]: 
+UPDATE `model` SET `name` = ? WHERE Id = ?;
+2015-48-18 17:48:59[Test worker][TRACE]: 
+INSERT INTO `model` (`name`) VALUES (?);
+2015-48-18 17:48:59[Test worker][TRACE]: 
+ALTER TABLE `model` ADD `name` VARCHAR(36) NOT NULL DEFAULT '';
+
+2015-48-18 17:48:59[Test worker][TRACE]: protected void doAlter(java.sql.Statement stmt, java.util.Set columns) throws java.sql.SQLException {
+		java.util.Map alterMap = new java.util.HashMap();
+		alterMap.put("name", "ALTER TABLE `model` ADD `name` VARCHAR(36) NOT NULL DEFAULT '';");
+
+		java.util.Map.Entry entry;
+		java.util.Iterator it = alterMap.entrySet().iterator();
+		while (it.hasNext()) {
+			entry = it.next();
+			if (!columns.contains((String)entry.getKey()))
+			stmt.addBatch((String)entry.getValue());
+		}
+	}
+2015-48-18 17:48:59[Test worker][TRACE]: 
+DELETE FROM `model` WHERE Id = ?;
+2015-49-18 17:49:00[Test worker][TRACE]: 
+CREATE TABLE IF NOT EXISTS `model`(
+	`Id` VARCHAR(36) NOT NULL DEFAULT '',
+	`name` VARCHAR(36) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+2015-49-18 17:49:00[Test worker][TRACE]: 
+CREATE TABLE IF NOT EXISTS `model`(
+	`Id` VARCHAR(36) NOT NULL DEFAULT '',
+	`identy` VARCHAR(36) NOT NULL DEFAULT '',
+	UNIQUE KEY `identy` (`identy`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+2015-49-18 17:49:00[Test worker][TRACE]: 
+CREATE TABLE IF NOT EXISTS `model`(
+	`Id` VARCHAR(36) NOT NULL DEFAULT '',
+	`address` VARCHAR(36) NOT NULL DEFAULT '',
+	KEY `address` (`address`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+2015-49-18 17:49:00[Test worker][TRACE]: protected void doCreate(java.sql.Statement stmt) {stmt.addBatch("CREATE TABLE IF NOT EXISTS `model`(`Id` VARCHAR(36) NOT NULL DEFAULT '',`address` VARCHAR(36) NOT NULL DEFAULT '',KEY `address` (`address`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");}
+2015-49-18 17:49:00[Test worker][TRACE]: 
+SELECT `name` FROM `model` WHERE Id = ?;
+2015-49-18 17:49:00[Test worker][TRACE]: 
+UPDATE `model` SET `name` = ? WHERE Id = ?;
+2015-49-18 17:49:00[Test worker][TRACE]: 
+INSERT INTO `model` (`name`) VALUES (?);
+2015-49-18 17:49:00[Test worker][TRACE]: 
+ALTER TABLE `model` ADD `name` VARCHAR(36) NOT NULL DEFAULT '';
+
+2015-49-18 17:49:00[Test worker][TRACE]: protected void doAlter(java.sql.Statement stmt, java.util.Set columns) throws java.sql.SQLException {
+		java.util.Map alterMap = new java.util.HashMap();
+		alterMap.put("name", "ALTER TABLE `model` ADD `name` VARCHAR(36) NOT NULL DEFAULT '';");
+
+		java.util.Map.Entry entry;
+		java.util.Iterator it = alterMap.entrySet().iterator();
+		while (it.hasNext()) {
+			entry = it.next();
+			if (!columns.contains((String)entry.getKey()))
+			stmt.addBatch((String)entry.getValue());
+		}
+	}
+2015-49-18 17:49:00[Test worker][TRACE]: 
+DELETE FROM `model` WHERE Id = ?;
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

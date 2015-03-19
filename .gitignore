@@ -2,7 +2,10 @@
 .classpath
 .project
 .settings
-.gradle
+*.iml
+*.ipr
+*.iws
+
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -16,3 +19,5 @@
 hs_err_pid*
 /build/
 /bin/
+/.idea/
+/.gradle/

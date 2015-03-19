@@ -40,7 +40,7 @@ class ConfigHandler extends AbstractHandler {
   
   @Override
   public void startDocument() throws SAXException {
-	attributes = new HashMap<String, String>();
+	attributes = new HashMap<>();
   }
   
   @Override

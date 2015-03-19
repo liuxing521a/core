@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.itas.core.bytecode.TestType" tests="16" skipped="0" failures="0" errors="0" timestamp="2015-03-18T09:48:58" hostname="liu" time="1.989">
+  <properties/>
+  <testcase name="testByteType" classname="org.itas.core.bytecode.TestType" time="0.059"/>
+  <testcase name="testBooleanType" classname="org.itas.core.bytecode.TestType" time="0.001"/>
+  <testcase name="testGameObject" classname="org.itas.core.bytecode.TestType" time="0.04"/>
+  <testcase name="testEnum" classname="org.itas.core.bytecode.TestType" time="0.002"/>
+  <testcase name="testSimple" classname="org.itas.core.bytecode.TestType" time="0.001"/>
+  <testcase name="testResource" classname="org.itas.core.bytecode.TestType" time="0.001"/>
+  <testcase name="testString" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testTimeStamp" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testByteType" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testBooleanType" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testGameObject" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testEnum" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testSimple" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testResource" classname="org.itas.core.bytecode.TestType" time="0.0"/>
+  <testcase name="testString" classname="org.itas.core.bytecode.TestType" time="0.001"/>
+  <testcase name="testTimeStamp" classname="org.itas.core.bytecode.TestType" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
