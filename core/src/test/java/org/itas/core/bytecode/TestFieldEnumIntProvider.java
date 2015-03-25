@@ -20,7 +20,7 @@ public class TestFieldEnumIntProvider {
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldEnumIntProvider();
+		codeType = new EnumIntProvider();
 		codeType.setMethodProvider(new TestMethod());
 	}
 	
@@ -51,32 +51,6 @@ public class TestFieldEnumIntProvider {
 		
 		content = codeType.setStatement(field);
 		Assert.assertEquals(result, content);
-	}
-	
-	class Model {
-		
-		private EnumInt bs;
-
-		public EnumInt getBs() {
-			return bs;
-		}
-
-		public void setBs(EnumInt bs) {
-			this.bs = bs;
-		}
-		
-		public void setState(PreparedStatement state) throws SQLException {
-			int ebyte_bs = 0;
-			if (getBs() != null) {
-				ebyte_bs = getBs().key();
-			}
-			
-			state.setInt(1, ebyte_bs);
-		}
-		
-		public void getResult(ResultSet result) throws SQLException {
-//			setBs(org.itas.core.util.Utils.EnumUtils.parse(EnumInt.class, result.getInt("bs")));
-		}
 	}
 	
 }

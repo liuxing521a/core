@@ -66,50 +66,51 @@ public final class ByteCodes implements ClassLoaders {
   }
 	
   private Class<?> toClass(CtClass ctClass) throws Exception {
-	ByteCodeMethods methods = new ByteCodeMethods();
-	methods.begin(ctClass);
-	  
-	List<CtField> fields = getAllField(ctClass);
-	for (CtField field : fields) {
-	  if (field.hasAnnotation(UnSave.class) || 
-	      Modifier.isStatic(field.getModifiers())) {
-			continue;
-	  } 
-		  
-	  methods.append(field);
-	}
-	methods.end();
-	for (CtMethod ctMethod : methods.toMethods()) {
-	  if (ctMethod != null) {
-	    ctClass.addMethod(ctMethod);
-	  }
-	}
-	  
-	ctClass.writeFile("D:/");
-	return ctClass.toClass();
+//	ByteCodeMethods methods = new ByteCodeMethods();
+//	methods.begin(ctClass);
+//	  
+//	List<CtField> fields = getAllField(ctClass);
+//	for (CtField field : fields) {
+//	  if (field.hasAnnotation(UnSave.class) || 
+//	      Modifier.isStatic(field.getModifiers())) {
+//			continue;
+//	  } 
+//		  
+//	  methods.append(field);
+//	}
+//	methods.end();
+//	for (CtMethod ctMethod : methods.toMethods()) {
+//	  if (ctMethod != null) {
+//	    ctClass.addMethod(ctMethod);
+//	  }
+//	}
+//	  
+//	ctClass.writeFile("D:/");
+//	return ctClass.toClass();
+  	return null;
   }
   
   Class<?> testToClass(CtClass ctClass) throws Exception {
-	ByteCodeMethods methods = new ByteCodeMethods();
-	methods.begin(ctClass);
-		
-	List<CtField> fields = getAllField(ctClass);
-	for (CtField field : fields) {
-      if (field.hasAnnotation(UnSave.class) || 
-    	   Modifier.isStatic(field.getModifiers())) {
-		  continue;
-      } 
-			
-      methods.append(field);
-	}
-	methods.end();
-		
-	for (CtMethod ctMethod : methods.toMethods()) {
-	  if (ctMethod != null) {
-	    ctClass.addMethod(ctMethod);
-	  }
-	}
-		
+//	ByteCodeMethods methods = new ByteCodeMethods();
+//	methods.begin(ctClass);
+//		
+//	List<CtField> fields = getAllField(ctClass);
+//	for (CtField field : fields) {
+//      if (field.hasAnnotation(UnSave.class) || 
+//    	   Modifier.isStatic(field.getModifiers())) {
+//		  continue;
+//      } 
+//			
+//      methods.append(field);
+//	}
+//	methods.end();
+//		
+//	for (CtMethod ctMethod : methods.toMethods()) {
+//	  if (ctMethod != null) {
+//	    ctClass.addMethod(ctMethod);
+//	  }
+//	}
+//		
 //	clazz.writeFile("D:/");
 	return null;
   }

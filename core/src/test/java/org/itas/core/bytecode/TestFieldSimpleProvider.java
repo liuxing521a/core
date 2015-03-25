@@ -21,7 +21,7 @@ public class TestFieldSimpleProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException {
-		codeType = new FieldSimpleProvider();
+		codeType = new SimpleProvider();
 		codeType.setMethodProvider(new TestMethod());
 	}
 	
@@ -57,48 +57,6 @@ public class TestFieldSimpleProvider {
 				+ "}";
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
-	}
-	
-	
-	
-	class Model {
-		
-		private Simple<TestMode> bs;
-
-		public Simple<TestMode> getBs() {
-			return bs;
-		}
-
-		public void setBs(Simple<TestMode> bs) {
-			this.bs = bs;
-		}
-		
-	}
-	
-	private class TestMode extends GameObjectAotuID {
-
-		protected TestMode(String Id) {
-			super(Id);
-		}
-
-		@Override
-		public void writeExternal(ObjectOutput out) throws IOException {
-			
-		}
-
-		@Override
-		public void readExternal(ObjectInput in) throws IOException,
-				ClassNotFoundException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected String PRIFEX() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 	}
 	
 }

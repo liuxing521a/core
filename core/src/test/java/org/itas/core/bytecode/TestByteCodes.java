@@ -9,7 +9,7 @@ public class TestByteCodes {
 
 	@Test
 	public void testByteCodeClass() throws Exception {
-		CtClass ctClass = ClassPool.getDefault().get(TestModel.class.getName());
+		CtClass ctClass = ClassPool.getDefault().get(ModelTest.class.getName());
 		ByteCodes.instance.testToClass(ctClass);
 	}
 }

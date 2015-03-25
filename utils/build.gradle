@@ -9,9 +9,9 @@ ext {
     archiveBaseName = 'utils'
 }
 
-//eclipse.project {
-//    name = appName + '-' + archiveBaseName
-//}
+eclipse.project {
+    name = appName + '-' + archiveBaseName
+}
 
 defaultTasks 'packJar'
 jar {

@@ -239,31 +239,31 @@ public interface XmlContainers extends Enums {
 	}
 
 	private Object toValue(Class<?> clazz, String value) {
-	  if (booleanType.is(clazz)) {
+	  if (booleanType.isType(clazz)) {
     	return parseBoolean(value);
-	  } else if (byteType.is(clazz)) {
+	  } else if (byteType.isType(clazz)) {
 		return parseByte(value);
-	  } else if (charType.is(clazz)) {
+	  } else if (charType.isType(clazz)) {
 		return parseChar(value);
-	  } else if (shortType.is(clazz)) {
+	  } else if (shortType.isType(clazz)) {
 		return parseShort(value);
-	  } else if (intType.is(clazz)) {
+	  } else if (intType.isType(clazz)) {
 		return parseInt(value);
-	  } else if (longType.is(clazz)) {
+	  } else if (longType.isType(clazz)) {
 		return parseLong(value);
-	  } else if (floatType.is(clazz)) {
+	  } else if (floatType.isType(clazz)) {
 		return parseFloat(value);
-	  } else if (doubleType.is(clazz)) {
+	  } else if (doubleType.isType(clazz)) {
 		return parseDouble(value);
-	  } else if (stringType.is(clazz))	{
+	  } else if (stringType.isType(clazz))	{
 		return value;
-	  } else if (enumByteType.is(clazz)) {
+	  } else if (enumByteType.isType(clazz)) {
 		return parse(clazz, parseByte(value));
-	  } else if (enumIntType.is(clazz)) {
+	  } else if (enumIntType.isType(clazz)) {
 		return parse(clazz, parseInt(value));
-	  } else if (enumStringType.is(clazz)) {
+	  } else if (enumStringType.isType(clazz)) {
 		return parse(clazz, value);
-	  } else if (resourceType.is(clazz)) {
+	  } else if (resourceType.isType(clazz)) {
 		return parseResource(value);
 	  } else {
 		throw new RuntimeException("reflect unSupported type:["	+ clazz + "]");

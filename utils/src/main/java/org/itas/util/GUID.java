@@ -36,7 +36,7 @@ public class GUID {
 	}
 
 	private void getRandomGUID() {
-		StringBuffer sbValueBeforeMD5 = new StringBuffer(128);
+    StringBuilder sbValueBeforeMD5 = new StringBuilder(128);
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			long time = System.currentTimeMillis();
@@ -51,9 +51,9 @@ public class GUID {
 			md5.update(valueBeforeMD5.getBytes());
 
 			byte[] array = md5.digest();
-			StringBuffer sb = new StringBuffer(32);
-			for (int j = 0; j < array.length; ++j) {
-				int b = array[j] & TWO_BYTES;
+			StringBuilder sb = new StringBuilder(32);
+			for (final byte bs : array) {
+				int b = bs & TWO_BYTES;
 				if (b < PAD_BELOW)
 					sb.append('0');
 				sb.append(Integer.toHexString(b));

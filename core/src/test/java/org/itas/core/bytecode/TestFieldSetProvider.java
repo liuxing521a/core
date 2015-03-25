@@ -29,7 +29,7 @@ public class TestFieldSetProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException {
-		codeType = new FieldSetProvider();
+		codeType = new SetProvider();
 		codeType.setMethodProvider(new TestMethod());
 		ClassPool pool = ClassPool.getDefault();
 		clazz = pool.get(Model.class.getName());
@@ -169,94 +169,6 @@ public class TestFieldSetProvider {
 				//						 bsArray.add(%s);
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
-	}
-	
-	
-	
-	class Model {
-		
-		@Clazz(LinkedHashSet.class)
-		private Set<Simple<TestMode>> bs;
-
-		@Size(16)
-		private Set<TestRes> rs;
-
-		private Set<Integer> as;
-		
-		private Set<EnumByte> es;
-
-		public Set<Simple<TestMode>> getBs() {
-			return bs;
-		}
-
-		public void setBs(Set<Simple<TestMode>> bs) {
-			this.bs = bs;
-		}
-
-		public Set<TestRes> getRs() {
-			return rs;
-		}
-
-		public void setRs(Set<TestRes> rs) {
-			this.rs = rs;
-		}
-
-		public Set<Integer> getAs() {
-			return as;
-		}
-
-		public void setAs(Set<Integer> as) {
-			this.as = as;
-		}
-
-		public Set<EnumByte> getEs() {
-			return es;
-		}
-
-		public void setEs(Set<EnumByte> es) {
-			this.es = es;
-		}
-		
-	}
-	
-	public class TestRes extends Resource {
-
-		protected TestRes(String Id) {
-			super(Id);
-		}
-		
-	}
-	
-	class TestMode extends GameObject {
-
-		protected TestMode(String Id) {
-			super(Id);
-		}
-
-		@Override
-		public void writeExternal(ObjectOutput out) throws IOException {
-			
-		}
-
-		@Override
-		public void readExternal(ObjectInput in) throws IOException,
-				ClassNotFoundException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected String PRIFEX() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		protected <T extends GameObject> T autoInstance(String Id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 	}
 	
 }

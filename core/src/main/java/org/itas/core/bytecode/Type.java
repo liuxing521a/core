@@ -3,8 +3,6 @@ package org.itas.core.bytecode;
 import javassist.CtClass;
 import javassist.CtField;
 
-import org.itas.core.CallBack;
-
 
 
 /**
@@ -12,13 +10,13 @@ import org.itas.core.CallBack;
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月27日上午10:02:48
  */
-public enum Type {
+public enum Type implements TypeProvider {
 	
 	booleanType {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeBooleanProvider.PROVIDER;
+			return BooleanProvider.PROVIDER;
 		}
 		
 	},
@@ -26,7 +24,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeByteProvider.PROVIDER;
+			return ByteProvider.PROVIDER;
 		}
 		
 	},
@@ -34,7 +32,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeCharProvider.PROVIDER;
+			return CharProvider.PROVIDER;
 		}
 		
 	},
@@ -42,7 +40,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeShortProvider.PROVIDER;
+			return ShortProvider.PROVIDER;
 		}
 		
 	},
@@ -50,7 +48,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeIntProvider.PROVIDER;
+			return IntProvider.PROVIDER;
 		}
 		
 	},
@@ -58,7 +56,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeLongProvider.PROVIDER;
+			return LongProvider.PROVIDER;
 		}
 		
 	},
@@ -66,7 +64,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeFloatProvider.PROVIDER;
+			return FloatProvider.PROVIDER;
 		}
 		
 	},
@@ -74,7 +72,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeDoubleProvider.PROVIDER;
+			return DoubleProvider.PROVIDER;
 		}
 		
 	},
@@ -82,7 +80,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeStringProvider.PROVIDER;
+			return StringProvider.PROVIDER;
 		}
 		
 	},
@@ -90,7 +88,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeSimpleProvider.PROVIDER;
+			return SimpleProvider.PROVIDER;
 		}
 		
 	},
@@ -98,7 +96,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeResourceProvider.PROVIDER;
+			return ResourceProvider.PROVIDER;
 		}
 		
 	},
@@ -106,7 +104,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeEnumByteProvider.PROVIDER;
+			return EnumByteProvider.PROVIDER;
 		}
 		
 	},
@@ -114,14 +112,14 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeEnumIntProvider.PROVIDER;
+			return EnumIntProvider.PROVIDER;
 		}
 	},
 	enumStringType {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeEnumStringProvider.PROVIDER;
+			return EnumStringProvider.PROVIDER;
 		}
 		
 	},
@@ -129,7 +127,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeListProvider.PROVIDER;
+			return ListProvider.PROVIDER;
 		}
 		
 	},
@@ -137,7 +135,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeSetProvider.PROVIDER;
+			return SetProvider.PROVIDER;
 		}
 	
 	},
@@ -145,7 +143,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeMapProvider.PROVIDER;
+			return MapProvider.PROVIDER;
 		}
 		
 	},
@@ -153,7 +151,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeTimestampProvider.PROVIDER;
+			return TimestampProvider.PROVIDER;
 		}
 		
 	},
@@ -161,7 +159,7 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeGameObjectProvider.PROVIDER;
+			return GameObjectProvider.PROVIDER;
 		}
 	
 	},
@@ -169,32 +167,37 @@ public enum Type {
 
 		@Override
 		protected TypeProvider provider() {
-			return TypeGameObjectAutoIdProvider.PROVIDER;
+			return GameObjectAutoProvider.PROVIDER;
 		}
 		
 	},
-	
 	;
 	
 	private Type() {
-		
 	}
 	
-	protected abstract TypeProvider provider();
+	abstract TypeProvider provider();
 	
-	public boolean is(Class<?> clazz) {
+	@Override
+	public boolean isType(Class<?> clazz) {
 		return provider().isType(clazz);
 	}
 
-	public boolean is(CtClass clazz) throws Exception {
-		return provider().isCtType(clazz);
+	@Override
+	public boolean isType(CtClass clazz) throws Exception {
+		return provider().isType(clazz);
 	}
 	
-	String columnSQL(CtField field) throws Exception {
-		return provider().columnSQL(field);
+	@Override
+	public String sqlType(CtField field) throws Exception {
+		return provider().sqlType(field);
 	}
 	
-	void fieldProcessing(MethodProvider provider, CallBack<FieldProvider> call) throws Exception {
-		provider().fieldProcessing(provider, call);
-	}
+//	@Override
+//	public void process(MethodProvider provider, 
+//			CallBack<FieldProvider> call) throws Exception {
+////		provider().process(provider, call);
+//	}
+	
+	
 }

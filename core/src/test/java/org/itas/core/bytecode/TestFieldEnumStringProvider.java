@@ -15,7 +15,7 @@ public class TestFieldEnumStringProvider {
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldEnumStringProvider();
+		codeType = new EnumStringProvider();
 		codeType.setMethodProvider(new TestMethod());
 	}
 	
@@ -46,19 +46,6 @@ public class TestFieldEnumStringProvider {
 		
 		content = codeType.setStatement(field);
 		Assert.assertEquals(result, content);
-	}
-	
-	class Model {
-		
-		private EnumString bs;
-
-		public EnumString getBs() {
-			return bs;
-		}
-
-		public void setBs(EnumString bs) {
-			this.bs = bs;
-		}
 	}
 	
 }

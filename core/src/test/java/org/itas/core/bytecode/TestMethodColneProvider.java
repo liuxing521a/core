@@ -15,12 +15,12 @@ public class TestMethodColneProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException, Exception {
-		ctClass = ClassPool.getDefault().get(TestModel.class.getName());
+		ctClass = ClassPool.getDefault().get(ModelTest.class.getName());
 	}
 	
 	@Test
 	public void testClone() throws Exception {
-		MethodCloneProvider clone = new MethodCloneProvider();
+		CloneProvider clone = new CloneProvider();
 		
 		clone.begin(ctClass);
 		clone.end();

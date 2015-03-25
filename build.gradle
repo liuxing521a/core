@@ -12,22 +12,22 @@ buildscript {
 }
 
 allprojects {
-    //apply plugin: "eclipse"
-    apply plugin: 'idea'
+    apply plugin: "eclipse"
+    //apply plugin: 'idea'
 
-	//eclipse {
-  	//classpath {
-    //	downloadSources = true
-    //	downloadJavadoc = false
-  	//	}
-	//}
+	eclipse {
+  	classpath {
+    	downloadSources = true
+    	downloadJavadoc = false
+  		}
+	}
 
-    idea{
-        module{
-            inheritOutputDirs = false
-            outputDir = file("${buildDir}/classes/main")
-        }
-    }
+    //idea{
+    //    module{
+    //        inheritOutputDirs = false
+    //        outputDir = file("${buildDir}/classes/main")
+    //    }
+    //}
 
     version = '1.1.1'
     group = 'net.core'

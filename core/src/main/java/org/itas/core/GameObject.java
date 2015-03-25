@@ -131,12 +131,12 @@ public abstract class GameObject implements HashId,
 		case news: 
 			doInsert(statement);
 			statement.addBatch();
-			status = DataStatus.load;
+			this.status = DataStatus.load;
 			break;
 		case modify:
 			doUpdate(statement);
 			statement.addBatch();
-			status = DataStatus.load;
+			this.status = DataStatus.load;
 			break;
 		case destory: 
 			doDelete(statement);

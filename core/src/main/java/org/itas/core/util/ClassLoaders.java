@@ -70,7 +70,9 @@ public interface ClassLoaders {
     }
 	
     public CtClass[] loadCtClass(String packageName) throws Exception {
-	  final List<Path> fileList =  loadFile(packageName, ".class"); 
+	  final List<Path> fileList =  loadFile(packageName, ".class");
+	  assert fileList != null;
+	  
 	  final CtClass[] ctClasss = new CtClass[fileList.size()];
 	
 	  final ClassPool classPool = ClassPool.getDefault();
@@ -86,8 +88,10 @@ public interface ClassLoaders {
   
     public Class<?>[] loadClass(String packageName) {
       try {
-		final List<Path> fileList =  loadFile(packageName, ".class"); 
-		  final Class<?>[] clazzArray = new Class<?>[fileList.size()];
+    	final List<Path> fileList =  loadFile(packageName, ".class"); 
+    	assert fileList != null;
+
+    	final Class<?>[] clazzArray = new Class<?>[fileList.size()];
 			
 		  String fileName;
 		  for (int i = 0; i < fileList.size(); i ++) {

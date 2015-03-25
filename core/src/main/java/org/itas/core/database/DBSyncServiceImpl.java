@@ -62,7 +62,7 @@ final class DBSyncServiceImpl implements Runnable, DBSyncService {
 			lastTime = TimeUtil.systemTime();
 		  }
 
-		  Thread.sleep(interval);
+		  worker.wait(interval);
 	    } catch(InterruptedException exception) {
 		  // do nothing
 	    } catch (Throwable e) {

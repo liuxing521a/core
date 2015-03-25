@@ -36,7 +36,7 @@ public final class GameWorld {
 		this.lock = new ReentrantReadWriteLock();
 	}
 	
-	public void send(int userId, SendAble sendAble) {
+	public void send(String userId, SendAble sendAble) {
 		lock.readLock().lock();
 		try  {
 			User user = user_group.get(userId);
@@ -51,7 +51,7 @@ public final class GameWorld {
 		}
 	}
 	
-	public void sendAndFlush(int userId, SendAble message) {
+	public void sendAndFlush(String userId, SendAble message) {
 		lock.readLock().lock();
 		try  {
 			User user = user_group.get(userId);
@@ -66,7 +66,7 @@ public final class GameWorld {
 		}
 	}
 	
-	public void flush(int userId, Message message) {
+	public void flush(String userId, Message message) {
 		lock.readLock().lock();
 		try  {
 			User user = user_group.get(userId);
@@ -177,11 +177,11 @@ public final class GameWorld {
 	 * @param userList 指定用户组
 	 * @param message 消息
 	 */
-	public void sendMuilt(SendAble message, Iterable<Integer> userList) {
+	public void sendMuilt(SendAble message, Iterable<String> userList) {
 		lock.readLock().lock();
 		try {
 			User user;
-			for (Integer userId : userList) {
+			for (String userId : userList) {
 				user = user_group.get(userId);
 				if (Objects.nonNull(user)) {
 					user.send(message);
@@ -194,11 +194,11 @@ public final class GameWorld {
 		}
 	}
 	
-	public void sendAndFlushMuilt(SendAble message, Iterable<Integer> userList) {
+	public void sendAndFlushMuilt(SendAble message, Iterable<String> userList) {
 		lock.readLock().lock();
 		try {
 			User user;
-			for (Integer userId : userList) {
+			for (String userId : userList) {
 				user = user_group.get(userId);
 				if (Objects.nonNull(user)) {
 					user.send(message);
@@ -211,11 +211,11 @@ public final class GameWorld {
 		}
 	}
 	
-	public void flushMuilt(Iterable<Integer> userList) {
+	public void flushMuilt(Iterable<String> userList) {
 		lock.readLock().lock();
 		try {
 			User user;
-			for (Integer userId : userList) {
+			for (String userId : userList) {
 				user = user_group.get(userId);
 				if (Objects.nonNull(user)) {
 					user.flush();

@@ -24,7 +24,7 @@ public class TestMethodSQLProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException, Exception {
-		ctClass = ClassPool.getDefault().get(TestModel.class.getName());
+		ctClass = ClassPool.getDefault().get(ModelTest.class.getName());
 	}
 	
 	@Test
@@ -168,70 +168,4 @@ public class TestMethodSQLProvider {
 //		ctClass.addMethod(method);
 	}
 	
-	@SQLEntity("model")
-	class TestModel extends GameObject {
-
-		protected TestModel(String Id) {
-			super(Id);
-		}
-		
-		private String name;
-		
-		@Unique
-		private String identy;
-		
-		@Index
-		private String address;
-
-		public String getName() {
-			
-			
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getIdenty() {
-			return identy;
-		}
-
-		public void setIdenty(String identy) {
-			this.identy = identy;
-		}
-
-		public String getAddress() {
-			return address;
-		}
-
-		public void setAddress(String address) {
-			this.address = address;
-		}
-
-		@Override
-		public void writeExternal(ObjectOutput out) throws IOException {
-			
-		}
-
-		@Override
-		public void readExternal(ObjectInput in) throws IOException,
-				ClassNotFoundException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected String PRIFEX() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		protected <T extends GameObject> T autoInstance(String Id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}
 }

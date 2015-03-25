@@ -67,7 +67,7 @@ public class GenericInfo {
 	
 	@Override
 	public String toString() {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(name);
 		
 		if (Objects.nonEmpty(childs)) {

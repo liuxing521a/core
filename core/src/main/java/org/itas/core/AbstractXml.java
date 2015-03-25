@@ -30,39 +30,39 @@ abstract class AbstractXml implements XmlContainers {
 	  field.setAccessible(true);
 	}
 	
-	if (booleanType.is(field.getType())) {
+	if (booleanType.isType(field.getType())) {
 	  field.setBoolean(this, parseBoolean(text));
-	} else if (byteType.is(field.getType())) {
+	} else if (byteType.isType(field.getType())) {
 	  field.setByte(this, parseByte(text));
-	} else if (charType.is(field.getType())) {
+	} else if (charType.isType(field.getType())) {
 	  field.setChar(this, parseChar(text));
-	} else if (shortType.is(field.getType())) {
+	} else if (shortType.isType(field.getType())) {
 	  field.setShort(this, parseShort(text));
-	} else if (intType.is(field.getType())) {
+	} else if (intType.isType(field.getType())) {
 	  field.setInt(this, parseInt(text));
-	} else if (longType.is(field.getType())) {
+	} else if (longType.isType(field.getType())) {
 	  field.setLong(this, parseLong(text));
-	} else if (floatType.is(field.getType())) {
+	} else if (floatType.isType(field.getType())) {
 	  field.setFloat(this, parseFloat(text));
-	} else if (doubleType.is(field.getType())) {
+	} else if (doubleType.isType(field.getType())) {
 	  field.setDouble(this, parseDouble(text));
-	} else if (stringType.is(field.getType())) {
+	} else if (stringType.isType(field.getType())) {
 	  field.set(this, text);
-	} else if (resourceType.is(field.getType())) {
+	} else if (resourceType.isType(field.getType())) {
 	  field.set(this, Pool.getResource(text));
-	} else if (enumByteType.is(field.getType())) {
+	} else if (enumByteType.isType(field.getType())) {
 	  field.set(this, parse(field.getType(), parseByte(text)));
-	} else if (enumIntType.is(field.getType())) {
+	} else if (enumIntType.isType(field.getType())) {
 	  field.set(this, parse(field.getType(), parseInt(text)));
-	} else if (enumStringType.is(field.getType())) {
+	} else if (enumStringType.isType(field.getType())) {
       field.set(this, parse(field.getType(), text));
-	} else if (setType.is(field.getType())) {
+	} else if (setType.isType(field.getType())) {
 	  field.set(this, parseSet(field, text));
-	} else if (listType.is(field.getType())) {
+	} else if (listType.isType(field.getType())) {
 	  field.set(this, parseList(field, text));
-	} else if (mapType.is(field.getType())) {
+	} else if (mapType.isType(field.getType())) {
 	  field.set(this, parseMap(field, text));
-	} else if (timeStampType.is(field.getType())) {
+	} else if (timeStampType.isType(field.getType())) {
 	  field.set(this, parseMap(field, text));
 	} else {
 	  throw new ItasException("unSupported:[type:" + field.getType() + "]");

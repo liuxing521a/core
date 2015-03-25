@@ -16,7 +16,7 @@ public class TestFieldEnumByteProvider implements Enums {
 	
 	@Before
 	public void setUP() {
-		codeType = new FieldEnumByteProvider();
+		codeType = new EnumByteProvider();
 		codeType.setMethodProvider(new TestMethod());
 	}
 	
@@ -47,19 +47,6 @@ public class TestFieldEnumByteProvider implements Enums {
 		
 		content = codeType.setStatement(field);
 		Assert.assertEquals(result, content);
-	}
-	
-	class Model {
-		
-		private EnumByte bs;
-
-		public EnumByte getBs() {
-			return bs;
-		}
-
-		public void setBs(EnumByte bs) {
-			this.bs = bs;
-		}
 	}
 	
 }

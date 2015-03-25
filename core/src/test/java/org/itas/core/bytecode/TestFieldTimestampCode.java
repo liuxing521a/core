@@ -17,7 +17,7 @@ public class TestFieldTimestampCode {
 	
 	@Before
 	public void setUP() throws NotFoundException {
-		codeType = new FieldTimestampProvider();
+		codeType = new TimestampProvider();
 		codeType.setMethodProvider(new TestMethod());
 	}
 	
@@ -32,20 +32,6 @@ public class TestFieldTimestampCode {
 		
 		content = codeType.getResultSet(field);
 		Assert.assertEquals("\t\tsetBs(result.getTimestamp(\"bs\"));", content);
-	}
-	
-	class Model {
-		
-		private Timestamp bs;
-
-		public Timestamp getBs() {
-			return bs;
-		}
-
-		public void setBs(Timestamp bs) {
-			this.bs = bs;
-		}
-		
 	}
 	
 }

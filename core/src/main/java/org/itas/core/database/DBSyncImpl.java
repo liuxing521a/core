@@ -51,9 +51,9 @@ class DBSyncImpl extends AbstractDBSync implements Binding {
   
   @Override
   public void unBind() {
-	insertDatas = null;
-	updateDatas = null;
-	deleteDatas = null;
+	insertDatas.clear();
+	updateDatas.clear();
+	deleteDatas.clear();
   }
 	
   @Override

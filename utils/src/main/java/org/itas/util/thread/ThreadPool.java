@@ -139,7 +139,7 @@ public final class ThreadPool implements Executor {
 
 	}
 
-	public int getThreadPriority() 
+	public synchronized int getThreadPriority() 
 	{
 		return threadPriority;
 	}

@@ -27,7 +27,7 @@ public final class IoUtil {
 		}
 	}
 
-    public static void send(int userId, SendAble message) {
+    public static void send(String userId, SendAble message) {
     	WOLRD.send(userId, message);
     }
 
@@ -48,15 +48,15 @@ public final class IoUtil {
 	}
 	
 	
-	public static void sendMuilt(SendAble message, Iterable<Integer> userList) {
+	public static void sendMuilt(SendAble message, Iterable<String> userList) {
 		WOLRD.sendMuilt(message, userList);
 	}
 
-	public static void flushMuilt(Iterable<Integer> userList) {
+	public static void flushMuilt(Iterable<String> userList) {
 		WOLRD.flushMuilt(userList);
 	}
 
-	public static void sendAndFlushMuilt(SendAble message, Iterable<Integer> userList) {
+	public static void sendAndFlushMuilt(SendAble message, Iterable<String> userList) {
 		WOLRD.sendAndFlushMuilt(message, userList);
 	}
 	

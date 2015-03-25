@@ -31,7 +31,7 @@ public class TestFieldMapProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException {
-		codeType = new FieldMapProvider();
+		codeType = new MapProvider();
 		codeType.setMethodProvider(new TestMethod());
 		ClassPool pool = ClassPool.getDefault();
 		clazz = pool.get(Model.class.getName());
@@ -187,97 +187,6 @@ public class TestFieldMapProvider {
 
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
-	}
-	
-	
-	
-	class Model {
-		
-		@Clazz(LinkedHashMap.class)
-		private Map<Simple<TestMode>, String> bs;
-
-		@Size(16)
-		private Map<TestRes, Integer> rs;
-
-		private Map<Integer, Simple<TestMode>> as;
-		
-		private Map<EnumByte, Float> es;
-
-		public Map<Simple<TestMode>, String> getBs() {
-			return bs;
-		}
-
-		public void setBs(Map<Simple<TestMode>, String> bs) {
-			this.bs = bs;
-		}
-
-		public Map<TestRes, Integer> getRs() {
-			return rs;
-		}
-
-		public void setRs(Map<TestRes, Integer> rs) {
-			this.rs = rs;
-		}
-
-		public Map<Integer, Simple<TestMode>> getAs() {
-			return as;
-		}
-
-		public void setAs(Map<Integer, Simple<TestMode>> as) {
-			this.as = as;
-		}
-
-		public Map<EnumByte, Float> getEs() {
-			return es;
-		}
-
-		public void setEs(Map<EnumByte, Float> es) {
-			this.es = es;
-		}
-		
-		public void setResultSet(ResultSet result) throws SQLException {
-			
-		}
-	}
-	
-	public class TestRes extends Resource {
-
-		protected TestRes(String Id) {
-			super(Id);
-		}
-		
-	}
-	
-	class TestMode extends GameObject {
-
-		protected TestMode(String Id) {
-			super(Id);
-		}
-
-		@Override
-		public void writeExternal(ObjectOutput out) throws IOException {
-			
-		}
-
-		@Override
-		public void readExternal(ObjectInput in) throws IOException,
-				ClassNotFoundException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected String PRIFEX() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		protected <T extends GameObject> T autoInstance(String Id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 	}
 	
 }

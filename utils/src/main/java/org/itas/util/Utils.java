@@ -359,6 +359,7 @@ public class Utils {
 			if (root.isDirectory()) {
 
 				final File[] files = root.listFiles();
+				assert files != null;
 				for (final File file : files) {
 					loadSonClass(clazzList, file, rootPath, parentClass);
 				}

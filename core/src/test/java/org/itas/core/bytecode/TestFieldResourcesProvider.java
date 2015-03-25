@@ -17,7 +17,7 @@ public class TestFieldResourcesProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException {
-		codeType = new FieldResourcesProvider();
+		codeType = new ResourceProvider();
 		codeType.setMethodProvider(new TestMethod());
 	}
 	
@@ -53,31 +53,6 @@ public class TestFieldResourcesProvider {
 				+ "}";
 		content = codeType.getResultSet(field);
 		Assert.assertEquals(expected, content);
-	}
-	
-	
-	
-	class Model {
-		
-		private HeroRes bs;
-
-		public HeroRes getBs() {
-			return bs;
-		}
-
-		public void setBs(HeroRes bs) {
-			this.bs = bs;
-		}
-		
-	}
-	
-	private class HeroRes extends Resource {
-
-		protected HeroRes(String Id) {
-			super(Id);
-		}
-
-
 	}
 	
 }

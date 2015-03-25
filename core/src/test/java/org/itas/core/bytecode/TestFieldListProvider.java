@@ -29,7 +29,7 @@ public class TestFieldListProvider {
 	
 	@Before
 	public void setUP() throws NotFoundException {
-		codeType = new FieldListProvider();
+		codeType = new ListProvider();
 		codeType.setMethodProvider(new TestMethod());
 		ClassPool pool = ClassPool.getDefault();
 		clazz = pool.get(Model.class.getName());
@@ -171,92 +171,5 @@ public class TestFieldListProvider {
 		Assert.assertEquals(expected, content);
 	}
 	
-	
-	
-	class Model {
-		
-		@Clazz(LinkedList.class) @Size(106)
-		private List<Simple<TestMode>> bs;
-
-		@Size(16)
-		private List<TestRes> rs;
-
-		private List<Integer> as;
-		
-		private List<EnumByte> es;
-
-		public List<Simple<TestMode>> getBs() {
-			return bs;
-		}
-
-		public void setBs(List<Simple<TestMode>> bs) {
-			this.bs = bs;
-		}
-
-		public List<TestRes> getRs() {
-			return rs;
-		}
-
-		public void setRs(List<TestRes> rs) {
-			this.rs = rs;
-		}
-
-		public List<Integer> getAs() {
-			return as;
-		}
-
-		public void setAs(List<Integer> as) {
-			this.as = as;
-		}
-
-		public List<EnumByte> getEs() {
-			return es;
-		}
-
-		public void setEs(List<EnumByte> es) {
-			this.es = es;
-		}
-		
-	}
-	
-	public class TestRes extends Resource {
-
-		protected TestRes(String Id) {
-			super(Id);
-		}
-		
-	}
-	
-	class TestMode extends GameObject {
-
-		protected TestMode(String Id) {
-			super(Id);
-		}
-
-		@Override
-		public void writeExternal(ObjectOutput out) throws IOException {
-			
-		}
-
-		@Override
-		public void readExternal(ObjectInput in) throws IOException,
-				ClassNotFoundException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected String PRIFEX() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		protected <T extends GameObject> T autoInstance(String Id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-	}
 	
 }

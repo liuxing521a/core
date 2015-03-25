@@ -152,51 +152,51 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 	
   @Override
   public void deleteData(CircularQueue<GameObject> gameObjects) {
-	int size = gameObjects.size();
-	if (size <= 0) {
-	  return;
-	}
-		
-	Connection conn = null;
-	PreparedStatement statement = null;
-	try {
-	  conn = getConnection();
-	  statement = conn.prepareStatement(gameObjects.peek().deleteSQL());
+    int size = gameObjects.size();
+    if (size <= 0) {
+      return;
+    }
 
-	  GameObject data;
-	  for (; size > 0; size--) {
-		synchronized (gameObjects) {
-		  data = gameObjects.pop();
-		}
+    Connection conn = null;
+    PreparedStatement statement = null;
+    try {
+      conn = getConnection();
+      statement = conn.prepareStatement(gameObjects.peek().deleteSQL());
 
-		if (data.getDataStatus() == DataStatus.destory) {
-		  data.doStatement(statement, DataStatus.destory);
-		}
-	  }
+      GameObject data;
+      for (; size > 0; size--) {
+      synchronized (gameObjects) {
+        data = gameObjects.pop();
+      }
 
-	  statement.executeBatch();
-	} catch (Exception e) {
-	  Logger.error("", e);
-	} finally {
-	  close(conn, statement);
-	}
+      if (data.getDataStatus() == DataStatus.destory) {
+        data.doStatement(statement, DataStatus.destory);
+      }
+      }
+
+      statement.executeBatch();
+    } catch (Exception e) {
+      Logger.error("", e);
+    } finally {
+      close(conn, statement);
+    }
   }
 	
   @Override
   public int[] createTable(List<GameObject> gameObjects) throws SQLException {
-	Connection conn = null;
-	Statement statement = null;
-	try {
-	  conn = getConnection();
-	  statement = conn.createStatement();
-	  for (GameObject gameObject : gameObjects) {
-	    gameObject.doCreate(statement);
-	  }
-			
-	  return statement.executeBatch();
-	} finally {
-	  close(conn, statement);
-	}
+    Connection conn = null;
+    Statement statement = null;
+    try {
+      conn = getConnection();
+      statement = conn.createStatement();
+      for (GameObject gameObject : gameObjects) {
+        gameObject.doCreate(statement);
+      }
+
+      return statement.executeBatch();
+    } finally {
+      close(conn, statement);
+    }
   }
 
   @Override

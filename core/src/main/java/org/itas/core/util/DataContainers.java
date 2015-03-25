@@ -315,15 +315,15 @@ public interface DataContainers {
 	}
 	
     private Object toValue(Class<?> clazz, Object o) {
-	  if (simpleType.is(clazz)) {
+	  if (simpleType.isType(clazz)) {
 	    return ((HashId)o).getId();
-	  } else if (resourceType.is(clazz)) {
+	  } else if (resourceType.isType(clazz)) {
 	    return ((HashId)o).getId();
-	  } else if (enumByteType.is(clazz)) {
+	  } else if (enumByteType.isType(clazz)) {
 	    return ((EnumByte)o).key();
-	  } else if (enumIntType.is(clazz)) {
+	  } else if (enumIntType.isType(clazz)) {
 	    return ((EnumInt)o).key();
-	  } else if (enumStringType.is(clazz)) {
+	  } else if (enumStringType.isType(clazz)) {
 		return ((EnumString)o).key();
 	  } else {
 	    return o;

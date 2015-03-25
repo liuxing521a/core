@@ -70,7 +70,7 @@ public abstract class Dispatch {
 		onExecute(user, event, message);
 	}
 	
-	private void onExecute(User user, Handle event, Message message) {
+	private void onExecute(final User user, Handle event, Message message) {
 		try  {
 			synchronized (user) {
 				if (Objects.nonNull(hook)){
