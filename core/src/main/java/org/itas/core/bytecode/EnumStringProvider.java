@@ -11,38 +11,25 @@ import javassist.CtField;
 class EnumStringProvider extends AbstractFieldProvider 
     implements FieldProvider, TypeProvider {
 	
-	private static final String STATEMENT_SET = 
-					"\t\t" 
-					+ "String estr_%s = \"\";"
-					+ "\n\t\t"
-					+ "if (get%s() != null) {"
-					+ "\n\t\t\t"
-					+ "estr_%s = get%s().key();"
-					+ "\n\t\t"
-					+ "}"
-					+ "\n\t\t"
-					+ "state.setString(%s, estr_%s);";
-
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(org.itas.core.util.Utils.EnumUtils.parse(%s.class, result.getString(\"%s\")));";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("{")
+		.append(next(1, 3)).append("String value_ = \"\";")
+		.append(next(1, 3)).append("if (get%s() != null) {")
+		.append(next(1, 4)).append("value_ = get%s().key();")
+		.append(next(1, 3)).append("}")
+		.append(next(1, 3)).append("state.setString(%s, value_);")
+		.append(next(1, 2)).append("}")
+		.toString();
+	
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2))
+		.append("set%s(parse(%s.class, result.getString(\"%s\")));")
+		.toString();
 	
 
 	public static final EnumStringProvider PROVIDER = new EnumStringProvider();
 	
 	private EnumStringProvider() {
-	}
-
-	@Override
-	public String setStatement(int index, CtField field) {
-		return String.format(STATEMENT_SET, field.getName(), upCase(field.getName()), 
-				field.getName(), upCase(field.getName()), index, field.getName());
-	}
-
-	@Override
-	public String getResultSet(CtField field) throws Exception {
-		return String.format(RESULTSET_GET, upCase(field.getName()), 
-				field.getType().getName(), field.getName());
 	}
 	
 	@Override
@@ -58,6 +45,18 @@ class EnumStringProvider extends AbstractFieldProvider
 	@Override
 	public String sqlType(CtField field) {
 		return String.format("`%s` VARCHAR(24) NOT NULL DEFAULT ''", field.getName());
+	}
+
+	@Override
+	public String setStatement(int index, CtField field) {
+		return String.format(STATEMENT_SET, 
+			upCase(field.getName()), upCase(field.getName()), index);
+	}
+
+	@Override
+	public String getResultSet(CtField field) throws Exception {
+		return String.format(RESULTSET_GET, upCase(field.getName()), 
+			field.getType().getName().replace('$', '.'), field.getName());
 	}
 
 }

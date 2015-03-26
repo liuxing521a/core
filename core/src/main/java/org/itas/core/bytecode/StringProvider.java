@@ -13,13 +13,13 @@ import org.itas.core.annotation.Size;
 class StringProvider extends AbstractFieldProvider
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setString(%s, get%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setString(%s, get%s());")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getString(\"%s\"));";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getString(\"%s\"));")
+		.toString();
 	
 	public static final StringProvider PROVIDER = new StringProvider();
 	

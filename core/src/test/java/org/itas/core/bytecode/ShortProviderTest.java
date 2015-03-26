@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 
@@ -21,8 +20,6 @@ import org.junit.Test;
 
 public class ShortProviderTest extends AbstreactFieldProvider {
 
-	private CtField field;
-	
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
@@ -73,7 +70,7 @@ public class ShortProviderTest extends AbstreactFieldProvider {
 	@Test
 	public void setStatementTest() throws Exception {
 		String expected = 
-				"\t\t" +
+				"\n\t\t" +
 				"state.setShort(1, getGemCount());";
 		
 		String actual  = provider.setStatement(1, field);
@@ -84,7 +81,7 @@ public class ShortProviderTest extends AbstreactFieldProvider {
 	@Test
 	public void getResultSetTest() throws Exception {
 		String expected = 
-				"\t\t" +
+				"\n\t\t" +
 				"setGemCount(result.getShort(\"gemCount\"));";
 		
 		String actual  = provider.getResultSet(field);

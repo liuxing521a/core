@@ -100,6 +100,14 @@ public enum Type implements TypeProvider {
 		}
 		
 	},
+	enumType {
+
+		@Override
+		TypeProvider provider() {
+			return EnumProvider.PROVIDER;
+		}
+		
+	},
 	enumByteType {
 
 		@Override

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 
@@ -18,13 +21,13 @@ import org.itas.core.Simple;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DoubleProviderTest extends AbstreactFieldProvider {
+public class TimestampProviderTest extends AbstreactFieldProvider {
 
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
-		provider = DoubleProvider.PROVIDER;
-		field = clazz.getDeclaredField("money");
+		provider = TimestampProvider.PROVIDER;
+		field = clazz.getDeclaredField("updateAt");
 	}
 	
 	@Test
@@ -50,8 +53,8 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(float.class));
 		Assert.assertEquals(false, provider.isType(Float.class));
 		
-		Assert.assertEquals(true, provider.isType(double.class));
-		Assert.assertEquals(true, provider.isType(Double.class));
+		Assert.assertEquals(false, provider.isType(double.class));
+		Assert.assertEquals(false, provider.isType(Double.class));
 
 		Assert.assertEquals(false, provider.isType(String.class));
 		Assert.assertEquals(false, provider.isType(Simple.class));
@@ -64,27 +67,24 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(ArrayList.class));
 		Assert.assertEquals(false, provider.isType(HashSet.class));
 		Assert.assertEquals(false, provider.isType(HashMap.class));
-		Assert.assertEquals(false, provider.isType(Timestamp.class));
+		Assert.assertEquals(true, provider.isType(Timestamp.class));
 	}
 	
-	@Test
+	@Override
 	public void setStatementTest() throws Exception {
-		String expected = 
-				"\n\t\t" +
-				"state.setDouble(1, getMoney());";
-		
-		String actual  = provider.setStatement(1, field);
+		String expected = "\n\t\t"
+				+ "state.setTimestamp(1, getUpdateAt());";
+				
+		String actual = provider.setStatement(1, field);
 		Assert.assertEquals(expected, actual);
-		
 	}
-	
-	@Test
+
+	@Override
 	public void getResultSetTest() throws Exception {
-		String expected = 
-				"\n\t\t" +
-				"setMoney(result.getDouble(\"money\"));";
+		String expected = "\n\t\t"
+				+ "setUpdateAt(result.getTimestamp(\"updateAt\"));";
 		
-		String actual  = provider.getResultSet(field);
+		String actual = provider.getResultSet(field);
 		Assert.assertEquals(expected, actual);
 	}
 	

@@ -18,13 +18,13 @@ import org.itas.core.Simple;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DoubleProviderTest extends AbstreactFieldProvider {
+public class SimpleProviderTest extends AbstreactFieldProvider {
 
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
-		provider = DoubleProvider.PROVIDER;
-		field = clazz.getDeclaredField("money");
+		provider = SimpleProvider.PROVIDER;
+		field = clazz.getDeclaredField("heroS");
 	}
 	
 	@Test
@@ -50,11 +50,11 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(float.class));
 		Assert.assertEquals(false, provider.isType(Float.class));
 		
-		Assert.assertEquals(true, provider.isType(double.class));
-		Assert.assertEquals(true, provider.isType(Double.class));
+		Assert.assertEquals(false, provider.isType(double.class));
+		Assert.assertEquals(false, provider.isType(Double.class));
 
 		Assert.assertEquals(false, provider.isType(String.class));
-		Assert.assertEquals(false, provider.isType(Simple.class));
+		Assert.assertEquals(true, provider.isType(Simple.class));
 		Assert.assertEquals(false, provider.isType(GameObject.class));
 		Assert.assertEquals(false, provider.isType(GameObjectAotuID.class));
 		Assert.assertEquals(false, provider.isType(EnumByte.class));
@@ -67,24 +67,34 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(Timestamp.class));
 	}
 	
-	@Test
+	@Override
 	public void setStatementTest() throws Exception {
-		String expected = 
-				"\n\t\t" +
-				"state.setDouble(1, getMoney());";
-		
-		String actual  = provider.setStatement(1, field);
+		String expected = "\n\t\t"
+				+ "{" + "\n\t\t\t"
+				+ "String value_ = \"\";" + "\n\t\t\t" 
+				+ "if (getHeroS() != null) {"  + "\n\t\t\t\t" 
+				+ "value_ = getHeroS().getId();"  + "\n\t\t\t" 
+				+ "}" + "\n\t\t\t" 
+				+ "state.setString(1, value_);" + "\n\t\t"
+				+ "}";
+
+		String actual = provider.setStatement(1, field);
 		Assert.assertEquals(expected, actual);
 		
-	}
-	
-	@Test
-	public void getResultSetTest() throws Exception {
-		String expected = 
-				"\n\t\t" +
-				"setMoney(result.getDouble(\"money\"));";
 		
-		String actual  = provider.getResultSet(field);
+	}
+
+	@Override
+	public void getResultSetTest() throws Exception {
+		String expected = "\n\t\t"
+				+ "{" + "\n\t\t\t" 
+				+ "String value_ = result.getString(\"heroS\");" + "\n\t\t\t"
+				+ "if (value_ != null && value_.length() > 0) {"  + "\n\t\t\t\t"
+				+ "setHeroS(new org.itas.core.Simple(value_));" + "\n\t\t\t" 
+				+ "}" + "\n\t\t" 
+				+ "}";
+		
+		String actual = provider.getResultSet(field);
 		Assert.assertEquals(expected, actual);
 	}
 	

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import javassist.CtField;
 import javassist.NotFoundException;
 import junit.framework.Assert;
 
@@ -21,8 +20,6 @@ import org.junit.Test;
 
 public class StringProviderTest extends AbstreactFieldProvider {
 
-	private CtField field;
-	
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
@@ -73,7 +70,7 @@ public class StringProviderTest extends AbstreactFieldProvider {
 	@Test
 	public void setStatementTest() throws Exception {
 		String expected = 
-				"\t\t" +
+				"\n\t\t" +
 				"state.setString(1, getName());";
 		
 		String actual  = provider.setStatement(1, field);
@@ -84,7 +81,7 @@ public class StringProviderTest extends AbstreactFieldProvider {
 	@Test
 	public void getResultSetTest() throws Exception {
 		String expected = 
-				"\t\t" +
+				"\n\t\t" +
 				"setName(result.getString(\"name\"));";
 		
 		String actual  = provider.getResultSet(field);

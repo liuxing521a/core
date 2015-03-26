@@ -11,13 +11,13 @@ import javassist.CtField;
 class FloatProvider extends AbstractFieldProvider 
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setFloat(%s, get%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setFloat(%s, get%s());")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getFloat(\"%s\"));";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getFloat(\"%s\"));")
+		.toString();
 	
 	public static final FloatProvider PROVIDER = new FloatProvider();
 	

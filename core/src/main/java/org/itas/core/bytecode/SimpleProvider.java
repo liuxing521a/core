@@ -11,28 +11,25 @@ import javassist.CtField;
 class SimpleProvider extends AbstractFieldProvider 
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" 
-			+ "String id_%s = \"\";" 
-			+ "\n\t\t" 
-			+ "if (get%s() != null) {" 
-			+ "\n\t\t\t" 
-			+ "id_%s = get%s().getId();" 
-			+ "\n\t\t" 
-			+ "}" 
-			+ "\n\t\t" 
-			+ "state.setString(%s, id_%s);";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("{")
+		.append(next(1, 3)).append("String value_ = \"\";") 
+		.append(next(1, 3)).append("if (get%s() != null) {") 
+		.append(next(1, 4)).append("value_ = get%s().getId();") 
+		.append(next(1, 3)).append("}") 
+		.append(next(1, 3)).append("state.setString(%s, value_);") 
+		.append(next(1, 2)).append("}")
+		.toString();
 
 
-	private static final String RESULTSET_GET = 
-			"\t\t"
-			+ "String id_%s = result.getString(\"%s\");" 
-			+ "\n\t\t"
-			+ "if (id_%s != null && id_%s.length() > 0) {" 
-			+ "\n\t\t\t"
-			+ "set%s(new org.itas.core.Simple(id_%s));" 
-			+ "\n\t\t"
-			+ "}";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("{")
+		.append(next(1, 3)).append("String value_ = result.getString(\"%s\");")
+		.append(next(1, 3)).append("if (value_ != null && value_.length() > 0) {")
+		.append(next(1, 4)).append("set%s(new org.itas.core.Simple(value_));")
+		.append(next(1, 3)).append("}")
+		.append(next(1, 2)).append("}")
+		.toString();
 
 	public static final SimpleProvider PROVIDER = new SimpleProvider();
 	
@@ -56,14 +53,14 @@ class SimpleProvider extends AbstractFieldProvider
 	
 	@Override
 	public String setStatement(int index, CtField field) {
-		return String.format(STATEMENT_SET, field.getName(), upCase(field.getName()),
-				field.getName(), upCase(field.getName()), index, field.getName());
+		return String.format(STATEMENT_SET, 
+			upCase(field.getName()), upCase(field.getName()), index);
 	}
 
 	@Override
 	public String getResultSet(CtField field) {
-		return String.format(RESULTSET_GET, field.getName(), field.getName(),
-				field.getName(), field.getName(), upCase(field.getName()), field.getName());
+		return String.format(RESULTSET_GET, 
+			field.getName(), upCase(field.getName()));
 	}
 
 }

@@ -11,13 +11,13 @@ import javassist.CtField;
 class BooleanProvider extends AbstractFieldProvider 
     implements FieldProvider, TypeProvider {
 	
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setBoolean(%s, %s%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setBoolean(%s, %s%s());")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getBoolean(\"%s\"));";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getBoolean(\"%s\"));")
+		.toString();
 
 	public static final BooleanProvider PROVIDER = new BooleanProvider();
 	

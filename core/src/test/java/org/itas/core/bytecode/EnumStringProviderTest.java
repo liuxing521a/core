@@ -18,13 +18,13 @@ import org.itas.core.Simple;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DoubleProviderTest extends AbstreactFieldProvider {
+public class EnumStringProviderTest extends AbstreactFieldProvider {
 
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
-		provider = DoubleProvider.PROVIDER;
-		field = clazz.getDeclaredField("money");
+		provider = EnumStringProvider.PROVIDER;
+		field = clazz.getDeclaredField("skillType");
 	}
 	
 	@Test
@@ -50,16 +50,17 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(float.class));
 		Assert.assertEquals(false, provider.isType(Float.class));
 		
-		Assert.assertEquals(true, provider.isType(double.class));
-		Assert.assertEquals(true, provider.isType(Double.class));
+		Assert.assertEquals(false, provider.isType(double.class));
+		Assert.assertEquals(false, provider.isType(Double.class));
 
 		Assert.assertEquals(false, provider.isType(String.class));
 		Assert.assertEquals(false, provider.isType(Simple.class));
 		Assert.assertEquals(false, provider.isType(GameObject.class));
 		Assert.assertEquals(false, provider.isType(GameObjectAotuID.class));
+		Assert.assertEquals(false, provider.isType(Enum.class));
 		Assert.assertEquals(false, provider.isType(EnumByte.class));
 		Assert.assertEquals(false, provider.isType(EnumInt.class));
-		Assert.assertEquals(false, provider.isType(EnumString.class));
+		Assert.assertEquals(true, provider.isType(EnumString.class));
 		Assert.assertEquals(false, provider.isType(Resource.class));
 		Assert.assertEquals(false, provider.isType(ArrayList.class));
 		Assert.assertEquals(false, provider.isType(HashSet.class));
@@ -67,24 +68,28 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(Timestamp.class));
 	}
 	
-	@Test
+	@Override
 	public void setStatementTest() throws Exception {
-		String expected = 
-				"\n\t\t" +
-				"state.setDouble(1, getMoney());";
-		
-		String actual  = provider.setStatement(1, field);
-		Assert.assertEquals(expected, actual);
-		
+		String expected =  "\n\t\t"
+				+ "{" + "\n\t\t\t" 
+				+ "String value_ = \"\";"	+ "\n\t\t\t"
+				+ "if (getSkillType() != null) {"  + "\n\t\t\t\t" 
+				+ "value_ = getSkillType().key();"  + "\n\t\t\t" 
+				+ "}" + "\n\t\t\t" 
+				+ "state.setString(1, value_);"  + "\n\t\t" 
+				+ "}";
+			
+			String actual = provider.setStatement(1, field);
+			Assert.assertEquals(expected, actual);
 	}
-	
-	@Test
+
+	@Override
 	public void getResultSetTest() throws Exception {
 		String expected = 
-				"\n\t\t" +
-				"setMoney(result.getDouble(\"money\"));";
+				"\n\t\t"
+				+ "setSkillType(parse(org.itas.core.bytecode.Model.SkillType.class, result.getString(\"skillType\")));";
 		
-		String actual  = provider.getResultSet(field);
+		String actual = provider.getResultSet(field);
 		Assert.assertEquals(expected, actual);
 	}
 	

@@ -4,11 +4,17 @@ import org.itas.core.bytecode.BooleanProviderTest;
 import org.itas.core.bytecode.ByteProviderTest;
 import org.itas.core.bytecode.CharProviderTest;
 import org.itas.core.bytecode.DoubleProviderTest;
+import org.itas.core.bytecode.EnumByteProviderTest;
+import org.itas.core.bytecode.EnumIntProviderTest;
+import org.itas.core.bytecode.EnumProviderTest;
+import org.itas.core.bytecode.EnumStringProviderTest;
 import org.itas.core.bytecode.FloatProviderTest;
 import org.itas.core.bytecode.IntProviderTest;
 import org.itas.core.bytecode.LongProviderTest;
 import org.itas.core.bytecode.ShortProviderTest;
+import org.itas.core.bytecode.SimpleProviderTest;
 import org.itas.core.bytecode.StringProviderTest;
+import org.itas.core.bytecode.TimestampProviderTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -22,20 +28,22 @@ import org.junit.runners.Suite;
         BooleanProviderTest.class,
         ByteProviderTest.class,
         CharProviderTest.class,
-        ShortProviderTest.class,
+        DoubleProviderTest.class,
+        EnumByteProviderTest.class,
+        EnumIntProviderTest.class,
+        EnumProviderTest.class,
+        EnumStringProviderTest.class,
+        FloatProviderTest.class,
         IntProviderTest.class,
         LongProviderTest.class,
-        DoubleProviderTest.class,
-        FloatProviderTest.class,
+        ShortProviderTest.class,
+        SimpleProviderTest.class,
         StringProviderTest.class,
+        TimestampProviderTest.class,
 //        TestFieldResourcesProvider.class,
 //        TestFieldSimpleProvider.class,
 //        TestFieldListProvider.class,
 //        TestFieldSetProvider.class,
-//        TestFieldTimestampCode.class,
-//        TestFieldEnumByteProvider.class,
-//        TestFieldEnumIntProvider.class,
-//        TestFieldEnumStringProvider.class,
 //        TestFieldMapProvider.class,
         
 //        TestMethodSQLProvider.class,

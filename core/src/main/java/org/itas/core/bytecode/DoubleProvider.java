@@ -11,13 +11,13 @@ import javassist.CtField;
 class DoubleProvider extends AbstractFieldProvider 
     implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setDouble(%s, get%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setDouble(%s, get%s());")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getDouble(\"%s\"));";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getDouble(\"%s\"));")
+		.toString();
 	
 	public static final DoubleProvider PROVIDER = new DoubleProvider();
 	

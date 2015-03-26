@@ -11,14 +11,14 @@ import javassist.CtField;
 class ShortProvider extends AbstractFieldProvider 
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setShort(%s, get%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setShort(%s, get%s());")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getShort(\"%s\"));";
-	
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getShort(\"%s\"));")
+		.toString();
+
 	public static final ShortProvider PROVIDER = new ShortProvider();
 	
 	private ShortProvider() {

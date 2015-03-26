@@ -11,13 +11,15 @@ import javassist.CtField;
 class TimestampProvider extends AbstractFieldProvider 
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setTimestamp(%s, get%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+	  .append(next(1, 2))
+	  .append("state.setTimestamp(%s, get%s());")
+	  .toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getTimestamp(\"%s\"));";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2))
+	  .append("set%s(result.getTimestamp(\"%s\"));")
+	  .toString();
 	
 	public static final TimestampProvider PROVIDER = new TimestampProvider();
 	

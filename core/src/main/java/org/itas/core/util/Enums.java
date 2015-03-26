@@ -19,111 +19,101 @@ import com.google.common.collect.Maps;
 public interface Enums {
 
   default <T extends Enum<T>> T parse(Class<?> clazz, byte key) {
-	return EnumParse.parse(clazz, key);
+  	return EnumParse.parse(clazz, key);
   }
   
   default <T extends Enum<T>> T parse(Class<?> clazz, int key) {
-	return EnumParse.parse(clazz, key);
+  	return EnumParse.parse(clazz, key);
   }
   
   default <T extends Enum<T>> T parse(Class<?> clazz, String key) {
     return EnumParse.parse(clazz, key);
   }
 	
-  @SuppressWarnings("unchecked")
-  static class EnumParse {
-		
-    private static final Map<Class<?>, Map<Byte, Enum<?>>> enumBytes;
-		
-	private static final Map<Class<?>, Map<Integer, Enum<?>>> enumInts;
-		
-	private static final Map<Class<?>, Map<String, Enum<?>>> enumStrings;
-		
-	static {
-	  enumBytes = Maps.newHashMap();
-	  enumInts = Maps.newHashMap();
-	  enumStrings = Maps.newHashMap();
-	}
+}
+
+class EnumParse {
 	
-	static <T extends Enum<T>> T parse(Class<?> clazz, byte key) {
-	  Map<Byte, Enum<?>> enumMap = enumBytes.get(clazz);
-	  if (enumMap == null) {
-		  enumMap = cachedEnumByte((Class<T>)clazz);
-	  }
-	  
-	  return (T)enumMap.get(key);
-	}
-
-	static <T extends Enum<T>> T parse(Class<?> clazz, int key) {
-	  Map<Integer, Enum<?>> enumMap = enumInts.get(clazz);
-	  if (enumMap == null) {
-	    enumMap = cachedEnumInt((Class<T>)clazz);
-	  }
-		  
-	  return (T)enumMap.get(key);
-	}
+  private static final Map<Class<?>, EnumModul> enums;
 	
-	static <T extends Enum<T>> T parse(Class<?> clazz, String key) {
-	  Map<String, Enum<?>> enumMap = enumStrings.get(clazz);
-	  if (enumMap == null) {
-		enumMap = cachedEnumString((Class<T>)clazz);
-	  }
-			  
-	  return (T)enumMap.get(key);
-	}
-	
-    private static <T extends Enum<T>> Map<Byte, Enum<?>> cachedEnumByte(Class<T> clazz) {
-	  final EnumSet<? extends Enum<?>> enumSet = EnumSet.allOf((Class<T>)clazz);
-		
-	  final Map<Byte, Enum<?>> enums = new HashMap<Byte, Enum<?>>(enumSet.size());
-	  for (Enum<?> e : enumSet) {
-	    if (e instanceof EnumByte) {
-	      enums.put(((EnumByte)e).key(), e);
-	      continue; 
-	    } 
-
-	    throw new ItasException("enum auto complate must be implements org.itas.core.EnumByte");
-	  }
-		
-	  enumBytes.putIfAbsent(clazz, enums);
-	  return enums;
-    }
-    
-    private static <T extends Enum<T>>  Map<Integer, Enum<?>> cachedEnumInt(Class<T> clazz) {
-  	  final EnumSet<? extends Enum<?>> enumSet = EnumSet.allOf((Class<T>)clazz);
-  		
-  	  final Map<Integer, Enum<?>> enums = new HashMap<Integer, Enum<?>>(enumSet.size());
-  	  for (Enum<?> e : enumSet) {
-  	    if (e instanceof EnumInt) {
-  	      enums.put(((EnumInt)e).key(), e);
-  	      continue; 
-  	    } 
-
-  	    throw new ItasException("enum auto complate must be implements org.itas.core.EnumInt");
-  	  }
-  		
-  	  enumInts.putIfAbsent(clazz, enums);
-  	  return enums;
-    }
-    
-    private static <T extends Enum<T>> Map<String, Enum<?>> cachedEnumString(Class<T> clazz) {
-	  final EnumSet<? extends Enum<?>> enumSet = EnumSet.allOf((Class<T>)clazz);
-		
-	  final Map<String, Enum<?>> enums = new HashMap<String, Enum<?>>(enumSet.size());
-	  for (Enum<?> e : enumSet) {
-	    if (e instanceof EnumInt) {
-	      enums.put(((EnumString)e).key(), e);
-	      continue; 
-	    } 
-
-	    throw new ItasException("enum auto complate must be implements org.itas.core.EnumString");
-	  }
-		
-	  enumStrings.putIfAbsent(clazz, enums);
-	  return enums;
-    }
-    
-    private EnumParse() {
-    }
+  static {
+  	enums = Maps.newHashMap();
   }
+
+  static <E extends Enum<E>> E parse(Class<E> clazz, String key) {
+  	EnumModul enumModul = enums.get(clazz);
+  	if (enumModul == null) {
+  		enumModul = EnumModul.loadEnums(clazz);
+  		enums.putIfAbsent(enumModul.getEnumClass(), enumModul);
+  	}
+  	
+  	return enumModul.getEnum(key);
+  }
+
+  private EnumParse() {
+  	throw new RuntimeException("not supported new instance...");
+  }
+}
+
+class EnumModul {
+	
+	private final Class<? extends Enum<?>> enumClass;
+	
+	private final Class<?> typeClass;
+	
+	private final Map<Object, Enum<?>> enums;
+	
+	private EnumModul(Class<? extends Enum<?>> enumClass, 
+			Class<?> typeClass, Map<Object, Enum<?>> enums) {
+		this.enumClass = enumClass;
+		this.typeClass = typeClass;
+		this.enums = Collections.unmodifiableMap(enums);
+	}
+	
+	public Class<? extends Enum<?>> getEnumClass() {
+		return enumClass;
+	}
+
+	public Object toKey(String value) {
+		if (!EnumDef.class.isAssignableFrom(enumClass)) {
+			return String.class;
+		} else if (typeClass == Byte.class) {
+			return Byte.valueOf(value);
+		} else if (typeClass == Integer.class) {
+			return Integer.valueOf(value);
+		} else if (typeClass == String.class) {
+			return value;
+		}
+
+		throw new UnsupportException(" type:" + typeClass);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <E extends Enum<E>> E getEnum(String key) {
+		final Enum<?> e = enums.get(toKey(key));
+		if (e == null) {
+			return null;
+		}
+		
+		return ((E) e);
+	}
+
+	static <E extends Enum<E>> EnumModul loadEnums(Class<E> clazz) {
+  	final EnumSet<E> enumSet = EnumSet.allOf(clazz);
+		
+  	Class<?> typeClass = null;
+  	final Map<Object, Enum<?>> enumMap = new HashMap<>(enumSet.size());
+  	for (E e : enumSet) {
+  		if (e instanceof EnumDef) {
+  			enumMap.put(((EnumDef<?>)e).key(), e);
+  			typeClass = ((EnumDef<?>) e).key().getClass();
+			} else{
+  			enumMap.put(e.name(), e);
+  			typeClass = String.class;
+  		}
+  	}
+		
+		return new EnumModul(clazz, typeClass, enumMap);
+	}
+	
 }

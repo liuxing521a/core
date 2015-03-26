@@ -11,14 +11,15 @@ import javassist.CtField;
 class CharProvider extends AbstractFieldProvider 
     implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setString(%s, String.valueOf(get%s()));";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setString(%s, String.valueOf(get%s()));")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getString(\"%s\").charAt(0));";
-	
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getString(\"%s\").charAt(0));")
+		.toString();
+
+
 	public static final CharProvider PROVIDER = new CharProvider();
 	
 	private CharProvider() {

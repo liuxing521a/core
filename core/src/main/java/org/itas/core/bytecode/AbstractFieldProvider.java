@@ -17,6 +17,20 @@ import org.itas.util.ItasException;
  */
 abstract class AbstractFieldProvider implements FirstChar {
 	
+	protected static String next(int line, int table) {
+		final StringBuffer buffer = new StringBuffer();
+		
+		for (int i = 0; i < line; i++) {
+			buffer.append('\n');
+		}
+
+		for (int i = 0; i < table; i++) {
+			buffer.append('\t');
+		}
+		
+		return buffer.toString();
+	}
+	
 	static class javaType {
 		
 		public final static Class<?> boolean_ = boolean.class;
@@ -49,6 +63,8 @@ abstract class AbstractFieldProvider implements FirstChar {
 		
 		public final static Class<?> resource_ = org.itas.core.Resource.class;
 		
+		public final static Class<?> enum_ = java.lang.Enum.class;
+
 		public final static Class<?> enumByte_ = org.itas.core.EnumByte.class;
 		
 		public final static Class<?> enumInt_ = org.itas.core.EnumInt.class;
@@ -104,6 +120,8 @@ abstract class AbstractFieldProvider implements FirstChar {
 
 		public final static CtClass resource_;
 
+		public final static CtClass enum_;
+
 		public final static CtClass enumByte_;
 
 		public final static CtClass enumInt_;
@@ -137,6 +155,7 @@ abstract class AbstractFieldProvider implements FirstChar {
 				string_ = pool.get(javaType.string_.getName());
 				simple_ = pool.get(javaType.simple_.getName());
 				resource_ = pool.get(javaType.resource_.getName());
+				enum_ = pool.get(javaType.enum_.getName());
 				enumByte_ = pool.get(javaType.enumByte_.getName());
 				enumInt_ = pool.get(javaType.enumInt_.getName());
 				enumString_ = pool.get(javaType.enumString_.getName());

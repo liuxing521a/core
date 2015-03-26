@@ -11,14 +11,15 @@ import javassist.CtField;
 class LongProvider extends AbstractFieldProvider 
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" +
-			"state.setLong(%s, get%s());";
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2)).append("state.setLong(%s, get%s());")
+		.toString();
 	
-	private static final String RESULTSET_GET = 
-			"\t\t" +
-			"set%s(result.getLong(\"%s\"));";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("set%s(result.getLong(\"%s\"));")
+		.toString();
 	
+
 	public static final LongProvider PROVIDER = new LongProvider();
 	
 	private LongProvider() {

@@ -18,13 +18,13 @@ import org.itas.core.Simple;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DoubleProviderTest extends AbstreactFieldProvider {
+public class EnumProviderTest extends AbstreactFieldProvider {
 
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
-		provider = DoubleProvider.PROVIDER;
-		field = clazz.getDeclaredField("money");
+		provider = EnumProvider.PROVIDER;
+		field = clazz.getDeclaredField("heroType");
 	}
 	
 	@Test
@@ -50,13 +50,14 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(float.class));
 		Assert.assertEquals(false, provider.isType(Float.class));
 		
-		Assert.assertEquals(true, provider.isType(double.class));
-		Assert.assertEquals(true, provider.isType(Double.class));
+		Assert.assertEquals(false, provider.isType(double.class));
+		Assert.assertEquals(false, provider.isType(Double.class));
 
 		Assert.assertEquals(false, provider.isType(String.class));
 		Assert.assertEquals(false, provider.isType(Simple.class));
 		Assert.assertEquals(false, provider.isType(GameObject.class));
 		Assert.assertEquals(false, provider.isType(GameObjectAotuID.class));
+		Assert.assertEquals(true, provider.isType(Enum.class));
 		Assert.assertEquals(false, provider.isType(EnumByte.class));
 		Assert.assertEquals(false, provider.isType(EnumInt.class));
 		Assert.assertEquals(false, provider.isType(EnumString.class));
@@ -67,24 +68,28 @@ public class DoubleProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(Timestamp.class));
 	}
 	
-	@Test
+	@Override
 	public void setStatementTest() throws Exception {
-		String expected = 
-				"\n\t\t" +
-				"state.setDouble(1, getMoney());";
-		
-		String actual  = provider.setStatement(1, field);
-		Assert.assertEquals(expected, actual);
-		
+		String expected =  "\n\t\t"
+				+ "{" + "\n\t\t\t" 
+				+ "String value_ = \"\";"	+ "\n\t\t\t"
+				+ "if (getHeroType() != null) {"  + "\n\t\t\t\t" 
+				+ "value_ = getHeroType().name();"  + "\n\t\t\t" 
+				+ "}" + "\n\t\t\t" 
+				+ "state.setString(1, value_);"  + "\n\t\t" 
+				+ "}";
+			
+			String actual = provider.setStatement(1, field);
+			Assert.assertEquals(expected, actual);
 	}
-	
-	@Test
+
+	@Override
 	public void getResultSetTest() throws Exception {
 		String expected = 
-				"\n\t\t" +
-				"setMoney(result.getDouble(\"money\"));";
+				"\n\t\t"
+				+ "setHeroType(parse(org.itas.core.bytecode.Model.HeroType.class, result.getString(\"heroType\")));";
 		
-		String actual  = provider.getResultSet(field);
+		String actual = provider.getResultSet(field);
 		Assert.assertEquals(expected, actual);
 	}
 	
