@@ -1,11 +1,11 @@
-package org.itas.core.bytecode;
+package org.itas.core.util;
 
 import junit.framework.Assert;
 
 import org.itas.core.util.FirstChar;
 import org.junit.Test;
 
-public class TestCodeType implements FirstChar {
+public class FirstCharTest implements FirstChar {
 
 	@Test
 	public void testFirstKeyUPCase() {

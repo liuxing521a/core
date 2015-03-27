@@ -7,6 +7,7 @@ import static org.itas.core.bytecode.Type.doubleType;
 import static org.itas.core.bytecode.Type.enumByteType;
 import static org.itas.core.bytecode.Type.enumIntType;
 import static org.itas.core.bytecode.Type.enumStringType;
+import static org.itas.core.bytecode.Type.enumType;
 import static org.itas.core.bytecode.Type.floatType;
 import static org.itas.core.bytecode.Type.intType;
 import static org.itas.core.bytecode.Type.longType;
@@ -43,90 +44,90 @@ public interface XmlContainers extends Enums {
   default Boolean parseBoolean(String text) {
     if (text == null || text.length() == 0) {
 	  return Boolean.FALSE;
-	}
+    }
 	  
     byte value = Byte.parseByte(text);
     if (value == 0) {
-	  return Boolean.FALSE;
+    	return Boolean.FALSE;
     }
 	  
     if (value == 1) {
-	  return Boolean.TRUE;
+    	return Boolean.TRUE;
     }
 	  
     throw new IllnessException("boolean type must 0|1");
   }
 	  
   default Byte parseByte(String text) {
-	if (text == null || text.length() == 0) {
-	  return 0;
-	}
-		
-	return Byte.valueOf(text);
+		if (text == null || text.length() == 0) {
+		  return 0;
+		}
+			
+		return Byte.valueOf(text);
   }
 	  
   default Character parseChar(String text) {
-	if (text == null || text.length() == 0) {
-  	  return ' ';
-	}
-		
-	return text.charAt(0);
+		if (text == null || text.length() == 0) {
+	  	  return ' ';
+		}
+			
+		return text.charAt(0);
   }
 	  
   default Short parseShort(String text) {
-	if (text == null || text.length() == 0) {
-	  return 0;
-	}
-		
-	return Short.valueOf(text);
+		if (text == null || text.length() == 0) {
+		  return 0;
+		}
+			
+		return Short.valueOf(text);
   }
 	  
   default Integer parseInt(String text) {
-	if (text == null || text.length() == 0) {
-	  return 0;
-	}
-			
-	return Integer.valueOf(text);
+		if (text == null || text.length() == 0) {
+		  return 0;
+		}
+				
+		return Integer.valueOf(text);
   }
 		
   default Long parseLong(String text) {
     if (text == null || text.length() == 0) {
-	  return 0L;
-	}
+    	return 0L;
+    }
 				  
     return Long.valueOf(text);
   }
 	  
   default Float parseFloat(String text) {
     if (text == null || text.length() == 0) {
-	  return 0.0F;
-	}
+    	return 0.0F;
+    }
 				  
     return Float.valueOf(text);
   }
 	  
   default Double parseDouble(String text) {
     if (text == null || text.length() == 0) {
-	  return 0.0D;
-	}
+    	return 0.0D;
+    }
 				  
     return Double.valueOf(text); 
   }
   
   default Resource parseResource(String text) {
-	return Pool.getResource(text);
+  	return Pool.getResource(text);
   }
   
   default Timestamp parseTimestamp(String text) {
-	return Timestamp.valueOf(text);
+  	return Timestamp.valueOf(text);
   }
   
   default Map<Object, Object> parseMap(Field field, String text) throws Exception {
-	return ContainerImpl.instance.parseMap(field, text);
+  	return ContainerImpl.instance.parseMap(field, text);
   }
   
   default List<Object> parseList(Field field, String text) throws Exception {
-	return ContainerImpl.instance.parseList(field, text);
+  	return ContainerImpl.instance.parseList(field, text);
   }
   
   default Set<Object> parseSet(Field field, String text) throws Exception {
@@ -136,161 +137,164 @@ public interface XmlContainers extends Enums {
   @SuppressWarnings("unchecked")
   static class ContainerImpl implements XmlContainers {
     
-	private static final ContainerImpl instance = new ContainerImpl();
-	  
-	public Map<Object, Object> parseMap(Field field, String text) throws Exception {
-      text = checkNull(text);
+		private static final ContainerImpl instance = new ContainerImpl();
+		  
+		public Map<Object, Object> parseMap(Field field, String text) throws Exception {
+	      text = checkNull(text);
+		
+		  final Clazz clazz = field.getAnnotation(Clazz.class);
+		  
+		  Map<Object, Object> map;
+		  if (clazz != null) {
+		  	map = (Map<Object, Object>)clazz.value().newInstance();
+		  } else {
+		  	map = Maps.newHashMap(); 
+		  }
+		      
+		  fill(map, field, text);
+		  return Collections.unmodifiableMap(map);
+	  }
 	
-	  final Clazz clazz = field.getAnnotation(Clazz.class);
-	  
-	  Map<Object, Object> map;
-	  if (clazz != null) {
-		map = (Map<Object, Object>)clazz.value().newInstance();
-	  } else {
-		map = Maps.newHashMap(); 
+		public List<Object> parseList(Field field, String text) throws Exception {
+		  text = checkNull(text);
+		  
+		  final Clazz clazz = field.getAnnotation(Clazz.class);
+		  
+		  List<Object> list;
+		  if (clazz != null) {
+		  	list = (List<Object>)clazz.value().newInstance();
+		  } else {
+		  	list = Lists.newArrayList(); 
+		  }
+		      
+		  fill(list, field, text);
+		  return Collections.unmodifiableList(list);
 	  }
-	      
-	  fill(map, field, text);
-	  return Collections.unmodifiableMap(map);
-    }
-
-	public List<Object> parseList(Field field, String text) throws Exception {
-	  text = checkNull(text);
-	  
-	  final Clazz clazz = field.getAnnotation(Clazz.class);
-	  
-	  List<Object> list;
-	  if (clazz != null) {
-		list = (List<Object>)clazz.value().newInstance();
-	  } else {
-		list = Lists.newArrayList(); 
-	  }
-	      
-	  fill(list, field, text);
-	  return Collections.unmodifiableList(list);
-    }
-    
-	public Set<Object> parseSet(Field field, String text) throws Exception  {
-	  text = checkNull(text);
-			
-	  final Clazz clazz = field.getAnnotation(Clazz.class);
-			
-	  Set<Object> set;
-	  if (clazz != null) {
-	    set = (Set<Object>)clazz.value().newInstance();
-	  } else {
-		set = Sets.newHashSet();
-	  }
-
-	  fill(set, field, text);
-	  return Collections.unmodifiableSet(set);
-	}
+	    
+		public Set<Object> parseSet(Field field, String text) throws Exception  {
+		  text = checkNull(text);
+				
+		  final Clazz clazz = field.getAnnotation(Clazz.class);
+				
+		  Set<Object> set;
+		  if (clazz != null) {
+		    set = (Set<Object>)clazz.value().newInstance();
+		  } else {
+		  	set = Sets.newHashSet();
+		  }
 	
-    private void fill(Collection<Object> c, Field field, String content) {
-	  final char[] chs = content.toCharArray();
-	  final StringBuffer v = new StringBuffer();
-			
-	  Class<?> genericClazz = getGenericClassArray(field)[0];
-	  for (char ch : chs) {
-		if (ch == '|') {
-		  c.add(toValue(genericClazz, v.toString()));
-		  v.setLength(0);
-		  continue;
+		  fill(set, field, text);
+		  return Collections.unmodifiableSet(set);
 		}
 		
-		v.append(ch);
-	  }
-			
-	  if (v.length() > 0) {
-		c.add(toValue(genericClazz, v.toString()));
-	  }
-	}
-		
-	private void fill(Map<Object, Object> map, Field field, String text) {
-	  final char[] chs = text.toCharArray();
-	  final StringBuffer k = new StringBuffer();
-	  final StringBuffer v = new StringBuffer();
-	  
-	  final Class<?>[] genericClazz = getGenericClassArray(field);
-			
-	  StringBuffer c = k;
-	  for (char ch : chs) {
-		if (ch == ',') {
-		  c = v;
-		  continue;
-		} 
+	  private void fill(Collection<Object> c, Field field, String content) {
+		  final char[] chs = content.toCharArray();
+		  final StringBuffer v = new StringBuffer();
 				
-		if (ch == '|') {
-		  map.put(toValue(genericClazz[0], k.toString()), 
-		      toValue(genericClazz[1], v.toString()));
-		  k.setLength(0);
-		  v.setLength(0);
-		  c = k;
-		  continue;
+		  Class<?> genericClazz = getGenericClassArray(field)[0];
+		  for (char ch : chs) {
+		  	if (ch == '|') {
+				  c.add(toValue(genericClazz, v.toString()));
+				  v.setLength(0);
+				  continue;
+		  	}
+			
+		  	v.append(ch);
+		  }
+				
+		  if (v.length() > 0) {
+		  	c.add(toValue(genericClazz, v.toString()));
+		  }
+		}
+			
+		private void fill(Map<Object, Object> map, Field field, String text) {
+		  final char[] chs = text.toCharArray();
+		  final StringBuffer k = new StringBuffer();
+		  final StringBuffer v = new StringBuffer();
+		  
+		  final Class<?>[] genericClazz = getGenericClassArray(field);
+				
+		  StringBuffer c = k;
+		  for (char ch : chs) {
+				if (ch == ',') {
+				  c = v;
+				  continue;
+				} 
+						
+				if (ch == '|') {
+				  map.put(toValue(genericClazz[0], k.toString()), 
+				      toValue(genericClazz[1], v.toString()));
+				  k.setLength(0);
+				  v.setLength(0);
+				  c = k;
+				  continue;
+				}
+				
+				c.append(ch);
+		  }
+				
+		  if (k.length() > 0) {
+		  	map.put(toValue(genericClazz[0], k.toString()), 
+		        toValue(genericClazz[1], v.toString()));
+		  }
+		}
+	
+		@SuppressWarnings("rawtypes")
+		private Object toValue(Class<?> clazz, String value) {
+		  if (booleanType.isType(clazz)) {
+	    	return parseBoolean(value);
+		  } else if (byteType.isType(clazz)) {
+		  	return parseByte(value);
+		  } else if (charType.isType(clazz)) {
+		  	return parseChar(value);
+		  } else if (shortType.isType(clazz)) {
+		  	return parseShort(value);
+		  } else if (intType.isType(clazz)) {
+		  	return parseInt(value);
+		  } else if (longType.isType(clazz)) {
+		  	return parseLong(value);
+		  } else if (floatType.isType(clazz)) {
+		  	return parseFloat(value);
+		  } else if (doubleType.isType(clazz)) {
+		  	return parseDouble(value);
+		  } else if (stringType.isType(clazz))	{
+		  	return value;
+		  } else if (enumByteType.isType(clazz)) {
+		  	return parse((Class<Enum>)clazz, parseByte(value));
+		  } else if (enumIntType.isType(clazz)) {
+		  	return parse((Class<Enum>)clazz, parseInt(value));
+		  } else if (enumStringType.isType(clazz)) {
+		  	return parse((Class<Enum>)clazz, value);
+		  } else if (enumType.isType(clazz)) {
+		  	return parse((Class<Enum>)clazz, value);
+		  } else if (resourceType.isType(clazz)) {
+		  	return parseResource(value);
+		  } else {
+		  	throw new RuntimeException("reflect unSupported type:["	+ clazz + "]");
+		  }
+	  }
+			
+	  private Class<?>[] getGenericClassArray(Field field) {
+		  final ParameterizedType type = (ParameterizedType)field.getGenericType();
+		  final Type[] types = type.getActualTypeArguments();
+		  final Class<?>[] classArray = new Class<?>[types.length];
+					
+		  int index = 0;
+		  for (Type t : types) {
+			classArray[index ++] = (t instanceof ParameterizedType) ?
+			    (Class<?>)(((ParameterizedType)t).getRawType()) : (Class<?>)t;
+		  }
+			
+		  return classArray;
+		}
+	    
+	  private String checkNull(String content) {
+	    return content == null ? "" : content;
+	  }
+		
+		private ContainerImpl() {
 		}
 		
-		c.append(ch);
-	  }
-			
-	  if (k.length() > 0) {
-		map.put(toValue(genericClazz[0], k.toString()), 
-	        toValue(genericClazz[1], v.toString()));
-	  }
 	}
-
-	private Object toValue(Class<?> clazz, String value) {
-	  if (booleanType.isType(clazz)) {
-    	return parseBoolean(value);
-	  } else if (byteType.isType(clazz)) {
-		return parseByte(value);
-	  } else if (charType.isType(clazz)) {
-		return parseChar(value);
-	  } else if (shortType.isType(clazz)) {
-		return parseShort(value);
-	  } else if (intType.isType(clazz)) {
-		return parseInt(value);
-	  } else if (longType.isType(clazz)) {
-		return parseLong(value);
-	  } else if (floatType.isType(clazz)) {
-		return parseFloat(value);
-	  } else if (doubleType.isType(clazz)) {
-		return parseDouble(value);
-	  } else if (stringType.isType(clazz))	{
-		return value;
-	  } else if (enumByteType.isType(clazz)) {
-		return parse(clazz, parseByte(value));
-	  } else if (enumIntType.isType(clazz)) {
-		return parse(clazz, parseInt(value));
-	  } else if (enumStringType.isType(clazz)) {
-		return parse(clazz, value);
-	  } else if (resourceType.isType(clazz)) {
-		return parseResource(value);
-	  } else {
-		throw new RuntimeException("reflect unSupported type:["	+ clazz + "]");
-	  }
-    }
-		
-    private Class<?>[] getGenericClassArray(Field field) {
-	  final ParameterizedType type = (ParameterizedType)field.getGenericType();
-	  final Type[] types = type.getActualTypeArguments();
-	  final Class<?>[] classArray = new Class<?>[types.length];
-				
-	  int index = 0;
-	  for (Type t : types) {
-		classArray[index ++] = (t instanceof ParameterizedType) ?
-		    (Class<?>)(((ParameterizedType)t).getRawType()) : (Class<?>)t;
-	  }
-		
-	  return classArray;
-	}
-    
-    private String checkNull(String content) {
-      return content == null ? "" : content;
-    }
-	
-	private ContainerImpl() {
-	}
-	
-  }
 	
 }

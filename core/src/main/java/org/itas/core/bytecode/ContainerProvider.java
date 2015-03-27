@@ -1,8 +1,17 @@
 package org.itas.core.bytecode;
 
+import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtField;
+import javassist.NotFoundException;
+import javassist.bytecode.BadBytecode;
+import javassist.bytecode.SignatureAttribute;
+import javassist.bytecode.SignatureAttribute.ClassType;
+import javassist.bytecode.SignatureAttribute.TypeArgument;
 
-import org.itas.util.ItasException;
+import org.itas.core.UnsupportException;
+import org.itas.core.annotation.Clazz;
+import org.itas.core.annotation.Size;
 
 /**
  * 容器数据[field]类型字节码动态生成
@@ -11,14 +20,44 @@ import org.itas.util.ItasException;
  */
 abstract class ContainerProvider extends AbstractFieldProvider {
 
+	protected ClassType getFieldType(final CtField field) throws BadBytecode {
+		return (ClassType)SignatureAttribute
+			.toFieldSignature(field.getGenericSignature());
+	}
+	
+	protected String newContainer(final CtField field, final String defaultContainer) 
+		throws ClassNotFoundException, NotFoundException {
+		Object annotiation;
+		
+		String containerName = defaultContainer;
+		if ((annotiation = field.getAnnotation(Clazz.class)) != null) {
+			containerName = ((Clazz)annotiation).value().getName();
+		} 
+			
+		CtClass listClass = ClassPool.getDefault().get(containerName);
+		try {
+			listClass.getDeclaredConstructor(new CtClass[]{javassistType.int_});
+			int size = 8;
+			if ((annotiation = field.getAnnotation(Size.class)) != null) {
+				size = ((Size)annotiation).value();
+			}
+			return String.format("%s(%s)", containerName, size);
+		} catch (NotFoundException e) {
+			return String.format("%s()", containerName);
+		}
+	}
+	
 	/**
-	 * 字符串转成泛型具体类型
+	 * 字符串转成泛型具体类型转换公式
 	 * @param genericType
 	 * @param value
 	 * @return
 	 * @throws Exception
 	 */
-	protected String toObjectCode(CtClass genericType, String value) throws Exception {
+	protected String parseFormula(final TypeArgument typeArgument, 
+		final String value) throws Exception {
+		final CtClass genericType = getCtClass(typeArgument);
+		
 		if (Type.booleanType.isType(genericType)) {
 			return String.format("java.lang.Boolean.valueOf(%s)", value);
 		} 
@@ -64,20 +103,44 @@ abstract class ContainerProvider extends AbstractFieldProvider {
 		} 
 
 		if (Type.enumByteType.isType(genericType)) {
-			return String.format("org.itas.core.util.Utils.EnumUtils.parse(%s.class, java.lang.Byte.valueOf(%s))", 
-					genericType.getName(), value);
+			return String.format("parse(%s.class, java.lang.Byte.valueOf(%s))", 
+				typeArgument.getType().toString(), value);
 		} 
 
 		if (Type.enumIntType.isType(genericType)) {
-			return String.format("org.itas.core.util.Utils.EnumUtils.parse(%s.class, java.lang.Integer.valueOf(%s))", 
-					genericType.getName(), value);
+			return String.format("parse(%s.class, java.lang.Integer.valueOf(%s))", 
+				typeArgument.getType().toString(), value);
 		} 
 
 		if (Type.enumStringType.isType(genericType)) {
-			return String.format("org.itas.core.util.Utils.EnumUtils.parse(%s.class, %s)", 
-					genericType.getName(), value);
+			return String.format("parse(%s.class, %s)", 
+				typeArgument.getType().toString(), value);
+		} 
+		
+		if (Type.enumType.isType(genericType)) {
+			return String.format("parse(%s.class, %s)", 
+				typeArgument.getType().toString(), value);
 		} 
 
-		throw new ItasException("[" + ContainerProvider.class.getName() + "] unsuppoted type: " + genericType.getName());
+		throw new UnsupportException("[" + ContainerProvider.class.getName() + 
+			"] unsuppoted type: " + genericType.getName());
+	}
+	
+	private CtClass getCtClass(TypeArgument typeArgument) 
+		throws NotFoundException {
+		final ClassType type = (ClassType)typeArgument.getType();
+		final StringBuffer clsBuf = new StringBuffer();
+		declaringName(type, clsBuf);
+		
+		return ClassPool.getDefault().get(clsBuf.toString());
+	}
+	
+	private void declaringName(ClassType classType, StringBuffer buffer) {
+		if (classType.getDeclaringClass() != null) {
+			declaringName(classType.getDeclaringClass(), buffer);
+			buffer.append('$');
+		}
+		
+		buffer.append(classType.getName());
 	}
 }

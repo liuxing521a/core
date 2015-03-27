@@ -18,13 +18,13 @@ import org.itas.core.Simple;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TimestampProviderTest extends AbstreactFieldProvider {
-
+public class ResourceProviderTest extends AbstreactFieldProvider {
+	
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
-		provider = TimestampProvider.PROVIDER;
-		field = clazz.getDeclaredField("updateAt");
+		provider = ResourceProvider.PROVIDER;
+		field = clazz.getDeclaredField("heroRes");
 	}
 	
 	@Test
@@ -60,18 +60,24 @@ public class TimestampProviderTest extends AbstreactFieldProvider {
 		Assert.assertEquals(false, provider.isType(EnumByte.class));
 		Assert.assertEquals(false, provider.isType(EnumInt.class));
 		Assert.assertEquals(false, provider.isType(EnumString.class));
-		Assert.assertEquals(false, provider.isType(Resource.class));
+		Assert.assertEquals(true, provider.isType(Resource.class));
 		Assert.assertEquals(false, provider.isType(ArrayList.class));
 		Assert.assertEquals(false, provider.isType(HashSet.class));
 		Assert.assertEquals(false, provider.isType(HashMap.class));
-		Assert.assertEquals(true, provider.isType(Timestamp.class));
+		Assert.assertEquals(false, provider.isType(Timestamp.class));
 	}
 	
 	@Override
 	public void setStatementTest() throws Exception {
 		String expected = "\n\t\t"
-				+ "state.setTimestamp(1, getUpdateAt());";
-				
+				+ "{" + "\n\t\t\t"
+				+ "String value_ = \"\";" + "\n\t\t\t"  
+				+ "if (getHeroRes() != null) {" + "\n\t\t\t\t" 
+				+ "value_ = getHeroRes().getId();"  + "\n\t\t\t"
+				+ "}" + "\n\t\t\t" 
+				+ "state.setString(1, value_);" + "\n\t\t"
+				+ "}";
+
 		String actual = provider.setStatement(1, field);
 		Assert.assertEquals(expected, actual);
 	}
@@ -79,7 +85,12 @@ public class TimestampProviderTest extends AbstreactFieldProvider {
 	@Override
 	public void getResultSetTest() throws Exception {
 		String expected = "\n\t\t"
-				+ "setUpdateAt(result.getTimestamp(\"updateAt\"));";
+				+ "{" + "\n\t\t\t"
+				+ "String value_ = result.getString(\"heroRes\");" + "\n\t\t\t" 
+				+ "if (value_ != null && value_.length() > 0) {"  + "\n\t\t\t\t" 
+				+ "setHeroRes(org.itas.core.Pool.getResource(value_));" + "\n\t\t\t" 
+				+ "}" + "\n\t\t"
+				+ "}";
 		
 		String actual = provider.getResultSet(field);
 		Assert.assertEquals(expected, actual);

@@ -1,15 +1,9 @@
 package org.itas.core.bytecode;
 
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
-import javassist.NotFoundException;
-import javassist.bytecode.SignatureAttribute;
 import javassist.bytecode.SignatureAttribute.ClassType;
-
-import org.itas.core.annotation.Clazz;
-import org.itas.core.annotation.Size;
-import org.itas.util.Utils.Objects;
+import javassist.bytecode.SignatureAttribute.TypeArgument;
 
 /**
  * list数据[field]类型字节码动态生成
@@ -19,34 +13,25 @@ import org.itas.util.Utils.Objects;
 class MapProvider extends ContainerProvider 
 		implements FieldProvider, TypeProvider {
 
-	private static final String STATEMENT_SET = 
-			"\t\t" 
-			+ "state.setString(%s, toString(get%s()));" ;
+	private static final String STATEMENT_SET = new StringBuffer()
+		.append(next(1, 2))
+		.append("state.setString(%s, toString(get%s()));")
+		.toString();
 
 
-	private static final String RESULTSET_GET = 
-			"\t\t"
-			+ "{"
-			+ "\n\t\t\t"
-			+ "String datas = result.getString(\"%s\");"
-			+ "\n\t\t\t"
-			+ "org.itas.util.Pair[] dataArray = parsePair(datas);"
-			+ "\n\t\t\t"
-			+ "%s dataMap = new %s;"
-			+ "\n\t\t\t"
-			+ "org.itas.util.Pair pair;"
-			+ "\n\t\t\t"
-			+ "for (int i = 0; i < dataArray.length; i ++) {"
-			+ "\n\t\t\t\t"
-			+ "pair = dataArray[i];"
-			+ "\n\t\t\t\t"
-			+ "dataMap.put(%s, %s);"
-			+ "\n\t\t\t"
-			+ "}"
-			+ "\n\t\t\t"
-			+ "set%s(dataMap);"
-			+ "\n\t\t"
-			+ "}";
+	private static final String RESULTSET_GET = new StringBuffer()
+		.append(next(1, 2)).append("{")
+		.append(next(1, 3)).append("String value_ = result.getString(\"%s\");")
+		.append(next(1, 3)).append("org.itas.util.Pair[] valueArray_ = parsePair(value_);")
+		.append(next(1, 3)).append("%s valueList_ = new %s;")
+		.append(next(1, 3)).append("org.itas.util.Pair pair;")
+		.append(next(1, 3)).append("for (int i = 0; i < valueArray_.length; i ++) {")
+		.append(next(1, 4)).append("pair = valueArray_[i];")
+		.append(next(1, 4)).append("valueList_.put(%s, %s);")
+		.append(next(1, 3)).append("}")
+		.append(next(1, 3)).append("set%s(valueList_);")
+		.append(next(1, 2)).append("}")
+		.toString();
 	
 	public static final MapProvider PROVIDER = new MapProvider();
 	
@@ -75,41 +60,15 @@ class MapProvider extends ContainerProvider
 
 	@Override
 	public String getResultSet(CtField field) throws Exception {
-		ClassType definType = (ClassType)SignatureAttribute.toFieldSignature(field.getGenericSignature());
+		final ClassType definType = getFieldType(field);
+		final TypeArgument[] typeArgument = definType.getTypeArguments();
+		final String containerName = newContainer(field, "java.util.HashMap");
 		
-		ClassType keyType = (ClassType)(definType.getTypeArguments()[0].getType());
-		ClassType valueType = (ClassType)(definType.getTypeArguments()[1].getType());
 		
-		CtClass keyCtClassType = toCtClassType(keyType);
-		CtClass valueCtClassType = toCtClassType(valueType);;
-		
-		Object annotiation = field.getAnnotation(Clazz.class);
-		String listClassName = Objects.nonNull(annotiation) ? 
-			((Clazz)annotiation).value().getName() : "java.util.HashMap";
-			
-		annotiation = field.getAnnotation(Size.class);
-		int size = Objects.nonNull(annotiation) ? ((Size)annotiation).value() : 8;
-			
-		CtClass listClass = ClassPool.getDefault().get(listClassName);
-		try {
-			listClass.getDeclaredConstructor(new CtClass[]{javassistType.int_});
-			listClassName = String.format("%s(%s)", listClassName, size);
-		} catch (NotFoundException e) {
-			listClassName = String.format("%s()", listClassName);;
-		}
-		
-		return String.format(RESULTSET_GET, field.getName(), definType.getName(), listClassName,
-				toObjectCode(keyCtClassType, "(String)pair.getKey()"),
-				toObjectCode(valueCtClassType, "(String)pair.getValue()"), upCase(field.getName()));
-	}
-
-	private CtClass toCtClassType(ClassType classType) throws NotFoundException {
-		if (classType.getDeclaringClass() == null) {
-			return ClassPool.getDefault().get(classType.getName());
-		} 
-
-		return ClassPool.getDefault().get(
-				String.format("%s$%s", classType.getDeclaringClass().getName(), classType.getName()));
+		return String.format(RESULTSET_GET, 
+			field.getName(), definType.getName(), containerName,
+			parseFormula(typeArgument[0], "(String)pair.getKey()"),
+			parseFormula(typeArgument[1], "(String)pair.getValue()"), upCase(field.getName()));
 	}
 
 }
