@@ -8,12 +8,12 @@ import org.itas.util.ItasException;
 public interface DataBase {
 
   default String tableName(CtClass clazz) throws ClassNotFoundException {
-	Object sqlEntity = clazz.getAnnotation(SQLEntity.class);
-	if (sqlEntity == null) {
-	  throw new ItasException(clazz.getName() + " module must has annotation[SQLEntity|UnPersistence]");
-	}
-
-	return ((SQLEntity)sqlEntity).value();
+		Object sqlEntity = clazz.getAnnotation(SQLEntity.class);
+		if (sqlEntity == null) {
+		  throw new ItasException(clazz.getName() + " module must has annotation[SQLEntity|UnPersistence]");
+		}
+	
+		return ((SQLEntity)sqlEntity).value();
   }
 	
 }

@@ -5,7 +5,7 @@ package org.itas.core;
  * @author liuzhen<liuxing521a@163.com>
  * @date 2014年3月24日
  */
-public final class Simple<T extends GameObject> implements HashId {
+public final class Simple<T extends GameBase> {
 	
   private final String Id;
 	
@@ -14,70 +14,69 @@ public final class Simple<T extends GameObject> implements HashId {
   private String name;
 	
   public Simple(String Id) {
-	this(Id, "");
+  	this(Id, "");
   }
 
   public Simple(String Id, String name) {
-	this.prefix = avilidPrefix(Id);
-	this.Id = Id;
-	this.name = name;
+		this.prefix = avilidPrefix(Id);
+		this.Id = Id;
+		this.name = name;
   }
 	
-  @Override
   public String getId() {
-	return Id;
+  	return Id;
   }
 	
   public String getName() {
-	return name;
+  	return name;
   }
 
   public void setName(String name) {
-	this.name = name;
+  	this.name = name;
   }
 
   public T enty() {
-	return Pool.get(Id);
+  	return Pool.get(Id);
   }
 	
   public String prefix() {
-	return prefix;
+  	return prefix;
   }
 
   @Override
   public boolean equals(Object data) {
-	if (data == this) {
-	  return true;
-	}
-		
-	if (!(data instanceof Simple)) {
-	  return false;
-	}
-
-	return Id.equals(((Simple<?>)data).Id);
+		if (data == this) {
+		  return true;
+		}
+			
+		if (!(data instanceof Simple)) {
+		  return false;
+		}
+	
+		return Id.equals(((Simple<?>)data).Id);
   }
 	
   @Override
   public int hashCode() {
-	return 31 + Id.hashCode();
+  	return 31 + Id.hashCode();
   }
 	
   @Override
   public String toString() {
-	return String.format("[Id=%s, name=%s]", Id, name);
+  	return String.format("[Id=%s, name=%s]", Id, name);
   }
 
   private String avilidPrefix(String Id) {
-	if (Id == null || Id.length() < 3) {
-	  throw new IllnessException("PRIFEX must endwith [_]," + Id);
-	}
-			
-	String prifex = Id.substring(0, 3);
-	if (prifex.charAt(2) != '_') {
-	  throw new IllegalArgumentException("PRIFEX must endwith [_]");
-	}
-
-	return prifex;
+		if (Id == null || Id.length() < 3) {
+		  throw new IllnessException("PRIFEX must endwith [_]," + Id);
+		}
+				
+		String prifex = Id.substring(0, 3);
+		if (prifex.charAt(2) != '_') {
+		  throw new IllegalArgumentException("PRIFEX must endwith [_]");
+		}
+	
+		return prifex;
   }
 	
 }

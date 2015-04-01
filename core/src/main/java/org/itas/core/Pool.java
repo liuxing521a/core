@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.itas.util.ItasException;
 
-@SuppressWarnings("unchecked")
 public final class Pool implements Ioc {
 	
   /** 数据池*/
@@ -16,102 +15,103 @@ public final class Pool implements Ioc {
   private static final ResPool resPool;
 	
   static {
-	resPool = Ioc.getInstance(ResPool.class);
-	dataPool = Ioc.getInstance(DataPool.class);
+  	resPool = Ioc.getInstance(ResPool.class);
+  	dataPool = Ioc.getInstance(DataPool.class);
   }
-	
   
-  public static <T extends GameObject> T get(String Id) {
-	return (T)dataPool.get(Id);
+  public static <T extends GameBase> T getModule(String Id) {
+  	return dataPool.getModule(Id);
   }
-	  
-  public static <T extends GameObject> T get(
-      Class<? extends GameObject> clazz, String Id) {
-    return (T)dataPool.get(clazz, Id);
+
+  public static <T extends GameBase> T getModule(Class<T> clazz) {
+  	return dataPool.getModule(clazz);
+  }
+  
+  public static <T extends CacheAble> T get(String Id) {
+  	return dataPool.get(Id);
+  }
+
+  public static <T extends CacheAble> T get(Class<T> clazz, String Id) {
+  	return dataPool.get(clazz, Id);
   }
 
   public static boolean isCached(String Id) {
-	return dataPool.isCached(Id);  
-  }
-
-  public static boolean isCached(Class<? extends GameObject> clazz, String Id) {
-	return dataPool.isCached(clazz, Id); 
-  }
-	
-  public static <T extends GameObject> T remove(String Id) {
-	return (T)dataPool.remove(Id); 
-  }
-
-  public static <T extends GameObject> T remove(
-      Class<? extends GameObject> clazz, String Id) {
-	return (T)dataPool.remove(clazz, Id); 
-  }
-	  
-  public static <T extends GameObject> T newInstance(String Id) {
-	  return (T)dataPool.newInstance(Id);
+  	return dataPool.isCached(Id);  
   }
   
-  public static <T extends GameObject> T newInstance(
-      Class<? extends GameObject> clazz, String Id) {
-	return (T)dataPool.newInstance(clazz, Id);
+  public static <T extends CacheAble> boolean isCached(Class<T> clazz, String Id) {
+  	return dataPool.isCached(clazz, Id); 
+  }
+
+  public static <T extends CacheAble> T remove(String Id) {
+  	return dataPool.remove(Id); 
+  }
+
+  public static <T extends CacheAble> T remove(Class<T> clazz, String Id) {
+  	return dataPool.remove(clazz, Id); 
+  }
+	  
+  public static <T extends CacheAble> T newInstance(String Id) {
+	  return dataPool.newInstance(Id);
+  }
+  
+  public static <T extends CacheAble> T newInstance(Class<T> clazz, String Id) {
+  	return dataPool.newInstance(clazz, Id);
   }
 		
   public static <T extends Resource> T getResource(String Rid) {
-    Resource res = resPool.get(Rid);
-	if (res == null) {
-		return null;
+    return resPool.get(Rid);
 	}
-
-	return (T)res;
-  }
-
+	
   public static <T extends Resource> List<T> getResource(Class<T> clazz) {
-	return (List<T>)resPool.get(clazz);
+		return resPool.get(clazz);
   }
 	
   public interface DBPool {
 
-	abstract Connection getConnection() throws SQLException;
-		
-	abstract void shutdown();
+  	Connection getConnection() throws SQLException;
 		
   }
 	
-  public interface DataPool extends Binding {
+  public interface DataPool {
 	  
-	abstract void put(GameObject data);
-	  
-	abstract <T extends GameObject> T get(String Id);
-	  
-	abstract <T extends GameObject> T get(Class<? extends GameObject> clazz, String Id);
-
-	abstract boolean isCached(String Id);
-
-	abstract boolean isCached(Class<? extends GameObject> clazz, String Id);
-	
-	abstract <T extends GameObject> T remove(String Id);
-
-	abstract <T extends GameObject> T remove(Class<? extends GameObject> clazz, String Id);
-	  
-	abstract <T extends GameObject> T newInstance(Class<? extends GameObject> clazz, String Id);
+		void put(CacheAble data);
 		
-	abstract <T extends GameObject> T newInstance(String Id);
+	  <T extends GameBase> T getModule(String Id);
+
+	  <T extends GameBase> T getModule(Class<T> clazz);
+		  
+		<T extends CacheAble> T get(String Id);
+		  
+		<T extends CacheAble> T get(Class<T> clazz, String Id);
+	
+		boolean isCached(String Id);
+	
+		<T extends CacheAble> boolean isCached(Class<T> clazz, String Id);
+		
+		<T extends CacheAble> T remove(String Id);
+	
+		<T extends CacheAble> T remove(Class<T> clazz, String Id);
+		  
+		<T extends CacheAble> T newInstance(String Id);
+
+		<T extends CacheAble> T newInstance(Class<T> clazz, String Id);
 	  
   }
   
+  public interface ResPool {
+  	
+  	<T extends Resource> T get(String rid);
+  	
+  	<T extends Resource> List<T> get(Class<T> clazz);
+  	
+  }
+
   public interface ConfigPool {
 	  
   }
   
-  public interface ResPool extends Binding {
-	  
-	abstract Resource get(String rid);
-	  
-	abstract List<Resource> get(Class<? extends Resource> clazz);
-	  
-  }
-  
   private Pool() {
-	throw new ItasException("can't create instance...");
+  	throw new ItasException("can't create instance...");
   }
 }

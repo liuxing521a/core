@@ -1,6 +1,6 @@
 package org.itas.core;
 
-import org.itas.util.ItasException;
+import org.itas.core.util.UUIDGenerator;
 
 /**
  * <p>自动同步数据库基类</p>
@@ -8,13 +8,35 @@ import org.itas.util.ItasException;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:30:51
  */
-public abstract class GameObjectAotuID extends GameObject {
+public abstract class GameObjectAotuID extends GameBase implements CacheAble {
 	
 	protected GameObjectAotuID(String Id) {
-		super(Id);
+		super(aotoId(Id));
 	}
-
-	protected final <T extends GameObject> T autoInstance(String Id) {
-		throw new ItasException("child of GameBaseAotuID can not auto new instance");
+	
+	@Override
+	public final boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		
+		if (!(o instanceof GameObjectAotuID)) {
+			return false;
+		}
+		
+		return ((GameObjectAotuID) o).Id.equals(Id);
 	}
+	
+	public int getCachedSize() {
+		return 86;
+	}
+	
+	static String aotoId(String Id) {
+		if (Id == null || Id.length() < 4) {
+			return new UUIDGenerator().toString();
+		}
+		
+		return Id;
+	}
+	
 }

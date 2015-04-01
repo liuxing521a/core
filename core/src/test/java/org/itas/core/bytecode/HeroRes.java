@@ -8,4 +8,11 @@ public class HeroRes extends Resource {
 		super(Id);
 	}
 
+	@Override
+	public String PRIFEX() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

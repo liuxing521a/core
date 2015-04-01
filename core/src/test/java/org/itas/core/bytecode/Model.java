@@ -83,8 +83,28 @@ public class Model extends GameObject {
 	@Size(16)private Map<HeroRes, Integer> heroResMap;
 	private Map<SexType, Float> sexCoinMap;
 	@Clazz(LinkedHashMap.class) private Map<Simple<Hero>, String> cardGroupNames;
-
 	
+	
+	private Hero hero;
+	private Model model;
+	
+	
+	public Model getModel() {
+		return model;
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
+	public Hero getHero() {
+		return hero;
+	}
+
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
+
 	public Map<Integer, Simple<Hero>> getHeroGroups() {
 		return heroGroups;
 	}
@@ -302,7 +322,7 @@ public class Model extends GameObject {
 	}
 
 	@Override
-	protected String PRIFEX() {
+	public String PRIFEX() {
 		return "mt_";
 	}
 

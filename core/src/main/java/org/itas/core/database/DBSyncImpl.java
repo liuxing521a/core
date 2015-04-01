@@ -61,21 +61,21 @@ class DBSyncImpl extends AbstractDBSync implements Binding {
 	return dbPool.getConnection();
   }
 	
-  protected void addInsert(GameObject gameObject) {
+  protected void addInsert(GameBase gameObject) {
 	CircularQueue<GameObject> items = insertDatas.get(gameObject.getClass());
    	synchronized (items) {
 	  items.push(gameObject);
 	}
   }
 
-  protected void addUpdate(GameObject gameObject) {
+  protected void addUpdate(GameBase gameObject) {
 	CircularQueue<GameObject> items = updateDatas.get(gameObject.getClass());
 	synchronized (items) {
 	  items.push(gameObject);
 	}
   }
 	
-  protected void addDelete(GameObject gameObject) {
+  protected void addDelete(GameBase gameObject) {
 	CircularQueue<GameObject> items = updateDatas.get(gameObject.getClass());
    	synchronized (items) {
 	  items.push(gameObject);

@@ -16,168 +16,169 @@ public enum Type implements TypeProvider {
 
 		@Override
 		protected TypeProvider provider() {
-			return BooleanProvider.PROVIDER;
+			return FDBooleanProvider.PROVIDER;
 		}
-		
 	},
 	byteType {
 
 		@Override
 		protected TypeProvider provider() {
-			return ByteProvider.PROVIDER;
+			return FDByteProvider.PROVIDER;
 		}
-		
 	},
 	charType {
 
 		@Override
 		protected TypeProvider provider() {
-			return CharProvider.PROVIDER;
+			return FDCharProvider.PROVIDER;
 		}
-		
 	},
 	shortType {
 
 		@Override
 		protected TypeProvider provider() {
-			return ShortProvider.PROVIDER;
+			return FDShortProvider.PROVIDER;
 		}
-		
 	},
 	intType {
 
 		@Override
 		protected TypeProvider provider() {
-			return IntProvider.PROVIDER;
+			return FDIntProvider.PROVIDER;
 		}
-		
 	},
 	longType {
 
 		@Override
 		protected TypeProvider provider() {
-			return LongProvider.PROVIDER;
+			return FDLongProvider.PROVIDER;
 		}
-		
 	},
 	floatType {
 
 		@Override
 		protected TypeProvider provider() {
-			return FloatProvider.PROVIDER;
+			return FDFloatProvider.PROVIDER;
 		}
-		
 	},
 	doubleType {
 
 		@Override
 		protected TypeProvider provider() {
-			return DoubleProvider.PROVIDER;
+			return FDDoubleProvider.PROVIDER;
 		}
-		
 	},
 	stringType {
 
 		@Override
 		protected TypeProvider provider() {
-			return StringProvider.PROVIDER;
+			return FDStringProvider.PROVIDER;
 		}
-		
 	},
 	simpleType {
 
 		@Override
 		protected TypeProvider provider() {
-			return SimpleProvider.PROVIDER;
+			return FDSimpleProvider.PROVIDER;
 		}
-		
 	},
 	resourceType {
 
 		@Override
 		protected TypeProvider provider() {
-			return ResourceProvider.PROVIDER;
+			return FDResourceProvider.PROVIDER;
 		}
-		
 	},
 	enumType {
 
 		@Override
 		TypeProvider provider() {
-			return EnumProvider.PROVIDER;
+			return FDEnumProvider.PROVIDER;
 		}
-		
 	},
 	enumByteType {
 
 		@Override
 		protected TypeProvider provider() {
-			return EnumByteProvider.PROVIDER;
+			return FDEnumByteProvider.PROVIDER;
 		}
-		
 	},
 	enumIntType {
 
 		@Override
 		protected TypeProvider provider() {
-			return EnumIntProvider.PROVIDER;
+			return FDEnumIntProvider.PROVIDER;
 		}
 	},
 	enumStringType {
 
 		@Override
 		protected TypeProvider provider() {
-			return EnumStringProvider.PROVIDER;
+			return FDEnumStringProvider.PROVIDER;
 		}
-		
+	},
+	singleArrayType {
+
+		@Override
+		TypeProvider provider() {
+			return FDSingleArrayProvider.PROVIDER;
+		}
+	},
+	doubleArrayType {
+
+		@Override
+		TypeProvider provider() {
+			return FDDoubleArrayProvider.PROVIDER;
+		}
 	},
 	listType {
 
 		@Override
 		protected TypeProvider provider() {
-			return ListProvider.PROVIDER;
+			return FDListProvider.PROVIDER;
 		}
-		
 	},
 	setType {
 
 		@Override
 		protected TypeProvider provider() {
-			return SetProvider.PROVIDER;
+			return FDSetProvider.PROVIDER;
 		}
-	
 	},
 	mapType {
 
 		@Override
 		protected TypeProvider provider() {
-			return MapProvider.PROVIDER;
+			return FDMapProvider.PROVIDER;
 		}
-		
 	},
 	timeStampType {
 
 		@Override
 		protected TypeProvider provider() {
-			return TimestampProvider.PROVIDER;
+			return FDTimestampProvider.PROVIDER;
 		}
-		
 	},
 	gameObjectType {
 
 		@Override
 		protected TypeProvider provider() {
-			return GameObjectProvider.PROVIDER;
+			return FDGameObjectProvider.PROVIDER;
 		}
-	
 	},
 	gameObjectAutoIdType {
+		
+		@Override
+		protected TypeProvider provider() {
+			return FDGameObjectAutoProvider.PROVIDER;
+		}
+	},
+	gameObjectUnCacheType {
 
 		@Override
 		protected TypeProvider provider() {
-			return GameObjectAutoProvider.PROVIDER;
+			return FDGameObjectNoCacheProvider.PROVIDER;
 		}
-		
 	},
 	;
 	
@@ -200,12 +201,5 @@ public enum Type implements TypeProvider {
 	public String sqlType(CtField field) throws Exception {
 		return provider().sqlType(field);
 	}
-	
-//	@Override
-//	public void process(MethodProvider provider, 
-//			CallBack<FieldProvider> call) throws Exception {
-////		provider().process(provider, call);
-//	}
-	
 	
 }

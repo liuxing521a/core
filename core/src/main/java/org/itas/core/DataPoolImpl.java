@@ -11,6 +11,7 @@ import org.itas.util.ItasException;
 import org.itas.util.Utils.Objects;
 import org.itas.util.Utils.TimeUtil;
 import org.itas.util.cache.Cache;
+import org.itas.util.cache.Cacheable;
 import org.itas.util.cache.LocalCache;
 
 import com.typesafe.config.Config;
@@ -33,13 +34,13 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
   private final long lifeTime;
 	
   /** 模型数据集 */
-  private Map<Class<?>, GameObject> classModules;
+  private Map<Class<?>, GameBase> classModules;
 	
   /** 前缀和class映射*/
-  private Map<String, GameObject> prefixModules;
+  private Map<String, GameBase> prefixModules;
 
   /** 对象缓存的缓存 */
-  private Map<String, Cache<String, GameObject>> dataCaches;
+  private Map<String, Cache<String, CacheAble>> dataCaches;
   
 	
   private DataPoolImpl(DBSync dbSync, long capacity, long lifeTime) {
@@ -51,14 +52,14 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
   @Override
   public void bind(Called back) {
 		checkInitialized();
-		final List<GameObject> gameObjects = back.callBack();
+		final List<GameBase> gameObjects = back.callBack();
 		
 		final int size = gameObjects.size();
-		final Map<Class<?>, GameObject> clsMap = new HashMap<>(size);
-		final Map<String, GameObject> prefixMap = new HashMap<>(size);
-		final Map<String, Cache<String, GameObject>> cacheMap = new HashMap<>(size);
-		for (final GameObject gameObject : gameObjects) {
-		  final Cache<String, GameObject> cache = new LocalCache<>(
+		final Map<Class<?>, Cacheable> clsMap = new HashMap<>(size);
+		final Map<String, Cacheable> prefixMap = new HashMap<>(size);
+		final Map<String, Cache<String, Cacheable>> cacheMap = new HashMap<>(size);
+		for (final GameBase gameObject : gameObjects) {
+		  final Cache<String, Cacheable> cache = new LocalCache<>(
 		      gameObject.getClass().getSimpleName(), 
 			  gameObject.getCachedSize()*this.capacity, this.lifeTime);
 		  
@@ -80,13 +81,13 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
   }
   
   @Override
-  public void put(GameObject data) {
+  public void put(CacheAble data) {
   	obtainCache(data).put(data.getId(), data);
   }
 
   
   @Override
-  public <T extends GameObject> T get(String Id) {
+  public <T extends CacheAble> T get(String Id) {
 	  GameObject gameObject = loadGameObject(Id);
 	  if (Objects.nonNull(gameObject)) {
 		  gameObject.setUpdateTime(TimeUtil.systemTime());
@@ -98,8 +99,8 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
   }
   
   @Override
-  public <T extends GameObject> T get(Class<? extends GameObject> clazz, String Id) {
-		GameObject gameObject = loadGameObject(clazz, Id);
+  public <T extends CacheAble> T get(Class<T> clazz, String Id) {
+  	CacheAble gameObject = loadGameObject(clazz, Id);
 		if (Objects.nonNull(gameObject)) {
 		  gameObject.setUpdateTime(TimeUtil.systemTime());
 		} else {
@@ -157,7 +158,7 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
 		}
   }
 	
-  private GameObject loadGameObject(Class<? extends GameObject> clazz, String Id) {
+  private <T extends CacheAble> loadGameObject(Class<T> clazz, String Id) {
   	return loadGameObject(obtainModule(clazz), Id);
   }
 	
@@ -183,7 +184,7 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
 		}
   }
 
-  private GameObject obtainModule(String Id) {
+  private <T extends GameBase> T obtainModule(String Id) {
 		if (Id == null || Id.length() < 3) {
 		  return null;
 		}
@@ -193,26 +194,26 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
 		  throw new IllegalArgumentException("PRIFEX must endwith [_]");
 		}
 			
-		GameObject module = prefixModules.get(prifex);
+		GameBase module = prefixModules.get(prifex);
 		if (Objects.isNull(module)) {
 		  throw new ItasException("illness Id:" + Id);
 		}
 		
-		return module;
+		return (T) module;
   }
   
-  private GameObject obtainModule(Class<? extends GameObject> clazz) {
-		GameObject module = classModules.get(clazz);
+  private <T extends GameBase> T  obtainModule(Class<T> clazz) {
+  	final GameBase module = classModules.get(clazz);
 		
 		if (Objects.isNull(module)) {
 		  throw new IllegalAccessError("unkown class type:" + clazz.getName());
 		}
 		
-		return module;
-	  }
+		return (T) module;
+	}
 	  
-	  private Cache<String, GameObject> obtainCache(GameObject module) {
-		Cache<String, GameObject> gameObjectCache = dataCaches.get(module.PRIFEX());
+	  private Cache<String, CacheAble> obtainCache(CacheAble module) {
+		final Cache<String, CacheAble> gameObjectCache = dataCaches.get(module.PRIFEX());
 		if (Objects.isNull(gameObjectCache)) {
 		  throw new NullPointerException("class cache:" + module.getClass());
 		}

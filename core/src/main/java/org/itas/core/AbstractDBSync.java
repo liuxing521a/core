@@ -1,6 +1,7 @@
 package org.itas.core;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.itas.core.GameObject.DataStatus;
+import org.itas.core.GameBase.DataStatus;
 import org.itas.core.util.AutoClose;
 import org.itas.util.Logger;
 import org.itas.util.collection.CircularQueue;
@@ -20,11 +21,11 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 
   protected abstract Connection getConnection() throws SQLException;
 	
-  protected abstract void addInsert(GameObject gameObject);
+  protected abstract void addInsert(GameBase gameObject);
 
-  protected abstract void addUpdate(GameObject gameObject);
+  protected abstract void addUpdate(GameBase gameObject);
 		
-  protected abstract void addDelete(GameObject gameObject);
+  protected abstract void addDelete(GameBase gameObject);
 
   @Override
   public GameObject loadData(GameObject gameObject, String Id) {
@@ -225,9 +226,18 @@ public abstract class AbstractDBSync implements DBSync, AutoClose {
 	ResultSet rs = null;
 	try {
 	  conn = getConnection();
-	  String sql = "SELECT column_name FROM information_schema.columns WHERE table_name = ?;";
+		DatabaseMetaData data = conn.getMetaData();
+    ResultSet result = data.getTables(null, "%", "%", new String[]{"TABLE", "VIEW"});
+		if (!result.next()) {
+			throw new SQLException("unkown database meta info...");
+		}
+		
+		String dbName = result.getString("TABLE_CAT");
+		
+	  String sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?;";
 	  ppst = conn.prepareStatement(sql);
 	  ppst.setString(1, tableName);
+	  ppst.setString(2, dbName);
 	  rs = ppst.executeQuery();
 
 	  Set<String> columns = new HashSet<String>();

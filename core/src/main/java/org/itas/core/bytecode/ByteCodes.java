@@ -6,11 +6,7 @@ import java.util.List;
 
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.Modifier;
 
-import org.itas.core.annotation.UnSave;
 import org.itas.core.util.ClassLoaders;
 
 /**

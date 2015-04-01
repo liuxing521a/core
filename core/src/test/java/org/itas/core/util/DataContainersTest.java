@@ -14,7 +14,6 @@ public class DataContainersTest implements DataContainers {
 
   @Test
   public void testToStringList() {
-      System.out.print("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	List<String> list = Arrays.asList("刘振", "李文行", "刘宇轩", "刘羽桐");
 	
 	Assert.assertEquals("[4]刘振|李文行|刘宇轩|刘羽桐|", toString(list));

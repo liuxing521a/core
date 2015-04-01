@@ -11,30 +11,33 @@ public interface MethodProvider extends Provider {
 	 * 序号增长, 1为底数
 	 * @return
 	 */
-	abstract int getAndIncIndex();
+	int getAndIncIndex();
 	
 	/**
-	 * 方法增加field之前预处理
-	 */
-	abstract void begin(CtClass clazz) throws Exception;
-	
-	/**
-	 * 增加方法相关field信息
-	 * @param field
-	 */
-	abstract void append(CtField field) throws Exception;
-
-	/**
-	 * 结束添加field后续处理
+	 * 开始处理类
+	 * @param clazz
 	 * @throws Exception
 	 */
-	abstract void end() throws Exception;
+	void startClass(CtClass clazz) throws Exception;
+	
+	/**
+	 * 开始处理属性
+	 * @param field
+	 * @throws Exception
+	 */
+	void processField(CtField field) throws Exception;
+	
+	/**
+	 * 结束处理类
+	 * @throws Exception
+	 */
+	void endClass() throws Exception;
 	
 	/**
 	 * 转成ctMethod
 	 * @return
 	 * @throws CannotCompileException
 	 */
-	abstract CtMethod toMethod() throws Exception;
+	CtMethod[] toMethod() throws Exception;
 	
 }

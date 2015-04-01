@@ -28,6 +28,109 @@ public class Hero extends GameObjectAotuID {
 	private Set<Effect> effectTypeList;
 	private Set<SkillType> skillTypeList;
 	
+	private Item item;
+	
+	private int[] pointArray;
+	private Simple<Hero>[] heroArray;
+	private HeroRes[] heroResArray;
+	private HeroType[] heroTypeArray;
+	private Item[] itemArray;
+	
+	private int[][] pointDArray;
+	private Simple<Hero>[][] heroDArray;
+	private HeroRes[][] heroResDArray;
+	private HeroType[][] heroTypeDArray;
+	private Item[][] itemDArray;
+	
+	
+	public int[][] getPointDArray() {
+		return pointDArray;
+	}
+
+	public void setPointDArray(int[][] pointDArray) {
+		this.pointDArray = pointDArray;
+	}
+
+	public Simple<Hero>[][] getHeroDArray() {
+		return heroDArray;
+	}
+
+	public void setHeroDArray(Simple<Hero>[][] heroDArray) {
+		this.heroDArray = heroDArray;
+	}
+
+	public HeroRes[][] getHeroResDArray() {
+		return heroResDArray;
+	}
+
+	public void setHeroResDArray(HeroRes[][] heroResDArray) {
+		this.heroResDArray = heroResDArray;
+	}
+
+	public HeroType[][] getHeroTypeDArray() {
+		return heroTypeDArray;
+	}
+
+	public void setHeroTypeDArray(HeroType[][] heroTypeDArray) {
+		this.heroTypeDArray = heroTypeDArray;
+	}
+
+	public Item[][] getItemDArray() {
+		return itemDArray;
+	}
+
+	public void setItemDArray(Item[][] itemDArray) {
+		this.itemDArray = itemDArray;
+	}
+
+	public int[] getPointArray() {
+		return pointArray;
+	}
+
+	public void setPointArray(int[] pointArray) {
+		this.pointArray = pointArray;
+	}
+
+	public Simple<Hero>[] getHeroArray() {
+		return heroArray;
+	}
+
+	public void setHeroArray(Simple<Hero>[] heroArray) {
+		this.heroArray = heroArray;
+	}
+
+	public HeroRes[] getHeroResArray() {
+		return heroResArray;
+	}
+
+	public void setHeroResArray(HeroRes[] heroResArray) {
+		this.heroResArray = heroResArray;
+	}
+
+	public HeroType[] getHeroTypeArray() {
+		return heroTypeArray;
+	}
+
+	public void setHeroTypeArray(HeroType[] heroTypeArray) {
+		this.heroTypeArray = heroTypeArray;
+	}
+
+	public Item[] getItemArray() {
+		return itemArray;
+	}
+
+	public void setItemArray(Item[] itemArray) {
+		this.itemArray = itemArray;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+	
 	public Set<Integer> getPoints() {
 		return points;
 	}
@@ -85,7 +188,7 @@ public class Hero extends GameObjectAotuID {
 	}
 
 	@Override
-	protected String PRIFEX() {
+	public String PRIFEX() {
 		return null;
 	}
 

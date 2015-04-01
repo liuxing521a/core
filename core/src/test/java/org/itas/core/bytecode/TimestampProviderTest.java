@@ -23,7 +23,7 @@ public class TimestampProviderTest extends AbstreactFieldProvider {
 	@Before
 	public void setUP() throws NotFoundException {
 		super.setUP();
-		provider = TimestampProvider.PROVIDER;
+		provider = FDTimestampProvider.PROVIDER;
 		field = clazz.getDeclaredField("updateAt");
 	}
 	
