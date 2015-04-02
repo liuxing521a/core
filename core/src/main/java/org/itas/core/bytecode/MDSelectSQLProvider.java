@@ -5,46 +5,38 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-class MDInsertSQLProvider extends AbstractMethodProvider {
+class MDSelectSQLProvider extends AbstractMethodProvider {
 	
-	private int count;
-	
-	MDInsertSQLProvider() {
+	MDSelectSQLProvider() {
+		super();
 	}
 	
 	@Override
 	public void startClass(CtClass clazz) throws Exception {
 		super.startClass(clazz);
-		this.count = 0;
-		buffer.append("protected String insertSQL() {");
-		buffer.append("return \"INSERT INTO `");
-		buffer.append(tableName(clazz));
-		buffer.append("` (");
+		
+		buffer.append("protected String selectSQL() {");
+		buffer.append("return \"SELECT ");
 	}
-	
+
 	@Override
 	public void processField(CtField field) {
 		if (!isProcesAble(field)) {
 			return;
 		}
-		this.count ++;
 		
 		buffer.append("`");
 		buffer.append(field.getName());
 		buffer.append("`");
 		buffer.append(", ");
 	}
-	
+
 	@Override
-	public void endClass() throws Exception {
+	public void endClass() throws ClassNotFoundException {
 		buffer.delete(buffer.length() - 2, buffer.length());
-		buffer.append(") VALUES (");
-		
-		for (int i = 0; i < count; i++) {
-			buffer.append("?, ");
-		}
-		buffer.delete(buffer.length() - 2, buffer.length());
-		buffer.append(");\";");
+		buffer.append(" FROM `");
+		buffer.append(tableName(ctClass));
+		buffer.append("` WHERE Id = ?;\";");
 		
 		buffer.append("}");
 	}
@@ -53,7 +45,7 @@ class MDInsertSQLProvider extends AbstractMethodProvider {
 	public CtMethod[] toMethod() throws CannotCompileException {
 		return new CtMethod[]{CtMethod.make(buffer.toString(), ctClass)};
 	}
-
+	
 	@Override
 	public String toString() {
 		return buffer.toString();

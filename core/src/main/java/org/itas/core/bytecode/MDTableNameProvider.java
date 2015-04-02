@@ -8,7 +8,6 @@ class MDTableNameProvider extends AbstractMethodProvider {
 
 	@Override
 	public void processField(CtField field) throws Exception {
-		
 	}
 	
 	@Override

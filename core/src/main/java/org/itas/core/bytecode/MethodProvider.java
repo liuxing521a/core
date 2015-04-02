@@ -8,17 +8,11 @@ import javassist.CtMethod;
 public interface MethodProvider extends Provider {
 
 	/**
-	 * 序号增长, 1为底数
-	 * @return
-	 */
-	int getAndIncIndex();
-	
-	/**
 	 * 开始处理类
 	 * @param clazz
 	 * @throws Exception
 	 */
-	void startClass(CtClass clazz) throws Exception;
+	void startClass(CtClass ctClazz) throws Exception;
 	
 	/**
 	 * 开始处理属性

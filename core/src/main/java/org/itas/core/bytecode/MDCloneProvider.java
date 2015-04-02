@@ -57,10 +57,5 @@ class MDCloneProvider extends AbstractMethodProvider {
 		
 		throw new ItasException("un supported clone:" + clazz.getName());
 	}
-
-	@Override
-	public int getAndIncIndex() {
-		throw new ItasException("clone method not need supprted");
-	}
 	
 }

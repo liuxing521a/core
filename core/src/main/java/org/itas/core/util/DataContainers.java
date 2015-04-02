@@ -26,11 +26,11 @@ import org.itas.util.Utils.Objects;
 public interface DataContainers {
 	
   default char parseChar(String text) {
-	if (text == null || text.length() == 0) {
-  	  return ' ';
-	}
-		
-	return text.charAt(0);
+		if (text == null || text.length() == 0) {
+	  	  return ' ';
+		}
+			
+		return text.charAt(0);
   }
 	  
   default String parseString(String text) {
@@ -42,7 +42,7 @@ public interface DataContainers {
   }
   
   default String[] parseArray(String content) {
-	return ContainerImpl.instance.parseArray(content);
+  	return ContainerImpl.instance.parseArray(content);
   }
   
   default String[][] parseDoubleArray(String content) {
@@ -66,7 +66,7 @@ public interface DataContainers {
   }
 
   default String toString(Map<?, ?> m) {
-	return ContainerImpl.instance.toString(m);
+  	return ContainerImpl.instance.toString(m);
   }
 	
   static class ContainerImpl {

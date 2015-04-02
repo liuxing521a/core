@@ -2,9 +2,9 @@ package org.itas.core.util;
 
 public interface Next {
 
-	static final String NEXT_LINE = System.getProperty("line.separator");
+	static final String NEXT_LINE = "\n";//System.getProperty("line.separator");
 	
-	public static String line(int num) {
+	default String line(int num) {
 		final StringBuffer buffer = new StringBuffer();
 		
 		for (int i = 0; i < num; i++) {
@@ -14,7 +14,7 @@ public interface Next {
 		return buffer.toString();
 	}
 	
-	public static String table(int num) {
+	default String table(int num) {
 		final StringBuffer buffer = new StringBuffer();
 		
 		for (int i = 0; i < num; i++) {
@@ -24,7 +24,7 @@ public interface Next {
 		return buffer.toString();
 	}
 	
-	public static String next(int line, int table) {
+	default String next(int line, int table) {
 		final StringBuffer buffer = new StringBuffer();
 		
 		for (int i = 0; i < line; i++) {

@@ -20,18 +20,20 @@ class MDUpdateSQLProvider extends AbstractMethodProvider {
 	
 	@Override
 	public void processField(CtField field) {
-		if (!"Id".equals(field.getName())) {
-			buffer.append("`");
-			buffer.append(field.getName());
-			buffer.append("`");
-			buffer.append(" = ?, ");
+		if (!isProcesAble(field) || "Id".equals(field.getName())) {
+			return;
 		}
+
+		buffer.append("`");
+		buffer.append(field.getName());
+		buffer.append("`");
+		buffer.append(" = ?, ");
 	}
 
 	@Override
 	public void endClass() throws Exception {
 		buffer.delete(buffer.length() - 2, buffer.length());
-		buffer.append(" WHERE Id = ?;\";");
+		buffer.append(" WHERE `Id` = ?;\";");
 		
 		buffer.append("}");
 	}

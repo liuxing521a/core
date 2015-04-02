@@ -6,9 +6,12 @@ import java.util.Map;
 
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.Modifier;
 
+import org.itas.core.annotation.UnSave;
 import org.itas.core.bytecode.AbstractFieldProvider.javassistType;
 import org.itas.core.util.DataBase;
+import org.itas.core.util.Next;
 import org.itas.util.ItasException;
 
 /**
@@ -17,7 +20,7 @@ import org.itas.util.ItasException;
  * @crateTime 2015年2月28日上午10:14:10
  */
 abstract class AbstractMethodProvider 
-	implements MethodProvider, DataBase {
+	implements MethodProvider, DataBase, Next {
 	
 	/**
 	 * 支持属性类型
@@ -67,7 +70,7 @@ abstract class AbstractMethodProvider
 	protected StringBuffer buffer;
 	
 	@Override
-	public synchronized void startClass(CtClass clazz) throws Exception {
+	public void startClass(CtClass clazz) throws Exception {
 		this.index = 0;
 		this.ctClass = clazz;
 		this.buffer = new StringBuffer();
@@ -90,9 +93,20 @@ abstract class AbstractMethodProvider
 		throw new ItasException("field type unsupported:" + field.getType());
 	}
 	
-	@Override
-	public int getAndIncIndex() {
-		return (++ index);
+	protected boolean isProcesAble(CtField ctField) {
+		if (Modifier.isStatic(ctField.getModifiers())) {
+			return false;
+		}
+		
+		if (ctField.hasAnnotation(UnSave.class)) {
+			return false;
+		}
+		
+		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return buffer.toString();
+	}
 }

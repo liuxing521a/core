@@ -1,5 +1,7 @@
 package org.itas.core.bytecode;
 
+import org.itas.core.CallBack;
+
 import javassist.CtClass;
 import javassist.CtField;
 
@@ -200,6 +202,10 @@ public enum Type implements TypeProvider {
 	@Override
 	public String sqlType(CtField field) throws Exception {
 		return provider().sqlType(field);
+	}
+	
+	public void process(CallBack<FieldProvider> back) {
+		back.called((FieldProvider)provider());
 	}
 	
 }
