@@ -1,9 +1,9 @@
 package org.itas.core.bytecode;
 
-import org.itas.core.CallBack;
-
 import javassist.CtClass;
 import javassist.CtField;
+
+import org.itas.core.CallBack;
 
 
 
@@ -12,7 +12,7 @@ import javassist.CtField;
  * @author liuzhen(liuxing521a@gmail.com)
  * @crateTime 2015年2月27日上午10:02:48
  */
-public enum Type implements TypeProvider {
+public enum Type {
 	
 	booleanType {
 
@@ -175,13 +175,6 @@ public enum Type implements TypeProvider {
 			return FDGameObjectAutoProvider.PROVIDER;
 		}
 	},
-	gameObjectUnCacheType {
-
-		@Override
-		protected TypeProvider provider() {
-			return FDGameObjectNoCacheProvider.PROVIDER;
-		}
-	},
 	;
 	
 	private Type() {
@@ -189,22 +182,19 @@ public enum Type implements TypeProvider {
 	
 	abstract TypeProvider provider();
 	
-	@Override
 	public boolean isType(Class<?> clazz) {
 		return provider().isType(clazz);
 	}
 
-	@Override
 	public boolean isType(CtClass clazz) throws Exception {
 		return provider().isType(clazz);
 	}
 	
-	@Override
 	public String sqlType(CtField field) throws Exception {
 		return provider().sqlType(field);
 	}
 	
-	public void process(CallBack<FieldProvider> back) {
+	public void process(CallBack<FieldProvider> back) throws Exception {
 		back.called((FieldProvider)provider());
 	}
 	

@@ -1,5 +1,7 @@
 package org.itas.core;
 
+import org.itas.core.cache.CacheAble;
+
 
 /**
  * <p>自动同步数据库基类</p>
@@ -8,7 +10,8 @@ package org.itas.core;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:25:47
  */
-public abstract class GameObject extends GameBase implements CacheAble {
+public abstract class GameObject 
+	extends GameBase implements CacheAble {
 
 	protected GameObject(String Id) {
 		super(Id);

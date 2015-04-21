@@ -1,27 +1,29 @@
 package org.itas.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.itas.core.Pool.DataPool;
+import org.itas.core.Pool.ResPool;
+import org.itas.core.cache.Cache;
+import org.itas.core.cache.CacheAble;
+import org.itas.core.cache.LocalCache;
+import org.itas.core.resources.XmlInfo;
 import org.itas.core.util.Constructors;
 import org.itas.util.ItasException;
+import org.itas.util.Logger;
 import org.itas.util.Utils.Objects;
 import org.itas.util.Utils.TimeUtil;
-import org.itas.util.cache.Cache;
-import org.itas.util.cache.Cacheable;
-import org.itas.util.cache.LocalCache;
 
 import com.typesafe.config.Config;
 
-/**
- * <p>对象池 </p>
- * @author liuzhen<liuxing521a@163.com>
- * @date 2014-3-19
- */
-@SuppressWarnings("unchecked")
+class PoolImpl {
+	
+}
+
 final class DataPoolImpl implements Constructors, DataPool, Binding {
 
   /** 数据库操作工具*/
@@ -55,11 +57,11 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
 		final List<GameBase> gameObjects = back.callBack();
 		
 		final int size = gameObjects.size();
-		final Map<Class<?>, Cacheable> clsMap = new HashMap<>(size);
-		final Map<String, Cacheable> prefixMap = new HashMap<>(size);
-		final Map<String, Cache<String, Cacheable>> cacheMap = new HashMap<>(size);
+		final Map<Class<?>, CacheAble> clsMap = new HashMap<>(size);
+		final Map<String, CacheAble> prefixMap = new HashMap<>(size);
+		final Map<String, Cache<String, CacheAble>> cacheMap = new HashMap<>(size);
 		for (final GameBase gameObject : gameObjects) {
-		  final Cache<String, Cacheable> cache = new LocalCache<>(
+		  final Cache<String, CacheAble> cache = new LocalCache<>(
 		      gameObject.getClass().getSimpleName(), 
 			  gameObject.getCachedSize()*this.capacity, this.lifeTime);
 		  
@@ -152,7 +154,7 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
 					
 		  gameObject = module.clone(Id);
 		  gameObject.initialize();
-		  ((AbstractDBSync)dbSync).addInsert(gameObject);
+		  ((DBSyner)dbSync).addInsert(gameObject);
 		  gameObjectCache.put(gameObject.getId(), gameObject);
 		  return gameObject;
 		}
@@ -257,4 +259,102 @@ final class DataPoolImpl implements Constructors, DataPool, Binding {
 		}
   }
   
+}
+
+class ResPoolImpl implements ResPool, Constructors {
+
+  /** 所有对象集合*/
+  private static Map<String, Resource> XML_MAP;
+	
+  /** 分类列表*/
+  private static Map<Class<?>, List<Resource>> XML_ARRAY_MAP;
+  
+  private ResPoolImpl(Map<String, Resource> maps, Map<Class<?>, List<Resource>> arrayMaps) {
+  	synchronized (ResPoolImpl.class) {
+  		checkInitialized();
+  		XML_MAP = Collections.unmodifiableMap(maps);
+  		XML_ARRAY_MAP = Collections.unmodifiableMap(arrayMaps);
+		}
+  }
+
+  @Override
+  public void bind() throws Exception {
+  	final List<XmlInfo> xmlInfos = call.callBack();
+  	final Map<String, Resource> resMap = new HashMap<>();
+  	final Map<Class<?>, List<Resource>> childresMap = new HashMap<>();
+
+  	Resource old;
+  	for (final XmlInfo xmlInfo : xmlInfos) {
+  		final List<Resource> childList = new ArrayList<>(xmlInfo.size());
+      for (final Resource xmlBean : xmlInfo.getXmlBeans()) {
+      	childList.add(xmlBean);
+      	old = resMap.put(xmlBean.getId(), xmlBean);
+	    
+      	if (old != null) {
+      		throw new DoubleException("class:[" + xmlBean.getClass().getName() + 
+      				"]\n class:[" + old.getClass().getName() + "] with same id=" + old.getId());
+      	}
+      }
+      
+      if (!childList.isEmpty()) {
+      	childresMap.put(childList.get(0).getClass(), 
+      	    Collections.unmodifiableList(childList));
+      }
+  	}
+	
+  	final Map<Class<?>, List<Resource>> typeResMap = new HashMap<>();
+		
+  	for (final XmlInfo xmlInfo : xmlInfos) {
+      xmlInfo.load();
+  	}
+	
+  	allResources = Collections.unmodifiableMap(resMap);
+  	childResources = Collections.unmodifiableMap(typeResMap);
+  	Logger.trace("res size is :{}", allResources.size());		
+  }
+
+  @Override
+  public void unBind() {
+  	XML_MAP = null;
+  	XML_ARRAY_MAP = null;
+  }
+  
+  @Override
+  public <T extends Resource> T get(String Id) {
+		if (Id == null || Id.length() == 0) {
+		  return null;
+		}
+			
+		return (T)XML_MAP.get(Id);
+  }
+	
+  @Override
+  public <T extends Resource> List<T> get(Class<T> clazz) {
+    return (List<T>)XML_ARRAY_MAP.get(clazz);
+  }
+	  
+  private void checkInitialized() {
+		if (XML_MAP != null || XML_ARRAY_MAP != null) {
+		  throw new DoubleException("can't initialized agin");
+		}
+  }
+  
+  public static ResPoolImplBuilder makeBuilder() {
+  	return new ResPoolImplBuilder();
+  }
+  
+  public static class ResPoolImplBuilder implements Builder {
+	
+  	private Map<String, Resource> mapa;
+  	
+  	private Map<Class<?>, List<Resource>> maps;
+  	
+		private ResPoolImplBuilder() {
+		}
+	
+		@Override
+		public ResPool builder() {
+		  return new ResPoolImpl(mapa, maps);
+		}
+  }
 }

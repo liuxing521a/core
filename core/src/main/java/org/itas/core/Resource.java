@@ -1,12 +1,8 @@
 package org.itas.core;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Map;
 
-import org.itas.core.annotation.CanNull;
-import org.itas.util.Utils.Objects;
+import org.itas.core.resources.AbstractXml;
 
 public abstract class Resource extends AbstractXml implements HashId {
 	
@@ -14,33 +10,26 @@ public abstract class Resource extends AbstractXml implements HashId {
   private String Id;
 	
   protected Resource(String Id)  {
-	this.Id = Id;
+  	this.Id = Id;
   }
 	
   @Override
   public String getId()  {
-	return Id;
+  	return Id;
+  }
+  
+  @Override
+  protected String confiMessage(Field field) {
+  	return String.format("class:%s[Id=%s, field=%s]", 
+  			getClass().getName(), Id, field.getName());
+  }
+  
+  @Override
+  protected String formatMessage(Field field, String value) {
+  	return String.format("class:%s[Id=%s, field=%s, type=%s, value=%s]", 
+  			getClass().getName(), Id, field.getName(), field.getType().getName(), value);
   }
 
-  void load(Collection<Field> fields, Map<String, String> attributes) throws Exception {
-	for (Field field : fields) {
-	  if (Modifier.isFinal(field.getModifiers()) || 
-	      Modifier.isStatic(field.getModifiers())) {
-		continue;
-	  }
-				
-	  String value = attributes.get(field.getName());
-	  if (Objects.nonNull(value)) {
-		fill(field, value);
-		continue;
-	  }
-				
-	  if (!field.isAnnotationPresent(CanNull.class)) {
-		throw new FieldNotConfigException("class:" + getClass().getName() + 
-		    "[Id=" + getId() + ",field=" + field.getName() + "]");
-	  }
-	}
-  }
 	
   @Override
   public boolean equals(Object o)  {
@@ -48,16 +37,16 @@ public abstract class Resource extends AbstractXml implements HashId {
       return true;
     }
     
-    if (o instanceof Resource) {
-      return getClass() == o.getClass() && Id.intern() == (((Resource)o).Id).intern();	
+    if (o.getClass() == this.getClass()) {
+    	return Id.equals(((Resource)o).Id);	
     }
 		
-	return false;
+    return false;
   }
 	
   @Override
   public int hashCode() {
-	return 31 + Id.hashCode();
+  	return 31 + Id.hashCode();
   }
 	
 }

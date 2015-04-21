@@ -7,14 +7,16 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import org.itas.core.Syner.GameBaseSyner;
 import org.itas.core.annotation.Primary;
 import org.itas.core.annotation.UnSave;
+import org.itas.core.cache.CacheAble;
 import org.itas.core.util.Constructors;
 import org.itas.core.util.DataContainers;
 import org.itas.util.ItasException;
 
 abstract class GameBase 
-	implements DataContainers, Constructors {
+	implements DataContainers, Constructors, CacheAble {
 	
 	enum DataStatus {
 		unload,		// 未加载
@@ -22,6 +24,7 @@ abstract class GameBase
 		news,		// 新数据
 		modify,		// 修改数据
 		destory,	// 销毁数据
+		expired,	// 被逐出
 	}
 	
 	protected GameBase(String Id) {
@@ -44,15 +47,18 @@ abstract class GameBase
 	 */
 	protected Timestamp createTime;
 	
+	
+	@UnSave protected Simple<?> simple;
+	
 	/** 
 	 * 对象当前状态 
 	 */
 	@UnSave private volatile DataStatus status = DataStatus.unload;
 	
-	@UnSave private static final AbstractDBSync dbSync;
+	@UnSave private static final GameBaseSyner SYNER;
 	
 	static {
-		dbSync = (AbstractDBSync)Ioc.Ioc.getInstance(DBSync.class);
+		SYNER = Ioc.getInstance(GameBaseSyner.class);
 	}
 	
 	/**
@@ -61,7 +67,7 @@ abstract class GameBase
 	protected abstract String PRIFEX();
 	
 	protected void initialize() {
-		status = DataStatus.news;
+		setDataStatus(DataStatus.news);
 	}
 	
 	public final String getId() {
@@ -89,19 +95,23 @@ abstract class GameBase
 	}
 	
 	protected void modify() {
-		if (status == DataStatus.load) {
-			status = DataStatus.modify;
-			dbSync.addUpdate(this);
+		if (getDataStatus() == DataStatus.load) {
+			setDataStatus(DataStatus.modify);
+			SYNER.addUpdate(this);
 		}
 	}
 
 	public void destroy() {
-		if (status != DataStatus.destory) {
-			status = DataStatus.destory;
-			dbSync.addDelete(this);
+		if (getDataStatus() != DataStatus.destory) {
+			setDataStatus(DataStatus.destory);
+			SYNER.addDelete(this);
 		}
 	}
 
+	void setDataStatus(DataStatus status) {
+		this.status = status;
+	}
+	
 	DataStatus getDataStatus() {
 		return status;
 	}
@@ -112,12 +122,12 @@ abstract class GameBase
 		case news: 
 			doInsert(statement);
 			statement.addBatch();
-			this.status = DataStatus.load;
+			setDataStatus(DataStatus.load);
 			break;
 		case modify:
 			doUpdate(statement);
 			statement.addBatch();
-			this.status = DataStatus.load;
+			setDataStatus(DataStatus.load);
 			break;
 		case destory: 
 			doDelete(statement);
@@ -130,9 +140,9 @@ abstract class GameBase
 	}
 	
 	final void doResultSet(ResultSet result) throws SQLException {
-		if (status == DataStatus.unload) {
+		if (getDataStatus() == DataStatus.unload) {
 			doFill(result);
-			this.status = DataStatus.load;
+			setDataStatus(DataStatus.load);
 		}
 	}
 	
@@ -202,6 +212,19 @@ abstract class GameBase
 	
 	public int getCachedSize() {
 		return 86;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public final <T extends CacheAble> Simple<T> simple() {
+		if (simple == null) {
+			simple = new Simple<T>(Id);
+		}
+		
+		return (Simple<T>) simple;
+	}
+	
+	final void setSimple(Simple<?> simple) {
+		this.simple = simple;
 	}
 	
 }

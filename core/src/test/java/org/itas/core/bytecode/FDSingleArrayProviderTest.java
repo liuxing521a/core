@@ -46,7 +46,7 @@ public class FDSingleArrayProviderTest extends AbstreactFieldProvider {
 		simpleResultTest();
 		resourceResultTest();
 		enumResultTest();
-		GameObjectNocacheResultTest();
+//		GameObjectNocacheResultTest();
 	}
 	
 	public void javaBaseResultTest() throws Exception {

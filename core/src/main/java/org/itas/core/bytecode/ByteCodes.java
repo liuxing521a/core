@@ -1,7 +1,6 @@
 package org.itas.core.bytecode;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javassist.ClassPool;
@@ -14,28 +13,32 @@ import org.itas.core.util.ClassLoaders;
  * @author liuzhen
  */
 public final class ByteCodes implements ClassLoaders {
-
-  public enum ClassType { CTCLASS, CLASS }
 	
-  static final ByteCodes instance = new ByteCodes();
+	static final ByteCodes instance = new ByteCodes();
+
+  public enum ClassType { 
+  	CTCLASS {
+			@Override
+			public List<Class<?>> loadClass(Class<?> parent, String packageName) throws Exception {
+				return instance.loadFromCtClass(parent, packageName);
+			}
+		}, 
+  	CLASS {
+			@Override
+			public List<Class<?>> loadClass(Class<?> parent, String packageName) throws Exception {
+				return instance.loadFromJavaClass(parent, packageName);
+			}
+		};
   
-  public static List<Class<?>> loadClass(Class<?> parent, 
-      String packageName, ClassType classType) throws Exception {
-	if (ClassType.CTCLASS == classType) {
-	  return instance.loadFromCtClass(parent, packageName);
-	} else if (ClassType.CLASS == classType) {
-	  return instance.loadFromJavaClass(parent, packageName);
-	} else {
-	  return Collections.emptyList();
-	}
+  	public abstract List<Class<?>> loadClass(Class<?> parent, String packageName) throws Exception;
   }
 	
-  private List<Class<?>> loadFromJavaClass (
-	  Class<?> parent, String packageName) throws Exception {
-	final Class<?>[] classArray = loadClass(packageName);
-    final List<Class<?>> classList = 
-		new ArrayList<Class<?>>(classArray.length);
+  
+  private List<Class<?>> loadFromJavaClass (Class<?> parent, 
+  		String packageName) throws Exception {
+  	final Class<?>[] classArray = loadClass(packageName);
     
+  	final List<Class<?>> classList =  new LinkedList<>();
     for (Class<?> clazz : classArray) {
       if (parent.isAssignableFrom(clazz)) {
     	  classList.add(clazz);
@@ -45,20 +48,20 @@ public final class ByteCodes implements ClassLoaders {
     return classList;
   }
   
-  private List<Class<?>> loadFromCtClass(
-      Class<?> parent, String packageName) throws Exception {
-	final CtClass[] ctClassArray = loadCtClass(packageName);
-	final List<Class<?>> classList = 
-	    new ArrayList<Class<?>>(ctClassArray.length);
+  private List<Class<?>> loadFromCtClass(Class<?> parent, 
+  		String packageName) throws Exception {
+  	final CtClass[] ctClassArray = loadCtClass(packageName);
+  	
+  	final List<Class<?>> classList = new LinkedList<>();
 	
-	final CtClass parentCt = ClassPool.getDefault().get(parent.getName());
-	for (CtClass ctClass : ctClassArray) {
-	  if (ctClass.subclassOf(parentCt)) {
-		classList.add(toClass(ctClass));
-	  }
-	}
+  	final CtClass parentCt = ClassPool.getDefault().get(parent.getName());
+  	for (CtClass ctClass : ctClassArray) {
+  		if (ctClass.subclassOf(parentCt)) {
+  			classList.add(toClass(ctClass));
+  		}
+  	}
 	
-	return classList;
+  	return classList;
   }
 	
   private Class<?> toClass(CtClass ctClass) throws Exception {
@@ -108,10 +111,11 @@ public final class ByteCodes implements ClassLoaders {
 //	}
 //		
 //	clazz.writeFile("D:/");
-	return null;
+  	return null;
   }
 	
   private ByteCodes() {
+  	
   }
 	
 }

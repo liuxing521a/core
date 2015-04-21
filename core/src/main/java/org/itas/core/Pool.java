@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.itas.core.cache.CacheAble;
+import org.itas.core.resources.Element;
 import org.itas.util.ItasException;
 
-public final class Pool implements Ioc {
+public class Pool {
 	
   /** 数据池*/
   private static final DataPool dataPool;
@@ -100,6 +102,8 @@ public final class Pool implements Ioc {
   }
   
   public interface ResPool {
+  	
+  	void reloading();
   	
   	<T extends Resource> T get(String rid);
   	

@@ -13,6 +13,4 @@ public interface HashId {
 	 */
 	public String getId();
 	
-	public String PRIFEX();
-	
 }

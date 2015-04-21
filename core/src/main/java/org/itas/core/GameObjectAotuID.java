@@ -8,7 +8,7 @@ import org.itas.core.util.UUIDGenerator;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:30:51
  */
-public abstract class GameObjectAotuID extends GameBase implements CacheAble {
+public abstract class GameObjectAotuID extends GameBase  {
 	
 	protected GameObjectAotuID(String Id) {
 		super(aotoId(Id));

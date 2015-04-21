@@ -21,7 +21,7 @@ import org.junit.runners.Suite;
   FDFloatProviderTest.class,
   FDGameObjectProviderTest.class,
   FDGameObjectAutoIdProviderTest.class,
-  FDGameObjectNoCacheProviderTest.class,
+//  FDGameObjectNoCacheProviderTest.class,
   FDIntProviderTest.class,
   FDListProviderTest.class,
   FDLongProviderTest.class,

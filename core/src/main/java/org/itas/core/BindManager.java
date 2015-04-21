@@ -10,9 +10,10 @@ import java.util.Map;
 import org.itas.core.BindManager.ModuleBinding.ModuleBindingBuilder;
 import org.itas.core.BindManager.XmlResourceBinding.ConfigBindingBuilder;
 import org.itas.core.Binding.Called;
-import org.itas.core.XmlInfo.XmlInfoBuilder;
 import org.itas.core.bytecode.ByteCodes;
 import org.itas.core.bytecode.ByteCodes.ClassType;
+import org.itas.core.resources.XmlInfo;
+import org.itas.core.resources.XmlInfo.XmlInfoBuilder;
 import org.itas.core.util.Constructors;
 
 public class BindManager {
@@ -151,7 +152,7 @@ public class BindManager {
 		  continue;
 	    }
 
-	    final XmlHandler handle = new ResourceHandler((Class<? extends Resource>)clazz);
+	    final Parser handle = new ResourceHandler((Class<? extends Resource>)clazz);
 	    final XmlInfoBuilder xmlInfoBuild = XmlInfo.newXmlInfoBuilder();
 		xmlInfoBuild.setHandle(handle);
 

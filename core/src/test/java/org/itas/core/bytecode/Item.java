@@ -1,10 +1,10 @@
 package org.itas.core.bytecode;
 
-import org.itas.core.GameObjectNoCache;
+import org.itas.core.GameObjectAotuID;
 import org.itas.core.annotation.SQLEntity;
 
 @SQLEntity("item")
-public class Item extends GameObjectNoCache {
+public class Item extends GameObjectAotuID {
 
 	protected Item(String Id) {
 		super(Id);

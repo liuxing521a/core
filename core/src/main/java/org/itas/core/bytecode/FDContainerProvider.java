@@ -120,11 +120,6 @@ abstract class FDContainerProvider extends AbstractFieldProvider {
 				genericType.getName().replace('$', '.'), value);
 		} 
 
-		if (Type.gameObjectUnCacheType.isType(genericType)) {
-			return String.format("org.itas.core.Pool.getModule(%s.class).clone(%s)", 
-				genericType.getName().replace('$', '.'), value);
-		} 
-
 		throw new UnsupportException("[" + FDContainerProvider.class.getName() + 
 			"] unsuppoted type: " + genericType.getName());
 	}

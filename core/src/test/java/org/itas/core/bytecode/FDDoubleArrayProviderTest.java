@@ -38,7 +38,7 @@ public class FDDoubleArrayProviderTest extends AbstreactFieldProvider {
 		simpleStatementTest();
 		resourceStatementTest();
 		enumStatementTest();
-		GameObjectNocacheStatementTest();
+//		GameObjectNocacheStatementTest();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class FDDoubleArrayProviderTest extends AbstreactFieldProvider {
 		simpleResultTest();
 		resourceResultTest();
 		enumResultTest();
-		GameObjectNocacheResultTest();
+//		GameObjectNocacheResultTest();
 	}
 	
 	public void javaBaseResultTest() throws Exception {

@@ -7,7 +7,6 @@ import javassist.CtClass;
 
 import org.itas.core.GameObject;
 import org.itas.core.GameObjectAotuID;
-import org.itas.core.GameObjectNoCache;
 import org.itas.core.util.FirstChar;
 import org.itas.util.ItasException;
 
@@ -88,7 +87,6 @@ abstract class AbstractFieldProvider implements FirstChar {
 
 		public final static Class<?> gameBaseAotuID = GameObjectAotuID.class;
 
-		public final static Class<?> gameObjectUnCache = GameObjectNoCache.class;
 	}
 	
 	static class javassistType {
@@ -143,9 +141,6 @@ abstract class AbstractFieldProvider implements FirstChar {
 
 		public final static CtClass gameBaseAotuID;
 
-		public final static CtClass gameObjectUnCache;
-		
-
     static {
     	final ClassPool pool = ClassPool.getDefault();
     	try {
@@ -170,7 +165,6 @@ abstract class AbstractFieldProvider implements FirstChar {
 				timeStamp = pool.get(javaType.timeStamp.getName());
 				gameObject = pool.get(javaType.gameObject.getName());
 				gameBaseAotuID = pool.get(javaType.gameBaseAotuID.getName());
-				gameObjectUnCache = pool.get(javaType.gameObjectUnCache.getName());
 			} catch (Exception e) {
 					throw new ItasException(e);
 			}

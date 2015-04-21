@@ -51,10 +51,6 @@ class MDCloneProvider extends AbstractMethodProvider {
 			return;
 		} 
 		
-		if (Type.gameObjectUnCacheType.isType(clazz)) {
-			return;
-		}
-		
 		throw new ItasException("un supported clone:" + clazz.getName());
 	}
 	
