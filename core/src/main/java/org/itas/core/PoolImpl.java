@@ -24,7 +24,7 @@ class PoolImpl {
 	
 }
 
-final class DataPoolImpl implements Constructors, DataPool, Binding {
+final class DataPoolImpl implements Constructors, DataPool {
 
   /** 数据库操作工具*/
   private final DBSync dbSync;

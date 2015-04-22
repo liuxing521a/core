@@ -102,9 +102,7 @@ public class Pool {
   }
   
   public interface ResPool {
-  	
-  	void reloading();
-  	
+
   	<T extends Resource> T get(String rid);
   	
   	<T extends Resource> List<T> get(Class<T> clazz);

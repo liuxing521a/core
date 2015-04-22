@@ -30,7 +30,6 @@ public abstract class Resource extends AbstractXml implements HashId {
   			getClass().getName(), Id, field.getName(), field.getType().getName(), value);
   }
 
-	
   @Override
   public boolean equals(Object o)  {
     if (this == o) {

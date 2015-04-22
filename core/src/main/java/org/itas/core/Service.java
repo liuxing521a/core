@@ -5,7 +5,7 @@ import com.google.inject.Binder;
 
 public interface Service {
 
-	interface OnStarUP extends Service {
+	interface OnStartUP extends Service {
 		
 		abstract void onStartUP() throws Exception;
 
@@ -19,7 +19,7 @@ public interface Service {
 	
 	interface OnBinder {
 		
-		abstract void bind(Binder binder);
+		abstract void bind(Binder binder) throws Exception;
 		
 	}
 		

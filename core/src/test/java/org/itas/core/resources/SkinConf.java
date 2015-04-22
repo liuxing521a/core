@@ -12,7 +12,7 @@ public class SkinConf extends Config {
 	private SkinConf() {
 	}
 
-	public static SkinConf get() {
+	public static SkinConf getInstance() {
 		return instance;
 	}
 
@@ -47,4 +47,8 @@ public class SkinConf extends Config {
 		return noChangeSkins;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s", skinCellList);
+	}
 }

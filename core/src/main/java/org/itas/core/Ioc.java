@@ -7,7 +7,7 @@ public interface Ioc {
 
   static final Injector Ioc = Guice.createInjector(new ServerModule());
   
-  static <T> T getInstance(Class<T> clazz) {
+  public static <T> T getInstance(Class<T> clazz) {
   	return Ioc.getInstance(clazz);
   }
 }

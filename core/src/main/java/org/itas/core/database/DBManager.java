@@ -5,33 +5,35 @@ import org.itas.core.Pool.DBPool;
 import org.itas.core.SQLExecutor;
 import org.itas.core.Service.OnBinder;
 import org.itas.core.Service.OnShutdown;
-import org.itas.core.Service.OnStarUP;
+import org.itas.core.Service.OnStartUP;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 
-public final class DBManager implements OnBinder, OnStarUP, OnShutdown {
+public final class DBManager implements OnBinder, OnStartUP, OnShutdown {
 
 	private final DBPoolImpl dbPool;
 
 	private final SynerThreadImpl syner;
-	
-  private DBManager(long interval, Config config) {
-  	dbPool = DBPoolImpl.newBilder()
-				.setConfig(config).builder();
-  	
-  	syner = SynerThreadImpl.newBuilder()
-  			.setInterval(interval).builder();
-  }
 
-  @Override
-  public void bind(Binder binder) {
-  	binder.bind(DBPool.class).toInstance(dbPool);
-  	
-  	SQLExecutor executor = SQLExecutorImpl.newBuilder().builder();
-  	binder.bind(SQLExecutor.class).toInstance(executor);
-  }
-  
+	private DBManager(long interval, Config config) {
+		dbPool = DBPoolImpl.newBilder()
+					.setConfig(config)
+					.builder();
+
+		syner = SynerThreadImpl.newBuilder()
+					.setInterval(interval)
+					.builder();
+	}
+
+	@Override
+	public void bind(Binder binder) {
+		binder.bind(DBPool.class).toInstance(dbPool);
+
+		binder.bind(SQLExecutor.class).toInstance(
+				SQLExecutorImpl.newBuilder().builder());
+	}
+
 	@Override
 	public void onShutdown() throws Exception {
 		dbPool.onShutdown();
@@ -43,7 +45,7 @@ public final class DBManager implements OnBinder, OnStarUP, OnShutdown {
 		dbPool.onStartUP();
 		syner.onStartUP();
 	}
-	
+
 	public static DataBaseManagerBuilder newBuilder() {
 		return new DataBaseManagerBuilder();
 	}
@@ -52,11 +54,11 @@ public final class DBManager implements OnBinder, OnStarUP, OnShutdown {
 
 		private long interval;
 		private Config config;
-		
+
 		private DataBaseManagerBuilder() {
-			
+
 		}
-		
+
 		public DataBaseManagerBuilder setInterval(long interval) {
 			this.interval = interval;
 			return this;
@@ -71,7 +73,7 @@ public final class DBManager implements OnBinder, OnStarUP, OnShutdown {
 		public DBManager builder() {
 			return new DBManager(interval, config);
 		}
-		
+
 	}
-	
+
 }

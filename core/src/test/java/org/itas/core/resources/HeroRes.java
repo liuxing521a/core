@@ -47,4 +47,9 @@ public class HeroRes extends Resource {
 		return adorn;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("\nId=%s, name=%s", getId(), getName());
+	}
+	
 }
