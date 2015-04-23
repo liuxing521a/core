@@ -5,18 +5,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
+import org.itas.core.Pool.DataPool;
 import org.itas.core.Syner.GameBaseSyner;
 import org.itas.core.annotation.Primary;
 import org.itas.core.annotation.UnSave;
 import org.itas.core.cache.CacheAble;
-import org.itas.core.util.Constructors;
-import org.itas.core.util.DataContainers;
+import org.itas.core.util.ItContainer;
 import org.itas.util.ItasException;
+import org.itas.util.Pair;
 
-abstract class GameBase 
-	implements DataContainers, Constructors, CacheAble {
+abstract class GameBase implements CacheAble {
+	
+	private static final DataPool pool;
+	
+	static {
+		pool = Ioc.getInstance(DataPool.class);
+	}
 	
 	enum DataStatus {
 		unload,		// 未加载
@@ -29,45 +37,34 @@ abstract class GameBase
 	
 	protected GameBase(String Id) {
 		this.Id = Id;
+		this.status = DataStatus.unload;
+		this.syner = pool.getSyner(this.getClass());
 	}
 	
-	/**
-	 * 唯一Id
-	 */
-	@Primary
-	protected String Id;
+	/**唯一Id*/
+	@Primary protected String Id;
 	
-	/** 
-	 * 修改时间 
-	 */
+	/**修改时间 */
 	protected Timestamp updateTime;
 	
-	/** 
-	 * 创建时间 
-	 */
+	/**创建时间 */
 	protected Timestamp createTime;
 	
+	/** 对象当前状态 */
+	@UnSave private volatile DataStatus status;
 	
-	@UnSave protected Simple<?> simple;
+	@UnSave private GameBaseSyner syner;
 	
-	/** 
-	 * 对象当前状态 
-	 */
-	@UnSave private volatile DataStatus status = DataStatus.unload;
 	
-	@UnSave private static final GameBaseSyner SYNER;
-	
-	static {
-		SYNER = Ioc.getInstance(GameBaseSyner.class);
-	}
 	
 	/**
 	 * id前缀，以次来区分一个字符串id属于那个对象
 	 */
-	protected abstract String PRIFEX();
+	protected abstract String prefix();
 	
-	protected void initialize() {
+	void initialized() {
 		setDataStatus(DataStatus.news);
+		syner.addInsert(this);
 	}
 	
 	public final String getId() {
@@ -97,14 +94,14 @@ abstract class GameBase
 	protected void modify() {
 		if (getDataStatus() == DataStatus.load) {
 			setDataStatus(DataStatus.modify);
-			SYNER.addUpdate(this);
+			syner.addUpdate(this);
 		}
 	}
 
 	public void destroy() {
 		if (getDataStatus() != DataStatus.destory) {
 			setDataStatus(DataStatus.destory);
-			SYNER.addDelete(this);
+			syner.addDelete(this);
 		}
 	}
 
@@ -116,8 +113,8 @@ abstract class GameBase
 		return status;
 	}
 
-	final void doStatement(PreparedStatement statement, 
-		DataStatus status) throws SQLException {
+	final void doStatement(PreparedStatement statement, DataStatus status) 
+	throws SQLException {
 		switch (status) {
 		case news: 
 			doInsert(statement);
@@ -134,8 +131,8 @@ abstract class GameBase
 			statement.addBatch();
 			break;
 		default: 
-			throw new ItasException(this.getClass().getName() + 
-					" unkown data status:" + status);
+			throw new ItasException(
+				String.format("%s unkown data status:%s", this.getClass().getName(), status));
 		}
 	}
 	
@@ -174,18 +171,18 @@ abstract class GameBase
 		throw new ItasException("doCreate must Override");
 	}
 	
-	protected void doAlter(Statement statement, 
-		Set<String> excludeColums) throws java.sql.SQLException {
+	protected void doAlter(Statement statement, Set<String> excludeColums) 
+	throws java.sql.SQLException {
 		throw new ItasException("doAlter must Override");
 	}
 	
 	protected void doInsert(PreparedStatement statement) 
-		throws java.sql.SQLException {
+	throws java.sql.SQLException {
 		throw new ItasException("doInsert must Override");
 	}
 
 	protected void doUpdate(PreparedStatement statement) 
-		throws java.sql.SQLException {
+	throws java.sql.SQLException {
 		throw new ItasException("doUpdate must Override");
 	}
 	
@@ -194,7 +191,8 @@ abstract class GameBase
 		throw new ItasException("doDelete must Override");
 	}
 	
-	protected void doFill(ResultSet result) throws java.sql.SQLException {
+	protected void doFill(ResultSet result) 
+	throws java.sql.SQLException {
 		throw new ItasException("doFill must Override");
 	}
 
@@ -202,8 +200,54 @@ abstract class GameBase
 		throw new ItasException("clone(String Id) must Override");
 	}
 	
+	protected char parseChar(String text) {
+		return ItContainer.parseChar(text);
+	}
+
+	protected String parseString(String text) {
+		return ItContainer.parseString(text);
+	}
+
+	protected String[] parseArray(String content) {
+		return ItContainer.parseArray(content);
+	}
+
+	protected String[][] parseDoubleArray(String content) {
+		return ItContainer.parseDoubleArray(content);
+	}
+
+	protected Pair<String, String>[] parsePair(String content) {
+		return ItContainer.parsePair(content);
+	}
+
+	protected String toString(Collection<?> c) {
+		return ItContainer.toString(c);
+	}
+
+	protected String toString(Map<?, ?> m) {
+		return ItContainer.toString(m);
+	}
+
+	protected String toString(Object[] array) {
+		return ItContainer.toString(array);
+	}
+
+	protected String toString(Object[][] array) {
+		return ItContainer.toString(array);
+	}
+	
 	@Override
-	public abstract boolean equals(Object o);
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		
+		if (o.getClass() == this.getClass()) {
+			return Id.equals(Id);
+		}
+		
+		return false;
+	}
 	
 	@Override
 	public final int hashCode() {
@@ -214,17 +258,8 @@ abstract class GameBase
 		return 86;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public final <T extends CacheAble> Simple<T> simple() {
-		if (simple == null) {
-			simple = new Simple<T>(Id);
-		}
-		
-		return (Simple<T>) simple;
-	}
-	
-	final void setSimple(Simple<?> simple) {
-		this.simple = simple;
+	public final <T extends GameBase> Simple<T> simple() {
+		return new Simple<T>(Id);
 	}
 	
 }

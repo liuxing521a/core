@@ -6,7 +6,6 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-import org.itas.core.UnDeFineException;
 import org.itas.core.util.FirstChar;
 import org.itas.util.Utils.Objects;
 

@@ -12,7 +12,6 @@ import org.itas.core.Service.OnBinder;
 import org.itas.core.Service.OnShutdown;
 import org.itas.core.Service.OnStartUP;
 import org.itas.core.resources.ResPoolImpl.ResPoolImplBuilder;
-import org.itas.core.resources.XmlLoader.XmlLoaderImpl;
 
 import com.google.inject.Binder;
 

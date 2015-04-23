@@ -42,7 +42,7 @@ public class Item extends GameObjectAotuID {
 	}
 
 	@Override
-	public String PRIFEX() {
+	public String prefix() {
 		return "it_";
 	}
 

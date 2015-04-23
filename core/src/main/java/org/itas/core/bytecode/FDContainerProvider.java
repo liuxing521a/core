@@ -9,7 +9,6 @@ import javassist.bytecode.SignatureAttribute;
 import javassist.bytecode.SignatureAttribute.ClassType;
 import javassist.bytecode.SignatureAttribute.TypeArgument;
 
-import org.itas.core.UnsupportException;
 import org.itas.core.annotation.Clazz;
 import org.itas.core.annotation.Size;
 

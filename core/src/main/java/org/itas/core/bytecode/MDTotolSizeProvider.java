@@ -5,8 +5,6 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-import org.itas.core.UnsupportException;
-
 class MDTotolSizeProvider extends AbstractMethodProvider {
 	
 	MDTotolSizeProvider() {

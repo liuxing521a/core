@@ -36,13 +36,15 @@ public final class DBManager implements OnBinder, OnStartUP, OnShutdown {
 
 	@Override
 	public void onShutdown() throws Exception {
-		dbPool.onShutdown();
 		syner.onShutdown();
+		dbPool.onShutdown();
 	}
 
 	@Override
 	public void onStartUP() throws Exception {
 		dbPool.onStartUP();
+		syner.createTable();
+		syner.alterTable();
 		syner.onStartUP();
 	}
 

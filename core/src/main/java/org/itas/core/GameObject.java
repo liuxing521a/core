@@ -1,6 +1,5 @@
 package org.itas.core;
 
-import org.itas.core.cache.CacheAble;
 
 
 /**
@@ -10,8 +9,7 @@ import org.itas.core.cache.CacheAble;
  * @author liuzhen<liuxing521a@gmail.com>
  * @createTime 2014年12月15日下午4:25:47
  */
-public abstract class GameObject 
-	extends GameBase implements CacheAble {
+public abstract class GameObject extends GameBase {
 
 	protected GameObject(String Id) {
 		super(Id);
@@ -25,18 +23,6 @@ public abstract class GameObject
 	 */
 	protected abstract <T extends GameObject> T autoInstance(String Id);
 	
-	@Override
-	public final boolean equals(Object o) {
-		if (o == this) {
-			return true;
-		}
-		
-		if (!(o instanceof GameObject)) {
-			return false;
-		}
-		
-		return ((GameObject) o).Id.equals(Id);
-	}
 	
 	public int getCachedSize() {
 		return 86;

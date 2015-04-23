@@ -2,7 +2,6 @@ package org.itas.core.bytecode;
 
 import javassist.NotFoundException;
 
-import org.itas.core.UnsupportException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;

@@ -1,4 +1,4 @@
-package org.itas.core;
+package org.itas.core.bytecode;
 
 public class UnDeFineException extends RuntimeException {
 	

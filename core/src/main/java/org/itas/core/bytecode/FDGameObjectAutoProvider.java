@@ -3,8 +3,6 @@ package org.itas.core.bytecode;
 import javassist.CtClass;
 import javassist.CtField;
 
-import org.itas.core.UnsupportException;
-
 class FDGameObjectAutoProvider extends AbstractFieldProvider 
 		implements FieldProvider, TypeProvider {
 	

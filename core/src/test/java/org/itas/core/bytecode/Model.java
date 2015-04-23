@@ -322,7 +322,7 @@ public class Model extends GameObject {
 	}
 
 	@Override
-	public String PRIFEX() {
+	public String prefix() {
 		return "mt_";
 	}
 

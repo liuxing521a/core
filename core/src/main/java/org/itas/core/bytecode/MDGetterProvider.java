@@ -4,7 +4,6 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-import org.itas.core.UnsupportException;
 import org.itas.core.util.FirstChar;
 
 /**

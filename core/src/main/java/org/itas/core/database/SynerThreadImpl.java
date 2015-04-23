@@ -46,7 +46,7 @@ final class SynerThreadImpl extends Syner implements OnShutdown, OnStartUP {
 	public synchronized void run() {
 		while (!isFlag) {
 			try {
-				worker.wait(super.doPersistent());
+				worker.wait(super.synDatabase());
 			} catch (InterruptedException exception) {
 				// do nothing
 			} catch (Throwable e) {

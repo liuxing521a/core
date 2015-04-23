@@ -64,7 +64,7 @@ class SQLExecutorImpl implements SQLExecutor, AutoClose {
 	}
 
 	@Override
-	public int execute(Called<PreparedStatement, Connection> back)
+	public int execute(Called<PreparedStatement> back)
 	throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -103,7 +103,7 @@ class SQLExecutorImpl implements SQLExecutor, AutoClose {
 	@Override
 	public int[] executeBatch(String sql, Object[][] args) {
 		Connection conn = null;
-		PreparedStatement ps = null;
+		Statement ps = null;
 		try {
 			conn = dbPool.getConnection();
 			ps = buildStatement(conn, sql, args);
@@ -117,10 +117,10 @@ class SQLExecutorImpl implements SQLExecutor, AutoClose {
 	}
 
 	@Override
-	public int[] executeBatch(Called<PreparedStatement, Connection> back) 
+	public int[] executeBatch(Called<Statement> back) 
 	throws Exception {
 		Connection conn = null;
-		PreparedStatement ps = null;
+		Statement ps = null;
 		try {
 			conn = dbPool.getConnection();
 			ps = back.called(conn);
@@ -134,7 +134,7 @@ class SQLExecutorImpl implements SQLExecutor, AutoClose {
 	}
 
 	@Override
-	public <T> T queryForObject(RowMapper<T> mapper, Called<PreparedStatement, Connection> back)
+	public <T> T queryForObject(RowMapper<T> mapper, Called<PreparedStatement> back)
 	throws Exception {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -198,7 +198,7 @@ class SQLExecutorImpl implements SQLExecutor, AutoClose {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T[] queryForArray(RowMapper<T> mapper, Called<PreparedStatement, Connection> back) 
+	public <T> T[] queryForArray(RowMapper<T> mapper, Called<PreparedStatement> back) 
 	throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;

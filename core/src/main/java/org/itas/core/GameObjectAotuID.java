@@ -14,19 +14,6 @@ public abstract class GameObjectAotuID extends GameBase  {
 		super(aotoId(Id));
 	}
 	
-	@Override
-	public final boolean equals(Object o) {
-		if (o == this) {
-			return true;
-		}
-		
-		if (!(o instanceof GameObjectAotuID)) {
-			return false;
-		}
-		
-		return ((GameObjectAotuID) o).Id.equals(Id);
-	}
-	
 	public int getCachedSize() {
 		return 86;
 	}

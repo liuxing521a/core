@@ -1,7 +1,5 @@
 package org.itas.core;
 
-import org.itas.core.resources.Element;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 

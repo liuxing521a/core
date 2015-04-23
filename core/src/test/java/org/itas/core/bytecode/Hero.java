@@ -188,7 +188,7 @@ public class Hero extends GameObjectAotuID {
 	}
 
 	@Override
-	public String PRIFEX() {
+	public String prefix() {
 		return null;
 	}
 
