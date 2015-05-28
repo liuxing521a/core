@@ -6,9 +6,9 @@ import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 
 import org.itas.buffer.SendAble;
+import org.itas.common.Utils.Objects;
+import org.itas.common.collection.CircularQueue;
 import org.itas.core.User;
-import org.itas.util.Utils.Objects;
-import org.itas.util.collection.CircularQueue;
 
 public class Message {
 	

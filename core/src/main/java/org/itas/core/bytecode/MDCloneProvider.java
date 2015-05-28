@@ -5,7 +5,7 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
-import org.itas.util.ItasException;
+import org.itas.common.ItasException;
 
 /**
  *  SQL操作方法字节码动态生成

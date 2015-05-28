@@ -11,12 +11,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.itas.common.ItasException;
 import org.itas.core.Builder;
 import org.itas.core.Ioc;
 import org.itas.core.Pool.DBPool;
 import org.itas.core.SQLExecutor;
 import org.itas.core.util.AutoClose;
-import org.itas.util.ItasException;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

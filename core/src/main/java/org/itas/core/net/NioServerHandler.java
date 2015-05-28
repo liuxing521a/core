@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.itas.common.Logger;
 import org.itas.core.Dispatch;
 import org.itas.core.User;
-import org.itas.util.Logger;
 
 @Sharable
 public class NioServerHandler extends SimpleChannelInboundHandler<Message> {

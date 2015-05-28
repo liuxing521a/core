@@ -7,7 +7,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.itas.util.Pair;
+import org.itas.common.Pair;
 import org.junit.Test;
 
 public class DataContainersTest {

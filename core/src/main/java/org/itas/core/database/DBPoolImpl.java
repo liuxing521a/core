@@ -8,9 +8,9 @@ import org.itas.core.DoubleException;
 import org.itas.core.Pool.DBPool;
 import org.itas.core.Service.OnShutdown;
 import org.itas.core.Service.OnStartUP;
+import org.itas.core.dbpool.BoneCP;
+import org.itas.core.dbpool.BoneCPConfig;
 
-import com.jolbox.bonecp.BoneCP;
-import com.jolbox.bonecp.BoneCPConfig;
 import com.typesafe.config.Config;
 
 final class DBPoolImpl implements DBPool, OnStartUP, OnShutdown {
@@ -32,7 +32,7 @@ final class DBPoolImpl implements DBPool, OnStartUP, OnShutdown {
 		this.config.setMinConnectionsPerPartition(config.getInt("minConnPerPart"));
 		this.config.setMaxConnectionsPerPartition(config.getInt("maxConnPerPart"));
 		this.config.setPoolAvailabilityThreshold(config.getInt("poolAvailabilityThreshold"));
-		this.config.setAcquireRetryDelayInMs(8000L);
+		this.config.setAcquireRetryDelay(8000);
 		this.config.setLogStatementsEnabled(true);
 	}
 

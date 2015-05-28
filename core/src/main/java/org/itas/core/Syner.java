@@ -3,8 +3,8 @@ package org.itas.core;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import org.itas.common.Utils.TimeUtil;
 import org.itas.core.SQLExecutor.Called;
-import org.itas.util.Utils.TimeUtil;
 
 public abstract class Syner implements Runnable {
 

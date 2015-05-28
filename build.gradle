@@ -30,7 +30,7 @@ allprojects {
     //}
 
     version = '1.1.1'
-    group = 'net.core'
+    group = 'org.itas.core'
     ext {
         appName = 'itas-core'
     }
@@ -49,7 +49,7 @@ project(":core") {
     	compile project(':utils')
 		compile (
 			'com.typesafe:config:1.0.1', 
-			'com.jolbox:bonecp:0.8.0.RELEASE', 
+			//'com.jolbox:bonecp:0.8.0.RELEASE', 
 			'nio:netty-all:5.0.0.Alpha1', 
 			'org.javassist:javassist:3.18.2-GA',
 			'com.google.guava:guava:17.0',
@@ -64,6 +64,19 @@ project(":core") {
 }
 
 project(":utils") {
+    apply plugin: "java"
+
+    dependencies {
+		compile (
+			'ch.qos.logback:logback-classic:1.1.2',
+			'ch.qos.logback:logback-core:1.1.2',
+			'org.slf4j:slf4j-api:1.7.7',
+			'junit:junit:4.9'
+		)
+    }
+}
+
+project(":common") {
     apply plugin: "java"
 
     dependencies {

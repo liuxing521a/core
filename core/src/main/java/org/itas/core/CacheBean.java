@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.Objects;
 import java.util.Set;
 
+import org.itas.common.Logger;
+import org.itas.common.collection.CircularQueue;
 import org.itas.core.GameBase.DataStatus;
 import org.itas.core.SQLExecutor.Called;
 import org.itas.core.SQLExecutor.RowMapper;
 import org.itas.core.Syner.GameBaseSyner;
 import org.itas.core.cache.Cache;
-import org.itas.util.Logger;
-import org.itas.util.collection.CircularQueue;
 
 final class CacheBean implements GameBaseSyner {
 	

@@ -10,8 +10,8 @@ import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Objects;
 
+import org.itas.common.Logger;
 import org.itas.core.User;
-import org.itas.util.Logger;
 
 //@Sharable
 public class MessageDecoder extends ByteToMessageDecoder {

@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.itas.common.ItasException;
 import org.itas.core.Syner.GameBaseSyner;
-import org.itas.util.ItasException;
 
 public class Pool {
 

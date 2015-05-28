@@ -5,10 +5,10 @@ import java.sql.Timestamp;
 import javassist.ClassPool;
 import javassist.CtClass;
 
+import org.itas.common.ItasException;
 import org.itas.core.GameObject;
 import org.itas.core.GameObjectAotuID;
 import org.itas.core.util.FirstChar;
-import org.itas.util.ItasException;
 
 /**
  * 属性[field]字节码动态生成

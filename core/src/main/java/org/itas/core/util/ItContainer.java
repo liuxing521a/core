@@ -11,12 +11,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.itas.common.Pair;
+import org.itas.common.Utils.Objects;
 import org.itas.core.EnumByte;
 import org.itas.core.EnumInt;
 import org.itas.core.EnumString;
 import org.itas.core.HashId;
-import org.itas.util.Pair;
-import org.itas.util.Utils.Objects;
 
 /**
  * 对象基类的提供处理集合的方法

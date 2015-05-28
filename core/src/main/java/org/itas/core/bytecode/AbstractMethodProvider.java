@@ -8,11 +8,11 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.Modifier;
 
+import org.itas.common.ItasException;
 import org.itas.core.annotation.UnSave;
 import org.itas.core.bytecode.AbstractFieldProvider.javassistType;
 import org.itas.core.util.DataBase;
 import org.itas.core.util.Next;
-import org.itas.util.ItasException;
 
 /**
  * 方法[method]字节码动态生成

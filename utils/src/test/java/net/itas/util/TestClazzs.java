@@ -5,9 +5,9 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.itas.util.GenericInfo;
-import org.itas.util.Utils.ClassUtils;
-import org.itas.util.Utils.GenericUtils;
+import org.itas.common.GenericInfo;
+import org.itas.common.Utils.ClassUtils;
+import org.itas.common.Utils.GenericUtils;
 import org.junit.Test;
 
 public class TestClazzs {

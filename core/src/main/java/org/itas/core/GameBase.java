@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.itas.common.ItasException;
+import org.itas.common.Pair;
 import org.itas.core.Pool.DataPool;
 import org.itas.core.Syner.GameBaseSyner;
 import org.itas.core.annotation.Primary;
 import org.itas.core.annotation.UnSave;
 import org.itas.core.cache.CacheAble;
 import org.itas.core.util.ItContainer;
-import org.itas.util.ItasException;
-import org.itas.util.Pair;
 
 abstract class GameBase implements CacheAble {
 	

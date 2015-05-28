@@ -2,7 +2,7 @@ package org.itas.core.util;
 
 import java.lang.reflect.Constructor;
 
-import org.itas.util.ItasException;
+import org.itas.common.ItasException;
 
 @SuppressWarnings("unchecked")
 public interface Constructors {

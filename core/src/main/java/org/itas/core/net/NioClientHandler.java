@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.itas.util.Logger;
+import org.itas.common.Logger;
 
 public class NioClientHandler extends SimpleChannelInboundHandler<Message> {
 	

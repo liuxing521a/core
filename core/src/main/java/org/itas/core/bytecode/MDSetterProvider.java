@@ -6,8 +6,8 @@ import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 
+import org.itas.common.Utils.Objects;
 import org.itas.core.util.FirstChar;
-import org.itas.util.Utils.Objects;
 
 import com.google.common.collect.Maps;
 

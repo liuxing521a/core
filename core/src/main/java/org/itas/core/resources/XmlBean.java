@@ -8,14 +8,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.itas.common.ItasException;
+import org.itas.common.Utils.ClassUtils;
 import org.itas.core.Builder;
 import org.itas.core.Config;
 import org.itas.core.Parser;
 import org.itas.core.Resource;
 import org.itas.core.resources.Attribute.AttributeBuilder;
 import org.itas.core.util.Constructors;
-import org.itas.util.ItasException;
-import org.itas.util.Utils.ClassUtils;
 
 
 final class XmlBean {

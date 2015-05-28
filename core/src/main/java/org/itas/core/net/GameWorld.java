@@ -7,9 +7,9 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.itas.buffer.SendAble;
+import org.itas.common.Logger;
 import org.itas.core.CallBack;
 import org.itas.core.User;
-import org.itas.util.Logger;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

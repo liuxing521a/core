@@ -2,8 +2,8 @@ package org.itas.core.util;
 
 import javassist.CtClass;
 
+import org.itas.common.ItasException;
 import org.itas.core.annotation.SQLEntity;
-import org.itas.util.ItasException;
 
 public interface DataBase {
 

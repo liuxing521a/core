@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-import org.itas.util.ItasException;
+import org.itas.common.ItasException;
 
 public abstract class AbstractXml {
 	

@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import org.itas.util.Logger;
+import org.itas.common.Logger;
 
 public class UUIDGenerator {
 
