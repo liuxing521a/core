@@ -5,13 +5,17 @@
 
 package org.itas.common.collection;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 
 // Referenced classes of package daff.util:
 //            Collection, Iterator, ArrayIterator, List, 
 //            Set
 
-public class LinkedList
-    implements List, Set
+public class LinkedList<E> implements List<E>
 {
     public class Node
     {
@@ -396,4 +400,21 @@ public class LinkedList
     private Node first;
     private Node last;
     private int size;
+	/* (non-Javadoc)
+	 * @see java.util.List#listIterator()
+	 */
+	@Override
+	public ListIterator<E> listIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.util.List#listIterator(int)
+	 */
+	@Override
+	public ListIterator<E> listIterator(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

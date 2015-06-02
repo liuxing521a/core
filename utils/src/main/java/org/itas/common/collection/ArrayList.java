@@ -1,246 +1,264 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   ArrayList.java
-
 package org.itas.common.collection;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
 
-// Referenced classes of package daff.util:
-//            Collection, Iterator, ArrayIterator, List
+public class ArrayList<E> implements java.util.List<E> {
 
-public class ArrayList
-    implements List
-{
+	private int size;
+	private transient Object[] datas;
+    
+    public ArrayList()  {
+        this(4);
+    }
 
-    public boolean removeAll(Collection collection)
-    {
+    public ArrayList(int i) {
+        datas = new Object[i];
+        size = 0;
+    }
+    
+    @Override
+    public int size() {
+        return size;
+    }
+    
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+    
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) > 0;
+    }
+    
+    @Override
+    public Iterator<E> iterator() {
+        return new ArrayIterator<>(datas, size());
+    }
+    
+    @Override
+    public Object[] toArray() {
+        Object aobj[] = new Object[size()];
+        System.arraycopy(((Object) (datas)), 0, ((Object) (aobj)), 0, aobj.length);
+        return aobj;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] t) {
+        System.arraycopy(datas, 0, t, 0, t.length);
+        return t;
+    }
+    
+    @Override
+    public boolean removeAll(Collection<?> c) {
         boolean flag = true;
-        for(Iterator iterator1 = collection.iterator(); iterator1.hasNext();)
-            flag &= remove(iterator1.next());
+        for(Iterator<?> it = c.iterator(); it.hasNext(); ) {
+        	flag &= remove(it.next());
+        }
 
         return flag;
     }
+    
+    @Override
+    public boolean add(E e) {
+        if(e == null) {
+            throw new NullPointerException("item is null");
+        }
+        
+        ensureCapacity(size + 1);
+        datas[size ++] = e;
+        return true;
+    }
 
-    public List subList(int i, int j)
-    {
-        ArrayList arraylist = new ArrayList(j - i);
-        for(int k = i; k < j; k++)
-            arraylist.add(get(k));
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for(Iterator<?> it = c.iterator(); it.hasNext(); ) {
+        	if (!contains(it.next())){
+        		return false;
+        	}
+        }
+
+        return true;
+    }
+    
+    @Override
+    public List<E> subList(int beginIndex, int endIndex) {
+        ArrayList<E> arraylist = new ArrayList<>(endIndex - beginIndex);
+        for(int k = beginIndex; k < endIndex; k++) {
+        	arraylist.add(get(k));
+        }
 
         return arraylist;
     }
 
-    public Object[] toArray()
-    {
-        Object aobj[] = new Object[size()];
-        System.arraycopy(((Object) (data)), 0, ((Object) (aobj)), 0, aobj.length);
-        return aobj;
-    }
 
-    public Object[] toArray(Object aobj[])
-    {
-        System.arraycopy(((Object) (data)), 0, ((Object) (aobj)), 0, aobj.length);
-        return aobj;
-    }
-
-    public int capacity()
-    {
-        return data.length;
-    }
-
-    private void ensureCapacity(int i)
-    {
-        if(data.length < i)
-        {
+    private void ensureCapacity(int i) {
+        if(datas.length < i)  {
             Object aobj[] = new Object[(i * 3) / 2];
-            System.arraycopy(((Object) (data)), 0, ((Object) (aobj)), 0, size);
-            data = aobj;
+            System.arraycopy(datas, 0, aobj, 0, size);
+            datas = aobj;
         }
     }
 
-    public Object get(int i)
-    {
-        if(i < 0 || i >= size)
+    @Override @SuppressWarnings("unchecked")
+	public E get(int index) {
+        if(index < 0 || index >= size)
             return null;
         else
-            return data[i];
+            return (E)datas[index];
     }
 
-    public Object set(int i, Object obj)
-    {
-        Object obj1 = data[i];
-        data[i] = obj;
-        return obj1;
+    @Override @SuppressWarnings("unchecked")
+    public E set(int i, Object o) {
+        Object obj1 = datas[i];
+        datas[i] = o;
+        return (E) obj1;
     }
 
-    public String toString()
-    {
-        StringBuffer stringbuffer = new StringBuffer(getClass().getName() + "[");
-        for(int i = 0; i < size; i++)
-            stringbuffer.append(data[i].toString() + ',');
-
-        stringbuffer.setCharAt(stringbuffer.length() - 1, ']');
-        return stringbuffer.toString();
-    }
-
-    public ArrayList()
-    {
-        this(2);
-    }
-
-    public boolean add(Object obj)
-    {
-        if(obj == null)
-        {
-            throw new NullPointerException("item is null");
-        } else
-        {
-            ensureCapacity(size + 1);
-            data[size++] = obj;
-            return true;
+    @Override
+    public String toString()  {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName());
+        sb.append('[');
+        
+        for(int i = 0; i < size; i++) {
+        	sb.append(datas[i].toString()).append(',');
         }
+
+        sb.setCharAt(sb.length() - 1, ']');
+        return sb.toString();
     }
 
-    public void add(int i, Object obj)
-    {
-        if(obj == null)
-        {
+
+    @Override
+    public void add(int i, Object o) {
+        if(o == null) {
             throw new NullPointerException("item is null");
-        } else
-        {
-            ensureCapacity(size + 1);
-            data[size++] = obj;
-            return;
         }
+        
+        ensureCapacity(size + 1);
+        datas[size++] = o;
+        return;
     }
 
-    public ArrayList(int i)
-    {
-        data = new Object[i];
-        size = 0;
-    }
 
-    public boolean addAll(Collection collection)
-    {
-        for(Iterator iterator1 = collection.iterator(); iterator1.hasNext(); add(iterator1.next()));
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        for(Iterator<? extends E> it = c.iterator(); it.hasNext(); ) {
+        	add(it.next());
+        }
+        
         return true;
     }
 
-    public boolean addAll(int i, Collection collection)
-    {
-        for(Iterator iterator1 = collection.iterator(); iterator1.hasNext(); add(i++, iterator1.next()));
+    @Override
+    public boolean addAll(int i, Collection<? extends E> c) {
+        for(Iterator<? extends E> it = c.iterator(); it.hasNext(); ) {
+        	 add(i++, it.next());
+        }
+        
         return true;
     }
-
-    public boolean contains(Object obj)
-    {
-        for(int i = 0; i < size; i++)
-            if(data[i] == obj)
-                return true;
-
-        return false;
-    }
-
-    public int size()
-    {
-        return size;
-    }
-
-    public int indexOf(Object obj)
-    {
-        for(int i = 0; i < size(); i++)
-            if(data[i] == obj)
-                return i;
+   
+    @Override
+    public int indexOf(Object o) {
+        for(int i = 0; i < size(); i++) {
+        	if(datas[i] == o)
+        		return i;
+        }
 
         return -1;
     }
 
-    public boolean equals(Object obj)
-    {
-        if(obj instanceof ArrayList)
-        {
-            ArrayList arraylist = (ArrayList)obj;
-            boolean flag = arraylist.size == size;
-            if(flag)
-            {
-                for(int i = 0; i < size; i++)
-                    if(!data[i].equals(arraylist.data[i]))
-                        return false;
-
-            }
-            return flag;
-        } else
-        {
-            return false;
+    @Override
+    public boolean equals(Object o) {
+    	if (o == null) {
+    		return false;
+    	}
+    	
+    	if (o == this) {
+    		return true;
+    	}
+    	
+        if(o.getClass() != this.getClass()) {
+        	return false;
+        } 
+        
+        @SuppressWarnings("unchecked")
+		ArrayList<E> arraylist = (ArrayList<E>)o;
+        boolean flag = arraylist.size == size;
+        if(arraylist.size != size) {
+        	for(int i = 0; i < size; i++)
+        		if(!datas[i].equals(arraylist.datas[i]))
+        			return false;
+        	
         }
-    }
-
-    public Iterator iterator()
-    {
-        return new ArrayIterator(data, size());
-    }
-
-    public boolean containsAll(Collection collection)
-    {
-        boolean flag = true;
-        for(Iterator iterator1 = collection.iterator(); iterator1.hasNext();)
-            flag &= contains(iterator1.next());
-
         return flag;
     }
-
-    public boolean retainAll(Collection collection)
-    {
-        clear();
-        addAll(collection);
-        return true;
+    
+    @Override
+    public boolean retainAll(Collection<?> c) {
+    	 Objects.requireNonNull(c);
+         boolean modified = false;
+         for (Iterator<E> it = iterator(); it.hasNext(); ) {
+             if (!c.contains(it.next())) {
+                 it.remove();
+                 modified = true;
+             }
+         }
+         
+         return modified;
     }
 
-    public void clear()
-    {
-        for(int i = 0; i < size; i++)
-            data[i] = null;
-
+    @Override
+    public void clear() {
+        Arrays.fill(datas, null);
         size = 0;
     }
 
-    public int lastIndexOf(Object obj)
-    {
-        for(int i = size() - 1; i > 0; i--)
-            if(data[i] == obj)
-                return i;
+    @Override
+    public int lastIndexOf(Object obj) {
+        for(int i = size() - 1; i > 0; i--) {
+        	if(datas[i] == obj)
+        		return i;
+        }
 
         return -1;
     }
-
-    public boolean isEmpty()
-    {
-        return size == 0;
+   
+    @Override
+    public boolean remove(Object o) {
+        return remove(indexOf(o)) != null;
     }
 
-    public boolean remove(Object obj)
-    {
-        Object obj1 = remove(indexOf(obj));
-        return obj1 != null;
-    }
-
-    public Object remove(int i)
-    {
-        if(i < 0 || i >= size)
-        {
+    @SuppressWarnings("unchecked")
+	@Override
+    public E remove(int i) {
+        if(i < 0 || i >= size) {
             return null;
-        } else
-        {
-            Object obj = data[i];
-            data[i] = data[size - 1];
-            data[size - 1] = null;
-            size--;
-            return obj;
-        }
+        } 
+        
+        Object obj = datas[i];
+        datas[i] = datas[size - 1];
+        datas[size - 1] = null;
+        size--;
+        return (E) obj;
     }
 
-    private Object data[];
-    private int size;
+	@Override
+	public ListIterator<E> listIterator() {
+		throw new UnsupportedOperationException("method listIterator()");
+	}
+
+	@Override
+	public ListIterator<E> listIterator(int index) {
+		throw new UnsupportedOperationException("method listIterator(int index)");
+	}
     
 }

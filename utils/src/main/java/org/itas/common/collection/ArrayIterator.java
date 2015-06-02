@@ -5,61 +5,57 @@
 
 package org.itas.common.collection;
 
+import java.util.Iterator;
 
 // Referenced classes of package daff.util:
 //            Iterator
 
-class ArrayIterator
-    implements Iterator
-{
+class ArrayIterator<E> implements Iterator<E> {
 
-    public String toString()
-    {
-        StringBuffer stringbuffer = new StringBuffer(getClass().getName() + "[");
-        for(int i = 0; i < length; i++)
-            stringbuffer.append(data[i].toString() + ',');
+	private Object[] data;
+	private int length;
+	private int pointer;
+	
+	ArrayIterator(Object[] os, int i) {
+		data = os;
+		length = i;
+	}
 
-        stringbuffer.setCharAt(stringbuffer.length() - 1, ']');
-        return stringbuffer.toString();
-    }
+	public String toString() {
+		StringBuffer stringbuffer = new StringBuffer(getClass().getName() + "[");
+		for (int i = 0; i < length; i++)
+			stringbuffer.append(data[i].toString() + ',');
 
-    ArrayIterator(Object aobj[], int i)
-    {
-        data = aobj;
-        length = i;
-    }
+		stringbuffer.setCharAt(stringbuffer.length() - 1, ']');
+		return stringbuffer.toString();
+	}
 
-    public boolean equals(Object obj)
-    {
-        if(obj instanceof ArrayIterator)
-        {
-            ArrayIterator arrayiterator = (ArrayIterator)obj;
-            boolean flag = arrayiterator.length == length;
-            if(flag)
-            {
-                for(int i = 0; i < length; i++)
-                    if(!data[i].equals(arrayiterator.data[i]))
-                        return false;
+	
 
-            }
-            return flag;
-        } else
-        {
-            return false;
-        }
-    }
+	public boolean equals(Object obj) {
+		if (obj instanceof ArrayIterator) {
+			ArrayIterator arrayiterator = (ArrayIterator) obj;
+			boolean flag = arrayiterator.length == length;
+			if (flag) {
+				for (int i = 0; i < length; i++)
+					if (!data[i].equals(arrayiterator.data[i]))
+						return false;
 
-    public boolean hasNext()
-    {
-        return pointer < length;
-    }
+			}
+			return flag;
+		} else {
+			return false;
+		}
+	}
 
-    public Object next()
-    {
-        return data[pointer++];
-    }
+	@Override
+	public boolean hasNext() {
+		return pointer < length;
+	}
 
-    private Object data[];
-    private int length;
-    private int pointer;
+	@Override
+	public E next() {
+		return (E) data[pointer++];
+	}
+
 }

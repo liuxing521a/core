@@ -5,32 +5,40 @@
 
 package org.itas.common.collection;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
 
 // Referenced classes of package daff.util:
 //            Map, Set, Iterator, ArrayList, 
 //            ArraySet, Collection
 
-public final class HashMap
-    implements Map
-{
-    private class MapEntry
-    {
+public final class HashMap<K, V>  implements Map<K, V> {
+	
+	private int loadFactor;
+	private int count;
+	private MapEntry<K, V>[] entries;
 
-        Object key;
-        Object value;
-        MapEntry next;
-
-        MapEntry(Object obj, Object obj1)
-        {
-            key = obj;
-            value = obj1;
-        }
+	public HashMap() {
+		this(16);
     }
 
+    public HashMap(int capacity) {
+        this(capacity, 75);
+    }
 
-    private int index2(Object obj)
-    {
-        return -1;
+    @SuppressWarnings("unchecked")
+	public HashMap(int capacity, int factor) {
+    	if(factor < 0 || factor >= 100){
+            throw new IllegalArgumentException();
+        }
+
+    	loadFactor = factor;
+    	entries = new MapEntry[capacity];
+    	count = 0;
+        return;
     }
 
     private void ensureCapacity()
@@ -48,68 +56,64 @@ public final class HashMap
             }
 
         }
+
     }
 
-    public Object put(Object obj, Object obj1)
-    {
-        if(obj == null || obj1 == null)
-            return null;
+    @Override
+    public V put(K key, V value) {
+        if (key == null) {
+        	return null;
+        }
+        
         ensureCapacity();
-        int i = Math.abs(obj.hashCode()) % entries.length;
-        MapEntry mapentry = entries[i];
-        if(mapentry == null)
-        {
-            mapentry = new MapEntry(obj, obj1);
-            mapentry.key = obj;
-            mapentry.value = obj1;
-            entries[i] = mapentry;
+        int i = key.hashCode() & entries.length;
+        MapEntry<K, V> entry = entries[i];
+        if(entry == null) {
+            entry = new MapEntry<>(key, value);
+            entries[i] = entry;
             count++;
-            return obj1;
-        }
-        if(mapentry.key.equals(obj))
-        {
-            mapentry.value = obj1;
-            return obj1;
-        }
-        for(; mapentry != null; mapentry = mapentry.next)
-        {
-            if(mapentry.key.equals(obj))
-            {
-                mapentry.value = obj1;
-                return obj1;
-            }
-            if(mapentry.next == null)
-            {
-                mapentry.next = new MapEntry(obj, obj1);
-                count++;
-                return obj1;
-            }
-        }
-
-        return null;
-    }
-
-    public Object get(Object obj)
-    {
-        if(obj == null)
             return null;
-        int i = Math.abs(obj.hashCode()) % entries.length;
-        for(MapEntry mapentry = entries[i]; mapentry != null; mapentry = mapentry.next)
-            if(mapentry.key.equals(obj))
-                return mapentry.value;
+        }
+        
+        if(entry.key.equals(key)) {
+        	V old = entry.value;
+            entry.value = value;
+            return old;
+        }
+        
+        for( ; entry != null; ) {
+        	entry = entry.next;
+            if(entry.key.equals(key)) {
+            	V old = entry.value;
+                entry.value = value;
+                return old;
+            }
+            
+            if(entry.next == null) {
+                entry.next = new MapEntry<>(key, value);
+                count++;
+                return null;
+            }
+        }
 
         return null;
     }
 
-    public void put(int i, Object obj)
-    {
-        put(new Integer(i), obj);
+    @Override
+    public V get(Object key)  {
+        if(key == null) {
+        	return null;
+        }
+        
+        int i = key.hashCode() & entries.length;
+        for (MapEntry<K, V> entry = entries[i]; entry != null; entry = entry.next) {
+        	if(entry.key.equals(key))
+        		return entry.value;
+        }
+
+        return null;
     }
 
-    public Object get(int i)
-    {
-        return get(new Integer(i));
-    }
 
     public String toString()
     {
@@ -131,36 +135,8 @@ public final class HashMap
         return stringbuffer.toString();
     }
 
-    public HashMap()
-    {
-        this(100);
-    }
-
-    public HashMap(int i)
-    {
-        this(i, 75);
-    }
-
-    public HashMap(int i, int j)
-    {
-        if(j < 0 || j >= 100)
-        {
-            throw new IllegalArgumentException();
-        } else
-        {
-            loadFactor = j;
-            init(i);
-            return;
-        }
-    }
-
-    private int index1(Object obj)
-    {
-        return -1;
-    }
-
-    public int size()
-    {
+    @Override
+    public int size() {
         return count;
     }
 
@@ -179,52 +155,32 @@ public final class HashMap
         return false;
     }
 
-    private int locate(Object obj, int i)
-    {
-        return -1;
-    }
-
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         return false;
     }
 
-    public void putAll(Map map)
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m)
     {
         Object obj;
-        for(Iterator iterator = map.keySet().iterator(); iterator.hasNext(); put(obj, map.get(obj)))
-            obj = iterator.next();
-
-    }
-
-    public Collection values()
-    {
-        ArrayList arraylist = new ArrayList(count);
-        for(int i = 0; i < entries.length; i++)
-        {
-            MapEntry mapentry = entries[i];
-            if(mapentry != null)
-            {
-                arraylist.add(mapentry.value);
-                for(mapentry = mapentry.next; mapentry != null; mapentry = mapentry.next)
-                    arraylist.add(mapentry.value);
-
-            }
+        Set<Map.Entry<? extends K, ? extends V>> entry = m.entrySet().iterator();
+        for(Iterator iterator = m.keySet().iterator(); iterator.hasNext(); ) {
+        	obj = iterator.next();
+        	put(obj, map.get(obj))
         }
 
-        return arraylist;
     }
 
-    public void clear()
-    {
-        for(int i = 0; i < entries.length; i++)
-            entries[i] = null;
+    
 
+    @Override
+    public void clear() {
+        Arrays.fill(entries, null);
         count = 0;
     }
 
-    public boolean isEmpty()
-    {
+    @Override
+    public boolean isEmpty() {
         return count == 0;
     }
 
@@ -247,8 +203,8 @@ public final class HashMap
         return false;
     }
 
-    public Set keySet()
-    {
+    @Override
+    public Set<K> keySet() {
         ArraySet arrayset = new ArraySet(count);
         for(int i = 0; i < entries.length; i++)
         {
@@ -261,29 +217,43 @@ public final class HashMap
 
         return arrayset;
     }
-
-    private void init(int i)
+    
+    public Collection values()
     {
-        entries = new MapEntry[i];
-        count = 0;
+        ArrayList arraylist = new ArrayList(count);
+        for(int i = 0; i < entries.length; i++)
+        {
+            MapEntry mapentry = entries[i];
+            if(mapentry != null)
+            {
+                arraylist.add(mapentry.value);
+                for(mapentry = mapentry.next; mapentry != null; mapentry = mapentry.next)
+                    arraylist.add(mapentry.value);
+
+            }
+        }
+
+        return arraylist;
     }
 
-    public Object remove(Object obj)
-    {
-        if(obj == null)
-            return null;
-        int i = Math.abs(obj.hashCode()) % entries.length;
+    @Override
+    public V remove(Object key) {
+        if(key == null) {
+        	return null;
+        }
+        
+        int i = Math.abs(key.hashCode()) % entries.length;
         MapEntry mapentry = entries[i];
         if(mapentry == null)
             return null;
         count--;
-        if(mapentry.key.equals(obj))
+        if(mapentry.key.equals(key))
         {
             entries[i] = mapentry.next;
             return mapentry.value;
         }
         for(; mapentry.next != null; mapentry = mapentry.next)
-            if(mapentry.next.key.equals(obj))
+            if(mapentry.next.key.equals(key))
             {
                 Object obj1 = mapentry.next.value;
                 mapentry.next = mapentry.next.next;
@@ -294,7 +264,40 @@ public final class HashMap
         return null;
     }
 
-    private int loadFactor;
-    private int count;
-    private MapEntry entries[];
+	
+	public static class MapEntry<K, V> implements Entry<K, V> {
+
+		K key;
+	    V value;
+	    MapEntry<K, V> next;
+
+	    MapEntry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+		@Override
+		public K getKey() {
+			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
+		}
+
+		@Override
+		public V setValue(V value) {
+			V old = this.value;
+			this.value = value;
+			return old;
+		}
+    }
+
+
+	@Override
+	public Set<Entry<K, V>> entrySet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
