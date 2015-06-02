@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 xcnet
+ * Copyright 2014-2015 itas group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.itas.common.collection;
+package org.itas.common.xml;
 
+/**
+ *
+ * @author liuzhen<liuxing521a@163.com>
+ * @calendar 2015年5月29日
+ */
+public class SerializationException extends RuntimeException {
 
-// Referenced classes of package daff.util:
-//            Collection, Iterator
+	private static final long serialVersionUID = -4240226726825212948L;
 
-public interface List<E> extends Collection<E> {
+	public SerializationException() {
+		super();
+	}
 
+	public SerializationException(String message) {
+		super(message);
+	}
 
-    List<E> subList(int i, int j);
+	public SerializationException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    E get(int i);
-
-    E set(int i, Object obj);
-
-    void add(int i, E obj);
-
-    boolean addAll(int i, Collection<? extends E> c);
-
-    int indexOf(Object obj);
-
-
-    int lastIndexOf(Object obj);
-
-
-    Object remove(int i);
+	public SerializationException(Throwable cause) {
+		super(cause);
+	}
 }

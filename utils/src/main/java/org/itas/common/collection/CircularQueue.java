@@ -54,6 +54,23 @@ public class CircularQueue<E> {
 	public E peek() {
         return first();
     }
+	
+	@SuppressWarnings("unchecked")
+	public E popLast() {
+        if (size == 0) {
+            return null;
+        }
+
+        Object ret = items[last];
+        items[last] = null;
+        size--;
+
+        return (E) ret;
+    }
+	
+	public E peekLast() {
+        return last();
+    }
 
     public void push(E item) {
         if (item == null) {
